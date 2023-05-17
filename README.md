@@ -12,7 +12,7 @@ Welcome to the fifth batch page of my Ideas for Computing. This is a stream of m
 
 # 1. Dynamic type crystallization
 
-Any variable can contain any type of data, but once it is set to a type, it cannot be changed to another type.
+Any variable can contain any type of data, but once it is set to a type, its type cannot be changed to another type. We don't need adaptive or specialised compilation if we have this rule.
 
 # 2. Matrix multiplication on matrixes of movements of identities
 
@@ -20,9 +20,9 @@ Any variable can contain any type of data, but once it is set to a type, it cann
 
 # 4. Orthogonality and nested placement relationships and rules
 
-When we move things around, we may also want to move them according to a multiple rules.
+When we move things around, we may also want to move them according to a multiple rules simultaneously.
 
-# 5. No matter how small the task, it composes and parallelises well
+# 5. No matter how small or large the task, it composes and parallelises well
 
 Imagine you're writing a web scraper, there are multiple steps in the procedure to scraping that need to be efficiently multitasked and scheduled. It would be nice if the unit of parallelization could be scaled up and down based on the characteristics of the calculation.
 
@@ -173,13 +173,15 @@ The state of the remote server, the state of the active server and the state of 
 
 Did you turn off the thing that isn't working? Did you shut down the server
 
-# 28. Distributed Match states, Connected everything
+# 28. Distributed Match states, Connected everything, assert on anything
 
 
 
 # 29. Search imports
 
-# 30. Consideration mitigation
+# 30. Standard consideration mitigation
+
+There's a batch of considerations to be considered when building a system, for example, is latency low even after continual usage?
 
 # 31. Good targets
 
@@ -187,7 +189,14 @@ Did you turn off the thing that isn't working? Did you shut down the server
 * 1000MBs per second
 * 100s of producers
 * 100s of consumers
-* 100s of applications per second
+* 100s of applications on one container
+* 600,000 requests per second
+
+# 32. When numbers are equal
+
+Do this
+
+
 
 
 
