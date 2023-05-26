@@ -12,7 +12,7 @@ Welcome to the fifth batch page of my Ideas for Computing. This is a stream of m
 
 # 1. Dynamic type crystallization
 
-Any variable can contain any type of data, but once it is set to a type, its type cannot be changed to another type. We don't need adaptive or specialised compilation if we have this rule.
+Any variable can contain any type of data, but once it is set to a type, its type cannot be changed to another type. Our adaptive or specialised compilation can flip to a specialised case with this rule and it never needs to hit a slow path except the first time.
 
 # 2. Matrix multiplication on matrixes of movements of identities
 
@@ -30,7 +30,9 @@ Imagine you're writing a web scraper, there are multiple steps in the procedure 
 
 Soft upgrade is a virtual upgrade but not an actual upgrade. In-place pauseless and synchronized upgrades
 
-# 7. 
+# 7. Code maps
+
+A standardised syntax for describing behaviour, used as a comment to find code easily.
 
 
 
@@ -43,13 +45,15 @@ Soft upgrade is a virtual upgrade but not an actual upgrade. In-place pauseless 
 
 # 10. Orthogonality of stacks and joins
 
-# 11. GUI container
+# 11. GUI state container
 
 What's a GUI container? A GUI container is similar to the active memory of a REPL. It interprets the objects in memory and tries to render them in an attractive way that makes sense.
 
 We can use type systems to define what state the GUI should be in. The GUI container is an object area that receives collections of objects and decides how to render them. The behaviour of the application is defined by the types.
 
 # 12. Beautiful API first
+
+The beautiful API is more important than even efficiency, and in theory a properly designed API can have hints, for compiling for a more performant solution.
 
 # 13. Data method calls
 
@@ -71,9 +75,9 @@ It should be easy to apply custom patches to code and package it easily, the bui
 
 # 19. Non ASCII tokens direct parse-to-parse mapping
 
-This idea is based on using assembly as an output language for a compiler. Using text output is extremely elegant API for code but is not very efficient due to the requirement to serialize and parse, especially for something such as a JIT compiler. It is inefficient to generate streams of text that shall only be parsed again by the assembler.
+This idea is based on using assembly as an output language for a compiler. Using text output is extremely elegant API for code but is not very efficient due to the requirement to serialize and parse, especially for something such as a JIT compiler that needs to compile frequently and as fast as possible. It is inefficient to generate/emit streams of text that shall only be parsed again by the assembler.
 
-What if we could skip the text component and communicate binary directly between the part that serialises and the part that deserialises but still maintain the textual API? 
+What if we could skip the text component and communicate binary directly between the part that serialises and the part that deserialises but still maintain the textual API from the programmer's perspective? 
 
 Instead we turn textual tokens into an compile time API, in other words the compiler encodes the tokens of the lexer into a binary protocol. This way the assembler can skip parsing because it has the data structure already in binary.
 
@@ -169,9 +173,13 @@ We should never get into a state where the server crashes or we get broken pipe.
 
 The state of the remote server, the state of the active server and the state of the data being sent back and forth.
 
-# 27. Common errors
+# 27. Common coding errors
 
 Did you turn off the thing that isn't working? Did you shut down the server
+
+Did you change the right object?
+
+Did you do the thing inside or outside the loop?
 
 # 28. Distributed Match states, Connected everything, assert on anything
 
@@ -191,14 +199,181 @@ There's a batch of considerations to be considered when building a system, for e
 * 100s of consumers
 * 100s of applications on one container
 * 600,000 requests per second
+* Efficient with Billion records
 
-# 32. When numbers are equal
+# 32. Promises - When numbers are equal
 
-Do this
+We can implement promises and mutual exclusion with numbers that are either equal or not equal. Do this thing when these numbers are equal.
+
+# 33. Bit mask scheduling
+
+# 34. Statelines diagram
+
+Draw statelines which show transit of values through system rather than progression of logic.
+
+# 35. The pedanticness of a fair benchmark should be incorporated into product design
+
+Many companies deny benchmarks of their software. 
+
+# 36. Robust package management ideas
+
+Package managers get into strange states.
+
+# 37. Data defines the software
+
+# 38. Breaking a computation across machines, chunk computation
+
+How do you divide any arbitrary computation across boxes, for data sizes that are beyond any given box?
+
+Threads, multithreading, sharding, and computation larger than a single machine
+
+# 39. Language should have efficient automatic serialization
+
+# 40. Data shipping home
+
+Trivially easy data migration pipelines.
+
+# 41. Markdown to crud website
+
+# 42. Behavioural resources
+
+Create resources similar to CRUD that have behaviours.
+
+# 43. The Bottom Abstraction - Composing behaviours is a huge problem
+
+When building a system, it is often helpful to have a bottom abstraction, that other things are based upon. What's the bottom abstraction anyway? How do you compose behaviours?
+
+* I want data to be migratable easily from machine to machine, from a graphical user interface.
+* I want IO and CPU computation to be parallelisable
+* In LISP it is lists and trees.
+* Instruction Set Architecture is instructions to do mathematical operations and move things around memory and move through instructions.
+
+# 44. Reverse log to AST tree
+
+Log to reverse tree to work out logic order.
+
+# 45. Coordinated runtimes
+
+After looking into liburing, it occurred to me that behaviours of systems should be generalised for the best possible performance.
+
+# 46. It's impossible to segfault if we know the range of what is valid
+
+Because you import what you use and what you expect to be where and what you expect each data structure to contain. It's not possible to dereference a value to an invalid piece of memory.
+
+Parsing associated with blocking.
+
+# 47. Can we infer the movement through instructions?
+
+# 48. Monetisation system
+
+# 49. Complete program, separated into pieces, re-stitched together into new program
+
+Imagine you have a complete program that does a task and we want to do a variation of what the existing program does. We can do a simple transformation to get the program into a form that we can extend:
+
+* inline all internal methods until only platform calls exist
+* label parameters that pass through the program through to these platform/system calls.
+* 
 
 
 
+can tweak relationships of the task, mix and match the code to do what we want.
+
+For example, a simple uring program can act as a webserver and send data to clients.
+
+Can add threading and cross thread communication to different pieces of code.
 
 
 
+rich runtime can be used to distribute processing too
+
+synchronization is just loops
+
+
+
+# 50. Hierarchy of event loops
+
+raise to previous event loop, state machine coordination
+
+# 51. Render the code differently, simplified rendering of code
+
+# 52. Complicated behaviour made easy
+
+can think about raft and state machine futures easily
+
+# 53. Graph inflection points
+
+scheduling is an inflection point on a wave function
+
+# 53. Structure of code references that are useful
+
+What is the shape of the program?
+
+# 54. Parameterless programming
+
+Chain together methods, define relationships as links that pass through the program. The important thing is the chaining together of methods.
+
+# 55. Roleplay language and pattern matching global state
+
+Instantiate objects and create roles to play.
+
+# 56. Stateful circle, programs on rails
+
+With stateful programs, it can be difficult to reason about them when there are interactions between different actors or nodes. This idea is that we represent all states as circles, which always progress forward. We define circles for each actor and circles for overall progress. We link circles together which form valid pathways of execution.
+
+* Any progression backwards is an invalid state, which means there is a bug in the program.
+* An unexpected state change is a bug.
+* Numbers that increment are new states.
+* Trapped state detection: No path of state associations back to the global circle, so it's impossible for the circle to move forward.
+* You must write a determine state function to determine the facts about the system at the current time. Concurrent events are represented
+* Can create incremental state machines which are snapshots of valid cases, which are stitched together.
+
+For example, we want to schedule two actors, A and B: ABABABABAB,
+
+No matter what interactions with other objects, all circles shall turn forwards.
+
+Must define your state machine as a circle, for each actor. This syntax defines a circle for the global progression of states and individual objects.
+
+The "dot" symbol is a "join" from one state to another state.
+
+```
+global = actor(A).scheduled actor(!A).not_scheduled | actor(B).scheduled actor(!B).not_scheduled | regenerate
+
+actor(A-B) = scheduled submitted++ | submitted == total | completed reset submitted = 0 | not_scheduled
+```
+
+Concurrent state changes
+
+Must define a function for each actor and global state: 
+
+Can write a test that tests state and then checks if the state is valid progression, according to the schema.
+
+Guaranteed to make progress.
+
+State explosion.
+
+Desired outcome: alternated scheduling of ABABABAB
+
+```
+range submitted..locks
+
+```
+
+interactions between things, what happens next
+
+```
+a1 a2 a3 b1 b2 b3
+
+```
+
+
+
+special cased work - throwing effort at the problem
+
+legilislational hardness
+
+# 57. Code focus
+
+Enable/disable log lines after running and show/hide log lines that came from there.
+
+# 58. A database is hard to change
 
