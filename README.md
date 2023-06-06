@@ -16,6 +16,8 @@ Any variable can contain any type of data, but once it is set to a type, its typ
 
 # 2. Matrix multiplication on matrixes of movements of identities
 
+Matrix multiplication is very useful, but what if matrix multiplication can be useful with the movement of identities through a program space? A matrix multiplication is similar to a breadth first search.
+
 # 3. VLIW software
 
 # 4. Orthogonality and nested placement relationships and rules
@@ -44,6 +46,8 @@ A standardised syntax for describing behaviour, used as a comment to find code e
 # 9. Linux single sign in
 
 # 10. Orthogonality of stacks and joins
+
+`callCC` and delimited continuations.
 
 # 11. GUI state container
 
@@ -248,9 +252,11 @@ When building a system, it is often helpful to have a bottom abstraction, that o
 * In LISP it is lists and trees.
 * Instruction Set Architecture is instructions to do mathematical operations and move things around memory and move through instructions.
 
-# 44. Reverse log to AST tree
+# 44. Reverse log to AST tree, state transition events to state machine
 
 Log to reverse tree to work out logic order.
+
+State machine code from events
 
 # 45. Coordinated runtimes
 
@@ -266,12 +272,14 @@ Parsing associated with blocking.
 
 # 48. Monetisation system
 
+Monetization doesn't need to ruin a website.
+
 # 49. Complete program, separated into pieces, re-stitched together into new program
 
 Imagine you have a complete program that does a task and we want to do a variation of what the existing program does. We can do a simple transformation to get the program into a form that we can extend:
 
 * inline all internal methods until only platform calls exist
-* label parameters that pass through the program through to these platform/system calls.
+* label parameters that pass through the program through to these platform/system calls and give them a type
 * 
 
 
@@ -318,28 +326,39 @@ Instantiate objects and create roles to play.
 
 # 56. Stateful circle, programs on rails
 
-With stateful programs, it can be difficult to reason about them when there are interactions between different actors or nodes. This idea is that we represent all states as circles, which always progress forward. We define circles for each actor and circles for overall progress. We link circles together which form valid pathways of execution.
+With stateful programs, it can be difficult to reason about them when there are interactions between different actors or nodes. This idea is that we represent all actors in the systems as circles, which always progress forward. We define circles for each actor and circles for overall progress. We link states between circles together which form valid pathways of execution.
 
+* We define a schema of the presence of facts and the progression through different facts.
 * Any progression backwards is an invalid state, which means there is a bug in the program.
 * An unexpected state change is a bug.
+* You could say that state is montonically increasing at all times.
+* No matter what interactions with other objects, all circles shall turn forwards.
+* Can use logical clocks to identify causality.
 * Numbers that increment are new states.
+* When global state is checked, that is communication with a global actor, presumably under a lock.
+* We can output logs of each thread periodically and analyse the logs to see if the schema was maintained.
 * Trapped state detection: No path of state associations back to the global circle, so it's impossible for the circle to move forward.
-* You must write a determine state function to determine the facts about the system at the current time. Concurrent events are represented
+* You must write a determine state function to determine the facts about the system at the current time. Concurrent events are represented.
 * Can create incremental state machines which are snapshots of valid cases, which are stitched together.
 
-For example, we want to schedule two actors, A and B: ABABABABAB,
+For example, we want to schedule two actors, A 5 times and B 5 times and run them alternatedly. AAAAABBBBBAAAAABBBBBAAAAABBBBBAAAAABBBBBAAAAABBBBB,
 
-No matter what interactions with other objects, all circles shall turn forwards.
-
-Must define your state machine as a circle, for each actor. This syntax defines a circle for the global progression of states and individual objects.
-
-The "dot" symbol is a "join" from one state to another state.
+The "dot" symbol is a "join" from one state to another state. State changes are atomic because processing is evaluated before scheduling time.
 
 ```
 global = actor(A).scheduled actor(!A).not_scheduled | actor(B).scheduled actor(!B).not_scheduled | regenerate
 
 actor(A-B) = scheduled submitted++ | submitted == total | completed reset submitted = 0 | not_scheduled
 ```
+
+This can be read as the following:
+
+```
+When the actor(A) is scheduled, every actor that is not A is not_scheduled.
+Actors that are scheduled are submitted++ until submitted == total and then submitted is set to 0 and they are not_scheduled.
+```
+
+
 
 Concurrent state changes
 
@@ -377,3 +396,297 @@ Enable/disable log lines after running and show/hide log lines that came from th
 
 # 58. A database is hard to change
 
+# 59. OpenConsult
+
+# 60. Product mixer
+
+# 61. High level low level concern mixing, whenever syntax
+
+How do you mix high level and low level concerns?
+
+High level specification of what should happen, high level logic:
+
+```
+checkout-button | review-basket | checkout | sign-in-or-guest-checkout | delivery-address | delivery-options | payment-detils | place-order | payment | send-order-confirmation 
+```
+
+
+
+Low level specification of what should happen, low level logic,
+
+weave them together
+
+* when "sending an api request", "write it to the write ahead log"
+
+# 62. Calculation complexity score
+
+A computation specification language that includes a complexity score.
+
+* round trip times
+* thread synchronizations
+* amount of data
+* amount of records
+
+# 63. Concurrent hash join
+
+Multiple users are doing the same query, we can share the large table.
+
+# 64. Markdown GUI format
+
+# 65. Exclusive content
+
+# 66. Logic of the kernel
+
+# 67. Readable code
+
+# 68. Turing complete is the golden standard
+
+But we want to do is constrain turing completeness without constraining it.
+
+Such as a builder pattern, to define what should happen when. We want to configure something. To compile it.
+
+Builder pattern that maps to assembly.
+
+Declarative, imperative, something new.
+
+We seem to want to 
+
+
+
+# 69. New versions breaking code
+
+# 70. Marketing and demand matching is an unsolved problem
+
+# 71. Event loops and coroutines
+
+# 72. Is assembly might not be the lowest common denominator
+
+# 73. Scheduled Collective Attention
+
+Attention is qualified.
+
+# 74. Code supported by one person is not dependable
+
+
+
+# 75. Cache invalidation and GUIs
+
+# 76. Per programming project information system
+
+# 77. Dispatch/Jumping around intelligently more valuable than actual mathematical operations on a CPU
+
+For example, all the methods that must be called in the right order to create a GUI.
+
+# 78. API State machines
+
+Each API call is a mini process with a behaviour.
+
+# 79. Omnichannel distributed system
+
+Frontend and backend cordinated from same codebase.
+
+There was a Haskell project that seamlessly transferred state between frontend and backend but I don't think it was a distributed system. I don't remember what it was called.
+
+Writing APIs to glue together data fetching and actions and GUI state is all very siloed. If you could talk about the system as a whole including GUI interactions at the same time as system interactions that could be truly powerful.
+
+Imagine multi *omnichannel* event streams that map to the users notifications, email inboxes, chat interface, post, deliveries, accounting, customer data, synchronisations, integrations, microservices and business CRM and ERP. Everything is linked together by powerful workflows. An interaction with a customer is just an extension of the system. It's a distributed system of human tasks as well as digital tasks and interactions between the customer and the company.
+
+# 80. The Wiring shouldn't matter
+
+What's important is the sequence of behaviours that should follow on from eachother.
+
+# 81. Coordinates 
+
+# 82. State machine GUI
+
+Use the state machine syntax to define the behaviour of the GUI.
+
+# 83. Community Idea: Fake the App
+
+# 84. State machines in assembly, error handling and structure sizes and attacks 
+
+# 85. GUIs at X11 layer
+
+# 86. Refresh logic in everything, Promise Lattice
+
+I read [this account on Hacker News about a GUI that was written in assembly](https://news.ycombinator.com/item?id=36153989) and it made me think of promises in GUI rendering.
+
+# 87. Literal linear synchronized in memory buffers for everything (linear memory and execution)
+
+Computers are linear with sporadic jumps. 
+
+I don't know how it works: exceptions at the assembly layer.
+
+# 88. Syscalls and function calls
+
+# 89. What you see is how it is organised in the computer
+
+# 90. Subscribe to blogger
+
+# 91. Attention camping
+
+Attention is extremely important and valuable in the internet world, it determines who you buy from and who you are influenced by. This idea is a website where you create a description of what you want attention for and then you camp (which means wait) for a match up with someone who wants to pay attention to it, based on a matching algorithm. When there is a group of 10 people who want to pay attention to something, it opens up the item and people can chat and interact on that item.
+
+Centrally plan your attention based on what you want to pay attention to rather than browsing or doomscrolling.
+
+Create an extremely deep profile of what you want to pay attention to, what you think is interesting and everything you find interesting.
+
+We can use large language models to compare similarity of everyone's profiles with other people in vector/embedding space.
+
+Create items that you want to share with others and when a critical mass of people reach the same item, then an item is created and everyone is notified that they want the same thing.
+
+This is an asynchronous community, like email waits for someone to reply.
+
+# 92. Offline IT, Designed to be down
+
+# 93. The C/C++ project building approach doesn't work
+
+You need to use Bazel or Buck or something serious to do anything properly.
+
+# 94. Refresh rate GUI state
+
+Creating GUIs is extremely difficult because of state management. If we express what the new state should be, a virtual DOM diffs it and decides how to make the old state match the new state.
+
+# 95. Wait state deschedules
+
+We want to avoid polling, so we have a wait command which deschedules the lightweight thread until it is finished. This is a bit like IO but results in a powerful direct style. This is similar to sleep but evented.
+
+```
+while True:
+    events = event_context.poll();
+    for event in events:
+        case event.type:
+            case TYPE_EVENT: // handle event
+                event_context.add_wait("NEXT_STATE")
+                
+                
+```
+
+We can use promises or async await for this pattern!
+
+# 96. Online multiplexing
+
+The simplest multiplexing is a loop. But we can do it as an online algorithm and separated in time, across processes.
+
+# 97. Constraints game
+
+Rust lifecycles and borrow checker are rather complicated to learn.
+
+# 98. Extracted pricing
+
+# 99. Diagram the spirit of problems in language
+
+# 100. Metaast
+
+A Java solution to doing something in plain English of the problem to be solved looks different to the same in Rust.
+
+Metaast is the creation of an AST of problems with a simplified configuration model that can transpile to Rust or Java.
+
+# 101. Locks in state machine formulation
+
+If these processes go in parallel:
+
+```T
+process-1 = action1 | shared_resource action2
+process-2 = action3 | shared_resource action
+```
+
+They shall automatically be scheduled so that locks are around the things that need to be protected.
+
+# 102. Parallel GUI visualisation
+
+A GUI where you can see parallel state machines executing and interleaving.
+
+# 103. Log hash
+
+A loghash is a configuration that leads to the output of particular kinds of logs.
+
+# 104. Isomorphic state machines
+
+This state machine can be executed on the server, on different threads, on different servers as microservices, as different routes, as protocols, on the web browser and in Javascript workers, in WASM and the communication is handled for you, automatically.
+
+```
+```
+
+# 105. Recursive descent parsing data fetching (ala GraphQL)
+
+# 106. Composition of APIs
+
+Parsing IS composition. Combine two libraries together with a lexer.
+
+If I have the behaviour as token stream of two programs, then I interleave them, so I need elegant way to do concurrent programming and wait states between different behaviours of each part.
+
+Substates of other programs behaviour, or instances of behaviour?
+
+```
+```
+
+Logical clocks, causality marked by thread ID
+
+# 107. Concurrency hoisting
+
+I want to be able to write the following code, without blocking the event loop:
+
+```
+hoist while (true) {
+	batch = poll events
+	for (item in batch) {
+		switch (item.type) {
+			case EVENT_A:
+				blocking_function(); 			# <---- THIS LINE DOESN'T BLOCK
+				call_function_after(); 			# <---- BUT THIS LINE HAPPENS AFTER
+				break;
+		}
+	}
+}
+```
+
+# 108. Parallel game engine
+
+# 109. Golden concurrency
+
+It should be possible to write to the same database from 3 processes all running as fast as they can without needing to separate the database into three databases and updating them separately.
+
+# 110. Funding IT
+
+# 110. Easy online
+
+A way of configuring a server so it that can come online quickly and join the network.
+
+Platform logic and my programming language and server software runtime should do this. Reliable autoconnect logic.
+
+# 111. Overlaid chunking/buffers
+
+Chunking can be overlaid some existing code for performance, without needing to redesign the underlying implementation.
+
+# 112. Elastic hierarchies
+
+A function that grows graphs according to a progression, like a mathematical set.
+
+# 113. Implementation Freedom
+
+Macros of AST transformation really are a way for implementation freedom, but what about orthogonality?
+
+I talked about is assembly the lowest common denominator.
+
+# 114. Unfair selects in Go
+
+In Go there is a selector operator.
+
+If I have events of different rates, I might want to define a SLA for processing events of each source, in effect I schedule the multiplexing of each channel.
+
+# 115. Multithreaded Runtime architecture Asynchronous and Nonblocking runtime
+
+How do you write a program that never blocks and where everything is asynchronous?
+
+One approach is to separate control and work.
+
+![NonblockingRuntime.drawio.png](NonblockingRuntime.drawio.png)
+
+This design incorporates 3 layers of threads for non-blocking high performance. Nonblocking Ringbuffers are used everywhere.
+
+* **App threads**: No IO or CPU is done in these threads. These coordinate IO and CPU use in the background to the application. They are not associated with a particular request but application state. Change detection happens here.
+* **Control threads** This is where liburing or epoll is used. This is a simple dispatcher and no IO actually goes on.
+* **CPU/IO Thread pool** Work actually happens here and communicates to the application with ring buffers.
+
+This design would actually work in a programming language implementation interpreter. The worker thread pool can be sent the context of the function to be executed.
