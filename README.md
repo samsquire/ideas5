@@ -625,7 +625,7 @@ Logical clocks, causality marked by thread ID
 
 # 107. Concurrency hoisting
 
-I want to be able to write the following code, without blocking the event loop:
+I want to be able to write the following code, where I can include a blocking function anywhere, but it shall never block the event loop of the current thread.
 
 ```
 hoist while (true) {
@@ -633,8 +633,8 @@ hoist while (true) {
 	for (item in batch) {
 		switch (item.type) {
 			case EVENT_A:
-				blocking_function(); 			# <---- THIS LINE DOESN'T BLOCK
-				call_function_after(); 			# <---- BUT THIS LINE HAPPENS AFTER
+				blocking_function(); 	# <---- THIS LINE DOESN'T BLOCK THE EVENT LOOP
+				call_function_after(); 	# <---- BUT THIS LINE HAPPENS AFTER
 				break;
 		}
 	}
@@ -659,6 +659,8 @@ Platform logic and my programming language and server software runtime should do
 
 Chunking can be overlaid some existing code for performance, without needing to redesign the underlying implementation.
 
+If I have a complicated algorithm, how do I postprocess the code to add chunking? Do I insert loops everywhere?
+
 # 112. Elastic hierarchies
 
 A function that grows graphs according to a progression, like a mathematical set.
@@ -673,7 +675,9 @@ I talked about is assembly the lowest common denominator.
 
 In Go there is a selector operator.
 
-If I have events of different rates, I might want to define a SLA for processing events of each source, in effect I schedule the multiplexing of each channel.
+If I have events of different rates, I might want to define a SLA for processing events of each source, in effect I schedule the multiplexing of each channel. This is sampling.
+
+
 
 # 115. Multithreaded Runtime architecture Asynchronous and Nonblocking runtime
 
@@ -686,7 +690,119 @@ One approach is to separate control and work.
 This design incorporates 3 layers of threads for non-blocking high performance. Nonblocking Ringbuffers are used everywhere.
 
 * **App threads**: No IO or CPU is done in these threads. These coordinate IO and CPU use in the background to the application. They are not associated with a particular request but application state. Change detection happens here.
-* **Control threads** This is where liburing or epoll is used. This is a simple dispatcher and no IO actually goes on.
-* **CPU/IO Thread pool** Work actually happens here and communicates to the application with ring buffers.
+* **Control threads** This is where liburing or epoll is used. This is a simple routing dispatcher and no IO actually goes on.
+* **CPU/IO Thread pool** Work actually happens here and communicates to the application with ring buffers or submitting IO requests.
 
 This design would actually work in a programming language implementation interpreter. The worker thread pool can be sent the context of the function to be executed.
+
+Need to work out how to combine the state machine formulation into this pattern.
+
+# 116. Compatible types
+
+# 117. Collection classes - what should the behaviour be when there's multiple?
+
+Multiply/pluraize behaviour upwards in the stack.
+
+# 118. Template pattern programming
+
+I have a model of system that I want a programming language to compile into. How do I do this?
+
+# 119. The architecture of a web server
+
+The ergonomics of configuring a web server are interesting. Flask, express and Spring Boot take different approaches to configuring web server listeners. Spring Boot uses annotations, flask uses decorators and express uses function calls and callbacks.
+
+I feel configuring a web server to route traffic to code is an information system problem. 
+
+# 120. GUI Assurances
+
+This should never overlap this.
+
+# 121. Compiled dispatch rule engine in a web server
+
+What should happen when.
+
+# 122. Need a C API AST
+
+I want to be capable of generating C code with an API.
+
+# 123. Do nested expressions have value?
+
+```
+something(other(another()));
+```
+
+# 124. The data structure of code
+
+# 125. Advanced resolution
+
+Resolution is such an underspecified thing. What does every package management solution do and build process look for things? 
+
+* Puppet's Hieradata is an advanced resolution mechanism but is used for a specific purpose.
+
+# 126. SIMD buffered request processing
+
+If you have a number of requests by different users in flight, could you batch them up and process them with one thread using SIMD instructions?
+
+# 127. Legalistic lens
+
+Pay a company to handle the legal requirements of your solution.
+
+# 128. Thoughts on boilerplate and plumbing
+
+Every developers least favourite task is writing boilerplate and plumbing code.
+
+# 129. Buyer pays IT resources
+
+# 130. Main spider
+
+Point a program at a codebase and see the code spider from the main method.
+
+# 131. State machine formulation as log output
+
+We can use the state formulation I defined in ideas4 [#558. State Machine Formulation](https://github.com/samsquire/ideas4#558-state-machine-formulation) as an output format for log lines.
+
+# 132. Disk Split
+
+# 133. Scalability pattern
+
+# 134. The in-memory website
+
+# 135. Module systems thoughts and Micromodules
+
+Module size is important.
+
+# 136. State machine Playground
+
+# 137. Thoughts on coroutines, underlying execution model
+
+I enjoyed this post entitled ["Asyncio Thoughts by Charles Leifer"](https://charlesleifer.com/blog/asyncio/). Asyncio permeates through the entire codebase due to async functions. There has to be a way of defining concurrency that is easy to understand and follow.
+
+One or more things can go on at the same time, we want to pause when there is IO such as a disk risk or network call.
+
+* explicit start/stop
+* 
+
+Can define URL handlers with state machine formulation:
+
+```
+/checkout = take-payment
+
+
+```
+
+# 138. Incremental code
+
+What does the code do?
+
+# 139. Standard program designs
+
+
+
+# 140. Relationship of turing tape placement and time
+
+# 141. Compute Autoscalability - Autobalancing actors
+
+These are actors that are assigned ownership of a particular kind of object and service requests to that type of objects for a certain element of behaviour. If the requests to a particular key get hot, they are extracted to a thread. Then if that gets hot, they are extracte to a server.
+
+
+
