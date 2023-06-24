@@ -185,6 +185,8 @@ Did you change the right object?
 
 Did you do the thing inside or outside the loop?
 
+is your loop try and except the right way round?
+
 # 28. Distributed Match states, Connected everything, assert on anything
 
 
@@ -574,6 +576,8 @@ Rust lifecycles and borrow checker are rather complicated to learn.
 
 # 98. Extracted pricing
 
+Itemized pricing
+
 # 99. Diagram the spirit of problems in language
 
 # 100. Metaast
@@ -601,9 +605,11 @@ A GUI where you can see parallel state machines executing and interleaving.
 
 A loghash is a configuration that leads to the output of particular kinds of logs.
 
+Can be stored in a text file and changed with command line tools.
+
 # 104. Isomorphic state machines
 
-This state machine can be executed on the server, on different threads, on different servers as microservices, as different routes, as protocols, on the web browser and in Javascript workers, in WASM and the communication is handled for you, automatically.
+This state machine formulation can be executed on the server, on different threads, on different servers as microservices, as different routes, as protocols, on the web browser and in Javascript workers, in WASM and the communication is handled for you, automatically.
 
 ```
 ```
@@ -612,7 +618,13 @@ This state machine can be executed on the server, on different threads, on diffe
 
 # 106. Composition of APIs
 
+We can schedule behaviour by moving blocks of lexer tokens around
+
+Need a GUI that looks like a Outliner that can move tokens and reorder them around. Can customise behaviour.
+
 Parsing IS composition. Combine two libraries together with a lexer.
+
+Tie together states in each application.
 
 If I have the behaviour as token stream of two programs, then I interleave them, so I need elegant way to do concurrent programming and wait states between different behaviours of each part.
 
@@ -773,36 +785,645 @@ Module size is important.
 
 # 136. State machine Playground
 
-# 137. Thoughts on coroutines, underlying execution model
+# 137. Thoughts on marrying coroutines and threads, an underlying pervasive execution model
 
-I enjoyed this post entitled ["Asyncio Thoughts by Charles Leifer"](https://charlesleifer.com/blog/asyncio/). Asyncio permeates through the entire codebase due to async functions. There has to be a way of defining concurrency that is easy to understand and follow.
+I enjoyed this post entitled ["Asyncio Thoughts by Charles Leifer"](https://charlesleifer.com/blog/asyncio/). Asyncio permeates through the entire codebase due to async functions. There must be a way of defining concurrency that is easy to understand and follow.
 
 One or more things can go on at the same time, we want to pause when there is IO such as a disk risk or network call.
 
+What do we want from lightweight processes or coroutines?
+
 * explicit start/stop
-* 
+* async/await
+* yield
+* wait for
+* fork
+* join
+* structured concurrency
+* continue on thread
+* pause
+* cancel
+* schedule
+* mutually exclusive scheduling
+* binpack work
 
-Can define URL handlers with state machine formulation:
+Coroutines either have an event loop or an event scheduling function, it's just hidden from the user. Coroutines at the assembly level have extremely more freedom than coroutines implemented in a high level language but the scheduler is much easier to write in a high level language.
+
+It's interesting that the event scheduling function is an example of an online algorithm in the style of 142. Online (Nonblocking/Blocking) use-adaptive algorithms APIs.
+
+Schedule functions change control flow completely, they effect the stack and what is returned to afterwards.
 
 ```
-/checkout = take-payment
+while (true) {
+	for (Coroutine in coroutines) {
+		run coroutine until yield
+	}
+}
+```
 
+"become" control flow (stack abandon, like a superpowerful goto) or shift reset in a high level language
 
 ```
 
-# 138. Incremental code
+```
 
-What does the code do?
+# 138. Community Idea: Incremental code highlight
+
+I want to see cut back summaries of how code achieves some purpose in a large codebase.
+
+What does the code do to implement X behaviour?
 
 # 139. Standard program designs
 
+I often think of programs as loops.
 
 
-# 140. Relationship of turing tape placement and time
+
+# 140. Relationship of Turing tape placement and time with multiple actors moving about
 
 # 141. Compute Autoscalability - Autobalancing actors
 
-These are actors that are assigned ownership of a particular kind of object and service requests to that type of objects for a certain element of behaviour. If the requests to a particular key get hot, they are extracted to a thread. Then if that gets hot, they are extracte to a server.
+These are actors that are assigned ownership of a particular kind of object and service requests to that type of objects for a certain element of behaviour. If the requests to a particular key get hot, they are extracted to a thread. Then if that gets hot, they are extracted automatically to a server.
+
+# 142. Online and Incremental (Nonblocking/Blocking) use-adaptive algorithms APIs
+
+If you can design your code so that each part is online or single-shot, then you can use your code in any API integration. This is a style of coding that is nonblocking or blocking, selectively and incremental.
+
+# 143. Rate batching - Would you pay latency for throughput?
+
+If you're bottlenecked on synchronizations per second, such as in your IO response schedules work for a thread.
+
+The event loop can submit ringbuffer events, but then we're synchronization bound.
 
 
 
+# 144. Expected API surfaces
+
+In a given piece of code, there's a set of API calls the host of the code expects you to call. What's appropriate when?
+
+# 145. Opt-in Dependencies
+
+Depend on properties
+
+# 146. Sending execution state around, distributed promises
+
+In a complicated distributed system it can be useful to send a execution state around and resume it on different machines.
+
+* If we're using coroutines, we can store a point where we should jump when resuming from a yield.
+* If we have promises, can we send promises around and have them resolve in any place?
+
+
+
+For example, the following is approximate assembly for a jump table, which can be used to jump to a state once resumed on another machine.
+
+```
+.data
+statetable     dq      state1, state2, state3            ; states
+.code
+jump:
+lea     statetable,r9
+main0:  jmp     qword ptr [r9+rax*8]
+main1::
+inc     rax
+cmp     rax,3
+jb      main0
+state1:
+state2:
+state3:
+
+
+```
+
+# 147. Web request handling state machine
+
+Can define URL handlers with state machine formulation:
+
+/checkout = take-payment
+
+# 148. Thoughts on Shift/reset continuation passing and ASTs
+
+By the AST representing interpretor/execution state, we have extreme power over execution and control flow.
+
+# 149. What is it good at/What does it do/What problems does it solve
+
+When evaluating any technology or programming language, I think this is the most important thing to consider. 
+
+# 150. High level APIs compiling to free form assembly
+
+Need a high level beautiful API and some mechanism for it to be compiled to efficient assembly.
+
+There needs to be a low level abstraction that can implement all the desired features of the 137. Thoughts on marrying coroutines and threads, an underlying pervasive execution model
+
+# 151. Named stack
+
+What's on the stack at any given point?
+
+# 152. Keyframe, Data logistics code generation, Sliding image puzzle assembly code generation: Moving things around revisited, value calculus and boxes
+
+We can use A* algorithm to generate assembly or high level function call code.
+
+You give it memory and registers and it generates instructions that fulfil that state.
+
+My example program takes the following input:
+
+```
+start_state = { 
+  "memory": [
+    0, 0, 0, 0
+  ],
+  "rax": 0,
+  "rbx": 1,
+  "rcx": 2,
+  "rdx": 3,
+  "rsp": -1
+}
+
+end_state = {
+  "memory": [
+    3, 1, 2, -1
+  ],
+  "rax": 3,
+  "rbx": 2,
+  "rcx": 1,
+  "rdx": 0,
+  "rsp": -1
+}
+```
+And interpolates the instructions needed to get to the end state. This is the following instructions:
+```
+[start, mov %rcx, %rsp, mov %rax, (%rdx), mov %rbx, (%rbx), mov %rbx, %rcx, mov %rsp, %rbx, mov %rbx, (%rbx), mov %rdx, %rsp, mov %rax, %rdx, mov %rsp, %rax, mov %rax, (%rsp)]
+```
+
+
+Why is this idea so extremely powerful?
+
+* **Value based programming** Most modern programming research is on types that variables take upon. I described value calculus in [ideas4 571. Value calculus variable tracing](https://github.com/samsquire/ideas4#571-value-calculus-variable-value-tracing)
+* **Can prepare callsites programmatically** We don't need to arrange data fetching if the code to move data into place can be generated. 
+
+This idea is inspired by the Myers algorithm which represents the inclusion of a character from a string as positions on a graph in two dimensions. We can represent values as objects on a graph that can be slid around to take different positions in registers or memory locations. This is how we can implement [#800. Data logistics plotting](https://github.com/samsquire/ideas4#800-data-logistics-plotting-or-the-stack-of-methods-is-a-data-structure-in-memory-and-can-be-manipulated-as-memory) This can be used to cause what we want to happen.
+
+
+
+Each slide is a move or xchg instruction.
+
+Trace of a value to a target location.
+
+I want this method to be called with these arguments.
+
+Stackless programming
+
+Special understanding of rsp register.
+
+can generate a yield instruction
+
+We can define target states where things are where we want them to be. This takes advantage of human reasoning which is easier about causality. Things are where we can use them already.
+
+How do we represent the causality of a stack?
+
+coroutines are just moving things in and out of the stack to control control flow.
+
+Moving things around to get the behaviour you want. Can we automate the binpacking of movements to generate algorithms?
+
+We know if we move something here, it shall cause this to happen. Causality
+
+We can use sliding image puzzle solving algorithms to schedule instructions 
+
+we need to synthesise the exact steps to cause what we want to cause
+
+it's all numbers at the end of the day, and assembly is just subtracting and adding numbers and moving them around
+
+target state
+
+puzzles, computer solving image puzzles
+
+ensuring queues are empty when quitting
+
+# 153. Fun crud
+
+# 154. Nested contexts
+
+My code often results in a large method that takes in many arguments.
+
+is there a programming style that leads to elegant designs where there is relationships between different kinds of objects?
+
+```
+my
+```
+
+# 155. Tangledness - return in a loop
+
+Exceptions in finally blocks 
+
+# 156. Specify What must happen, be told about ordering issues
+
+# 157. How do you know it's in synchronization?
+
+# 158. Correlation of behaviour from logs
+
+# 159. Stacks are trees
+
+We want to add logic that needs data from elsewhere deep in the stack, how do you do it?
+
+# 160. Program synthesis and search thoughts
+
+My program synthesiser tries to infer the data flow through states, including hidden states such as function calls.
+
+There is a map of available programs that have been written and their structure.
+
+Suggestion
+
+neighbours are iterators
+
+We can see all existing programs as a progression of ordered method calls.
+
+need to avoid creating states that are impossible to recover from
+
+maximise future possibilities
+
+lifetime of a state
+
+generate multiple nodes in one batch
+
+high dimension space
+
+what's the high dimension space of a program?
+
+the arrangement of most programs is the same
+
+valid histories
+
+parameter/calling convention passing, arranging things to be present in right places is pretty difficult
+
+theme iterators
+
+neighbours of a theme
+
+formula for a graph, that most programs take on
+
+ordering component
+
+exclude what you just did
+
+neighbour sequences, each thread tries different generators
+
+threads move problem search space around
+
+# 161. Active and selective logs
+
+Turn logs on or off in a program at runtime, in console output.
+
+# 162. Misses messages check
+
+This has to be the most common bug in distributed and multithreaded systems. Wait state
+
+# 163. Surfacing a fact
+
+Might count something deep internals of code, but inefficient to do it on the hot loop
+
+# 164. Multidimensional modelling
+
+What would Blender look like for higher dimensions.
+
+# 165. Forms are HTML files
+
+Don't even need to generate HTML with values interpolated, just proxy the HTML file through a special function that inserts saved values.
+
+# 166. Example invocations
+
+Example invocations are the most useful documentation.
+
+# 167. Useful library gallery
+
+My A* algorithm for generating code from placements.
+
+# 168. REPL+CRUD - Turing machines are not where we specify things, queries are, REPL to query
+
+Turing machines REALLY are the wrong place for specifying things because they are so rigid, specific and hard to optimise.
+
+Queries are different to Turing logic.
+
+Imagine a web based GUI that allowed objects to be created, edited, reordered and sorted and organised. Every part of the system is a collection that can be edited and queried, inserted and appended and reordered. REPL+CRUD combines a data collection editor with a REPL and REPL commands against those objects can be executed.
+
+There is an implementation that does what it is meant to do. Can the implementation be applied to a different data model and data sources? 
+
+```
+for item in items:
+	tax = calculate_tax(item)
+```
+
+We can implement **stretch logic** which is similar to a branching library. If we want to stretch some REPL based code to another model of something different. For example, we want to stretch it over a GUI.
+
+```
+<input type="text" value="{{ tax }}">
+```
+
+
+
+Optimisation work. We use the relations of things. Pushdown automation.
+
+Turing machines and declarativeness
+
+# 169. Hinge logic
+
+Postgres is considering/proposing moving from its process orientated design to a thread orientated design.
+
+Everything hinges on this logic. Postgres is an enormous codebase and there's no metadata about what the code is doing.
+
+# 170. Programming languages are the wrong place for ontologies
+
+C++ and Scala and Java all try use the programming language to implement an ontology of data structures.
+
+# 171. Coding Topic and callsite databases
+
+Refactoring would be easy if every piece of code was assigned to a topic and that topic was actually a serialization of an idea.
+
+# 172. Markdown GUIs
+
+Adapt a markdown renderer to render GUIs
+
+# 173. Information synchronization
+
+users entering payment details, synchronizing with bank, anti-fraud systems
+
+# 174. The platform should provide the polish
+
+It takes extreme amounts of effort to create a desktop, web application that is beautiful and useable.
+
+# 175. Event loops thoughts
+
+I was reading about Jetbrains Noria and it talks about its event loop.
+
+# 176. How to compiling processes down for efficient execution
+
+* orthogonality to an event loop and assembly
+* an event loop is an interpreter, a loop to a instructions is a compiler
+* Query engines deal with relational data, or iterators as in the volcano model, but what if we have a model of what should be done, how do we execute it efficiently.
+* An event loop is how it gets executed, but what does it look like if it were compiled to assembly, or events?
+* Moving around iterators is how you improve performance.
+* Effects of an iterator, same effect, compatibility
+* C++ parallel iterators and algorithm iterators
+* Compiling down to assembly
+* O notation
+* generalisation of looping
+* cardinality
+* loop rotation
+* 
+* loops are definitional, and cheap because they are relations, not logic
+
+How do you shift iterators around, or hoist them for efficiency? It's loops all the way down!
+
+```
+for item in a:
+	for item in b:
+		for item in c:
+			do_something()
+```
+
+this is equivalent to - just in a different order.
+
+```
+for item in c:
+	for item in a:
+		for item in b:
+			do_something()
+```
+
+
+
+# 177. Infer function application
+
+Change the effects, change the logic, change the log, change the behaviour
+
+# 178. Program synthesis backwards search
+
+We can search backwards to the origin and forwards from the origin to the destination.
+
+# 179. The Product is a number of requests per second
+
+| Requests per second | Price |      |
+| ------------------- | ----- | ---- |
+| 100                 | $1    |      |
+| 200                 |       |      |
+| 1000                |       |      |
+| 10000               |       |      |
+| 25000               |       |      |
+| 50000               |       |      |
+| 100,000             |       |      |
+| 1,000,000           |       |      |
+
+| Concurrent users | Price |
+| ---------------- | ----- |
+| 1                | £1    |
+| 10               |       |
+| 25               |       |
+| 50               |       |
+| 100              |       |
+| 1000             |       |
+| 10000            |       |
+| 20000            |       |
+| 100000           |       |
+| 150000           |       |
+| 500000           |       |
+| 1000000          |       |
+
+| IO per second | Price |
+| ------------- | ----- |
+|               |       |
+
+
+
+# 180. Exhaustive state machines and error and state handling
+
+
+
+# 181. 2000 line project
+
+# 182. Simulate the journey of a request
+
+For 100,000 requests per second
+
+
+
+# 183. Database query engines as scheduling
+
+# 184. Do you want to really want configure with a programming language?
+
+Vimrc is a command language, not a programming language, Xmonad configuration file is a Haskell file. Do you really want to program to configure something? Sometimes you do, sometimes you just want to make an asssertion.
+
+```
+only(1, X)
+```
+
+I feel generating configuration is really helpful from a programming language, generating data. But connecting data together is something that GUIs are better at.
+
+# 185. Scaling examples and scaling programming
+
+If a lot of people come up with examples, can we infer the result?
+
+# 186. Behavioural percolation
+
+If I take some gold with soil and filter it in a grilled pan, it shall percolate due to gravity through the holes.
+
+This idea is an idea how to generate complex structural changes to code. For example, if our existing code is socket per thread, how do we change it to be multiple sockets per thread?
+
+We insert a loop and call the behaviour in a loop.
+
+```
+int socket = accept()
+ClientThread clientThread = new ClientThread(socket);
+clientThread.start();
+```
+
+And I want to transform it to:
+
+```
+ClienThread:
+	while True:
+		for connection in connections:
+			int messageType = socket.readInt()
+```
+
+Moving behaviour to a different place, what's the path to the desired behaviour, we can use graph finding to find the traversal to the desired behaviour.
+
+Structural boilerplate generation
+
+behaviour percolation numbers, structures built up
+
+
+
+# 187. Nondeterminism testing
+
+# 188. Declarational imperative code
+
+Code that isn't executed as-is but creates relations between things, where it shall be filtered down into evaluable code. Similar to functional programming. Mainly applied to loops.
+
+still need to work out how to use prolog to solve logical problems, ontologies, CRUD for system, different kinds of things
+
+concurrent prolog, logic used to solve problems 
+
+# 189. Code hide
+
+Hide irrelevant details from the happy path.
+
+# 190. Mapping high level behaviours to imperative code API function usage
+
+I was reading Postgres sourcecode `postmaster.c` and it talks about how it `forks` to handle requests.
+
+Fork wouldn't be such a bad API if it was not inefficient!
+
+# 191. Program knowledge
+
+# 192. What lines of code have been executed and scroll through them all
+
+# 193. Desired behaviour optimisation API and environmental knowledge
+
+Can the following API be transformed into threads?
+
+```
+accept();
+fork();
+```
+
+
+
+# 194. Event loop compiler and replay -able determinism
+
+ a bit like rr and Microsoft Coyote and Vale programming language 
+
+# 195. Refactoring and code generation 
+
+What is it the thing you are you refactoring? Surely it's output, an output of something? It's an output of what the behaviour should be.
+
+If a program that is NOT refactored and there is a program that IS refactored but the behaviour stays the same, what is the code that you are refactoring? Surely the refactoring could be automated?
+
+
+
+Process orientated shared memory complexity
+
+
+
+# 196. Complex codebase
+
+What is behaviour
+
+anic, prolog processes
+
+#  197. Imaginary API
+
+# 198. Boundary pass
+
+Data flows through a boundary (a hierarchy of structure), we can do something with it. Can this be used to solve N+1 queries?
+
+N+1 queries 
+
+Write code to understand locks
+
+# 199. Beginning and end
+
+An API is easier if we delineate beginning and endings.
+
+# 200. Plot work
+
+# 201. Behaviours and configuration of them
+
+# 202. Organisational problems
+
+# 203. Most Rust and C++ programming is working around imposed limitations that nobody writes down
+
+# 204. 3D ROOM
+
+I think people assume that a 3 dimensional GUI requires movement around, but we can immediately move the view instead. Depth provides useful information.
+
+# 205. State machines and process management, interlocking recoverable states on retry
+
+Any IO creates state that is external to the system that is being written and this state can prevent the program's internal state machine from moving forwards. There's a direct mapping of state machine status and process. We should be capable of promising future states.
+
+# 206. High level definitional
+
+
+
+# 207. Incremental rerunning - Infer it shall never change
+
+The cheapest refresh logic is to simply re-run everything, but this is really inefficient. When do you need to rerun something? When it has changed. How do you detect it has changed?
+
+# 208. Animation timeline rendering would be useful for scheduling problems
+
+# 209. Method calls and behaviour
+
+Multiple method calls work together to provide behaviour.
+
+# 210. What's the difference between code that works and code that doesn't work?
+
+# 211. Assembly is just moving around
+
+Algebraic effects
+
+
+
+# 212. RETE and crystallisation
+
+Jump hierarchies are slow, when I think of assembly, it is just jumping around!
+
+# 213. We need to decouple definition from how
+
+# 214. Scenario editor
+
+# 215. Unlimited design
+
+# 216. Changing a number changes the course of future actions in assembly, movement through code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I need to write a parser for C and look at analysing Postgres sourcecode or something.
