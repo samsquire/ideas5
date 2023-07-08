@@ -282,7 +282,7 @@ Imagine you have a complete program that does a task and we want to do a variati
 
 * inline all internal methods until only platform calls exist
 * label parameters that pass through the program through to these platform/system calls and give them a type
-* 
+* accept, recv, send loop
 
 
 
@@ -675,7 +675,9 @@ If I have a complicated algorithm, how do I postprocess the code to add chunking
 
 # 112. Elastic hierarchies
 
-A function that grows graphs according to a progression, like a mathematical set.
+A function that grows complicated graphs according to a progression, like a mathematical set.
+
+This can be implemented to implement [ideas4 132. Revenue Scaling Plan](https://github.com/samsquire/ideas4#132-revenue-scaling-plan).
 
 # 113. Implementation Freedom
 
@@ -745,11 +747,12 @@ something(other(another()));
 
 # 124. The data structure of code
 
-# 125. Advanced resolution
+# 125. Advanced flexible resolution
 
 Resolution is such an underspecified thing. What does every package management solution do and build process look for things? 
 
 * Puppet's Hieradata is an advanced resolution mechanism but is used for a specific purpose.
+* C++ templates are a resolution algorithm
 
 # 126. SIMD buffered request processing
 
@@ -1000,7 +1003,9 @@ ensuring queues are empty when quitting
 
 # 153. Fun crud
 
-# 154. Nested contexts
+Crud should be fun.
+
+# 154. Nested contexts:
 
 My code often results in a large method that takes in many arguments.
 
@@ -1360,15 +1365,21 @@ Write code to understand locks
 
 # 199. Beginning and end
 
-An API is easier if we delineate beginning and endings.
+An API is easier if we delineate beginning and endings. This is what python context manager does.
 
 # 200. Plot work
 
 # 201. Behaviours and configuration of them
 
+I think this is an enormous problem of computing. A program exhibits behaviours, but configuration of the program is really difficult to define or change without lots of specific hook code.
+
 # 202. Organisational problems
 
-# 203. Most Rust and C++ programming is working around imposed limitations that nobody writes down
+Package management, code layout and structure are all inherent problems of programming.
+
+# 203. Most Rust and C++ programming is working around imposed ordering limitations that nobody writes down or talks about
+
+
 
 # 204. 3D ROOM
 
@@ -1380,7 +1391,7 @@ Any IO creates state that is external to the system that is being written and th
 
 # 206. High level definitional
 
-
+Imperative code as definitional - not literally executed as-is.
 
 # 207. Incremental rerunning - Infer it shall never change
 
@@ -1394,25 +1405,457 @@ Multiple method calls work together to provide behaviour.
 
 # 210. What's the difference between code that works and code that doesn't work?
 
-# 211. Assembly is just moving around
+# 211. Execution in Assembly is just moving through numbers
 
 Algebraic effects
 
 
 
-# 212. RETE and crystallisation
+# 212. RETE, crystallisation of order, dispatch and code layout
+
+RETE is awesome. RETE can be used to generate code.
+
+The complicated part of programming is the definition of rules.
 
 Jump hierarchies are slow, when I think of assembly, it is just jumping around!
 
-# 213. We need to decouple definition from how
+# 213. We need to decouple definition from "how"
 
 # 214. Scenario editor
 
-# 215. Unlimited design
+# 215. Unlimited scalable design
+
+
 
 # 216. Changing a number changes the course of future actions in assembly, movement through code
 
+# 217. Scheduling runtime foundations shouldn't be executed as-is
 
+I see examples of async runtimes where delays are implemented as Thread.sleep. I think the runtime should abstract away the execution of delays from the execution of code like Temporal. Blocking should never happen!
+
+# 218. Dataflow between threads
+
+# 219. Mini codeflows diagrams
+
+Parse sourcecode, create cut-down diagrams of code calls flowcharts.
+
+# 220. LINQ rewriting
+
+# 221. React! Handle all cases
+
+# 221. Moving blocks programming
+
+# 222. Dynamic Table programming, Just a grid, data structure visualization and serialization format
+
+We can change the columns or rows of a grid at runtime! It doesn't have to be static. A tree or graph maps to a table and the table can be interactive.
+
+| Root | Children | Children |
+| ---- | -------- | -------- |
+| 1    | 1        |          |
+|      | 2        |          |
+|      | 3        |          |
+
+ We can create object graphs from as serialization format of a table.
+
+# 223. Thoughts on scrolling
+
+# 224. Colours of things pattern matching
+
+# 225. Flow chart error handling
+
+Trampoline to retry.
+
+# 226. Wrong dense
+
+C++ and Rust are the wrong density.
+
+# 227. If that was there, where would it go if I did this? Multirelvis
+
+rotate meanings
+
+# 228. Contexts, behaviour and OOP and imperative code
+
+I want:
+
+* to write imperative code to coordinate behaviour of objects?
+* customise interactions between objects
+* what if I want an object method to return something?
+* programmed interaction sequences
+* can record message playback and play at a different time
+* coroutines OOP
+
+
+
+# 229.  Message passing GUIs are slots backed by pipelines
+
+# 230. Standard cycle and the state grid
+
+Every action changes the state of everything, a 2D grid of changes through time.
+
+Each line of code is a state transition of the entire state grid.
+
+List all the state changes every object should have.
+
+Line up state grids.
+
+# 231. Every object is duplex
+
+# 232. Delayed execution, Using flags when we want to write imperative code, turn imperative code into flags or types/sum types automatically
+
+# 233. Useful portals
+
+I loved Excite.com and Lycos and Yahoo! when they were portals and had portlets. They were valuable.
+
+# 234. Can detect the absence of behaviour by incrementing when an object is reviewed
+
+# 235. Societal rule engine is what people should be using
+
+# 236. Local variables are a struct
+
+# 237. Re-entrant future behaviour code
+
+It is often useful to stagger control flow over the future.
+
+I often find I want to do a sequence of actions with a series of future states, I usually use a boolean to do this logic. (A relevant idea is ideas5 232. ) Instead, I want to define behaviours that should happen in the next call to this function or next calls to other objects.
+
+You can think of this as interlocking future state of calling this method. States that line up, re-entrant code. Multiple invocations between this control flow and the following control flow. Reentrant continue. Wait for future states
+
+```
+on_click:
+	if state == UNMARKED:
+		mark_item()
+		on next on_click:
+			after render:
+				// something done after render
+		
+    
+```
+
+
+
+This is a code transformation that makes code easier to follow.
+
+Don't need to move code to start of handler
+
+# 238. Log folders
+
+I want all the logs of this log line together, so show me the logs out of order.
+
+# 239. Event runtime
+
+A high level abstraction for the [samsquire/ideas4 558. State machine formulation](https://github.com/samsquire/ideas4#558-state-machine-formulation) and [samsquire/ideas4, 526. Multiplexing setting format and routing operation](https://github.com/samsquire/ideas4#526-multiplexing-setting-format-and-routing-operation) is to use events.
+
+We can use ringbuffers and lightweight threading.
+
+# 240. The Permanent Website
+
+Fund for the next 25 years.
+
+# 241. Pull-site
+
+An alternative to federation. You pull content from other users.
+
+# 242. Pipeline server
+
+Rather than run a separate database, log server (such as Kafka) and GrapQL, we define our infrastructure as a task pipeline.
+
+# 243. Movement programming
+
+Most programming languages work by providing instructions that operate on state or function parameters to return new values or new states.
+
+Movement programming is different, in movement programming we see what we have available and then move it somewhere, like a Rubik's cube.
+
+dynamic table programming
+
+```
+highlight table cells when mouse over them
+table cell selected for move
+switch view to clicked item
+update columns and row to data of data structure
+click new destination to place data
+```
+
+# 244. Contexts are where callsite parameters come from
+
+Methods don't take parameters
+
+```
+context:
+	variable = 1
+	do_something
+	subcontext:
+		variable = 6
+		do_something
+```
+
+# 245. Understandability Kingdoms
+
+# 246. Functions are kind of strange
+
+They take in data as arguments and control flow jumps somewhere to do something with it.
+
+# 247. Slots state change visualisation
+
+Like a slot machine but each cylinder is a sequence of states.
+
+# 248. Flat code
+
+# 249. A shell that is also a pipeline server and task system
+
+# 250. Types as states, states are the more interesting types
+
+States can describe behaviour sequences.
+
+State grids can transform entire collections of objects into different states.
+
+# 251. Robust code: Limited and separate straight line control flow selections
+
+Divergences to happy path, can be retried to get to happy path.
+
+# 252. Happy path state machines: parsing and how it relates to control flow of state machines (train track rendering)
+
+Parsing algorithms used for AST generation can be used to create control flow execution state machines.
+
+Take this mathematical expression:
+
+```
+2 + (3 * (8 - 9))
+```
+
+Its parsing AST tree looks like this:
+
+```
+  Add
+2    Mul
+    3   Subtract
+       8    9
+```
+
+Its state machine looks like this though:
+
+```
+Subtract | Mul | Add
+```
+
+If we put an if statement in the expression, the state machine diverges, but we want to keep the number of states on a happy path.
+
+```
+  Add
+2    If
+   < 0 Mul          Mul
+      3 Subtract   4   Add
+           8   9      8   9
+```
+
+We want to join after the If to the rest of the state machine as soon as possible. The two branches of the if statement:
+
+```
+Subtract | Mul | If | Subtract | Mul
+Subtract | Mul | If | Add | Mul
+
+```
+
+Now if we replace the`If` with a function instead that could return a number of different states or did IO like a Monad.
+
+```
+Subtract | Mul | Function
+```
+
+Control flow and state diverges from this `Function`
+
+```
+Subtract | Mul | Function | State1
+Subtract | Mul | Function | State2
+Subtract | Mul | Function | State3
+Subtract | Mul | Function | Error1
+Subtract | Mul | Function | Error2
+Subtract | Mul | Function | Error3
+```
+
+How do we get the control flow on the happy path again? And how do we reliably test and retry errors?
+
+So this state machine is like a parser where the next state can be any of the optional states. Will be evaluated in a certain order due to the pratt parser.
+
+Take this definition of an SQL SELECT query from the PostgreSQL documentation. Each thing inside square braces is optional, but could be present.
+
+```
+
+SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]
+    [ * | expression [ [ AS ] output_name ] [, ...] ]
+    [ FROM from_item [, ...] ]
+    [ WHERE condition ]
+    [ GROUP BY [ ALL | DISTINCT ] grouping_element [, ...] ]
+    [ HAVING condition ]
+    [ WINDOW window_name AS ( window_definition ) [, ...] ]
+    [ { UNION | INTERSECT | EXCEPT } [ ALL | DISTINCT ] select ]
+    [ ORDER BY expression [ ASC | DESC | USING operator ] [ NULLS { FIRST | LAST } ] [, ...] ]
+    [ LIMIT { count | ALL } ]
+    [ OFFSET start [ ROW | ROWS ] ]
+    [ FETCH { FIRST | NEXT } [ count ] { ROW | ROWS } { ONLY | WITH TIES } ]
+    [ FOR { UPDATE | NO KEY UPDATE | SHARE | KEY SHARE } [ OF table_name [, ...] ] [ NOWAIT | SKIP LOCKED ] [...]
+```
+
+Each optional thing must change control flow when executed.
+
+We can define control flow with parsing technologies for elegant and understandable execution of control flow.
+
+
+
+# 253. The algorithm is just a loop or even an event loop or AST evaluation
+
+Even databases are just loops ultimately.
+
+# 254. Community Idea: Vote on Value
+
+# 255. Dream Dependency Need table
+
+This is inspired by Scrapscript and Val town. These are my dependencies for imaginary software.
+
+| Dependency name            | Description |
+| -------------------------- | ----------- |
+| create-email               |             |
+| create-file                |             |
+| create-tls-connection      |             |
+| create-tcp-connection      |             |
+| create-https-connection    |             |
+| create-http-connection     |             |
+| create-postgres-connection |             |
+| create-sqlite-connection   |             |
+|                            |             |
+
+# 256. 2 phase commit and thoughts on just updating everything in parallel
+
+# 257. Data flow between collections
+
+# 258. What doesn't matter to your business logic
+
+Why IT projects are so slow.
+
+# 259. Wire Grid Configurator: Describe something and Interleaved behaviour
+
+Activations along wires in a grid, like Orleans. Talk about everything in terms of everything else.
+
+# 260. Parallelism in ASTs
+
+Represent coroutines and threads as sibling nodes on a graph.
+
+```
+p = producer
+c = consumer
+p -> c
+
+(let [p producer c consumer]
+	(parallel
+		p -> c
+	)
+
+parallel for 
+```
+
+
+
+# 261. Parallel data/behaviour flow
+
+
+
+# 262. Movement and parallelism
+
+If we move things around, we can move things around in parallel.
+
+# 263. Lock turn-taking distribution
+
+
+
+# algorithm crystallization
+
+Loops are preparsed into AST and optimised into equivalents.
+
+ 
+
+# data flow machine
+
+flowcharts are fun
+
+Arrange dataflow through code that is in columns and wire it up.
+
+# 264. Processes (control flow) are data
+
+We can model processes or control flow as a data stream.
+
+# 265. Types are about control flow and dispatch and its link to advanced resolution, serialization
+
+When there is a dispatch decision, we need to do an advanced resolution and simplify the resolution callsite. Serialization of types at runtime.
+
+# 266. Java's verbosity is caused by the lack of an advanced resolution algorithm
+
+FactoryFactoryFactory is a recurring thing that occurs with Java, due to the lack of overridability.
+
+# 267. Standardised generalisation
+
+We generally want to generalise with the same approach, perhaps a parameter passed in.
+
+# 268. Writing a loop over an existing program's behaviour, a representation of behaviour for extensible and overridable behaviour
+
+Writing a loop over the existing program's behaviour.
+
+Coupling/uncoupling
+
+
+
+Deciding control flow in the future.
+
+# 269. How to understand any codebase at a glance, case based programming
+
+Render the codebase control flow graph to pipe separated state machines (State machine formulation)
+
+# 270. Pipeline syntax and a syntax for hooking into pipelines events
+
+```
+
+
+pipeline = one | two | three | four | five
+pipeline.start()
+
+# pipeline.start:
+
+```
+
+# 271. Task protocols
+
+Two or more programs talking to each other is a protocol. This is a control flow technique too but is linked to parsing. Methods can pass variables between themselves and call code in the other side.
+
+In this example, the lexer function emits "emit_character" events. Tokeniser emits "new_token" events and parser emits "emit_ast" events.
+
+```
+task lexer():
+	for each character in program:
+    	lexer.emit_character(character)
+
+task tokeniser(emit_character):
+	while character in emit_character:
+    	if character == "\n" or character == " ":
+    		continue
+        if character == "{":
+        	tokeniser.new_token("opencurly")
+        if character == "}":
+        	tokeniser.new_token("closecurly")
+
+task parser(new_token):
+	
+	while token there is new_token:
+   		if token == "opencurly":
+   			tokens = []
+   			while token there is new_token:
+   				
+   				if token == "closecurly":
+   					parser.emit_ast(tokens)
+                else:
+                	tokens.append(token)
+
+lexer = lexer()
+tokeniser = tokeniser(lexer.emit_character)
+parser = parser(tokeniser.new_token)
+```
 
 
 
