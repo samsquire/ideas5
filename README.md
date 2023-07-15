@@ -4,7 +4,7 @@ Welcome to the fifth batch page of my Ideas for Computing. This is a stream of m
  * See [100 Ideas for Computing](HTTPS://GitHub.com/samsquire/ideas), the first issue of this series.
  * See [ideas2, Another 85+ Ideas For Computing](HTTPS://GitHub.com/samsquire/ideas2)
  * See [ideas3, An Extra 100 Ideas for Computing](HTTPS://GitHub.com/samsquire/ideas3)
- * See [ideas4, Additional 100+ Ideas for Computing]([samsquire/ideas4: An Additional 100 Ideas for Computing https://samsquire.github.io/ideas4/](https://github.com/samsquire/ideas4))
+ * See [ideas4, Additional 100+ Ideas for Computing](https://github.com/samsquire/ideas4)
  * [Follow me on Twitter](HTTPS://twitter.com/mrsamuelsquire)
  * Looking for business ideas? Checkout my [startups repository](https://github.com/samsquire/startups) where I list business ideas.
 
@@ -1782,9 +1782,13 @@ Arrange dataflow through code that is in columns and wire it up.
 
 We can model processes or control flow as a data stream.
 
-# 265. Types are about control flow and dispatch and its link to advanced resolution, serialization
+can generalise an entire control flow for every state
 
-When there is a dispatch decision, we need to do an advanced resolution and simplify the resolution callsite. Serialization of types at runtime.
+# 265. Types are about control flow and dispatch and its link to advanced resolution, sequentialisation/serialization
+
+When there is a dispatch decision, we need to do an advanced resolution and simplify the resolution callsite. Serialisation/Sequentialisation of code for different types at runtime (monomorphisation)
+
+
 
 # 266. Java's verbosity is caused by the lack of an advanced resolution algorithm
 
@@ -1808,7 +1812,10 @@ Deciding control flow in the future.
 
 Render the codebase control flow graph to pipe separated state machines (State machine formulation)
 
-# 270. Pipeline syntax and a syntax for hooking into pipelines events
+```
+```
+
+# 270. Pipeline syntax and a syntax for hooking into lifecycle events
 
 ```
 
@@ -1859,11 +1866,237 @@ parser = parser(tokeniser.new_token)
 
 
 
+# 272. Epoll for thread readiness, online thread notification
+
+Synchronization requires two threads stop interrogating or writing to a value.
+
+I want a Java style notify but persistent notifications
+
+Couldn't you have two copies of the shared data?
+
+```
+shared_value = 6
+shared_value_lock = Lock()
+
+thread1:
+	while running:
+    	shared_value_lock.lock()
+    	shared_value = do_something(shared_value)
+		shared_value_lock.unlock()		
+thread2:
+	while running:
+	    shared_value_lock.lock()
+    	shared_value = do_something(shared_value)
+		shared_value_lock.unlock()		
+	
+```
+
+A simple flag only works for 2 threads. This approach should work for any number of threads. 
+
+```
+shared_value = 6
+queues = []
+
+for thread in threads:
+	queue = Queue()
+    thread.create(queue)
+	queues.append(queue)
+	
+for thread in threads:
+	thread.queues = queues.clone.remove(thread.queue)
+
+
+thread:
+	queues = []
+	my_queue = None
+	my_shared_value = 6
+	while running:
+    	new_shared_value = my_queue.trypop()
+    	if new_shared_value != None:
+    		my_shared_value = new_shared_value
+    	my_shared_value = do_something(shared_value)
+		for queue in queues:
+			queue.push(my_shared_value)	
+```
 
 
 
+What we want instead
+
+don't have to block while synchronizing
+
+# 273. Sequence compiler
+
+# 274. Table of data to process: it scales
+
+Computers are table processors. Control flow representation, data structures, traverse it properly, in parallel
+
+# 275. Threading synchronization and team design
+
+The code requires a lock to edit.
+
+# 276. Cross graph action
+
+Imagine a complicated graph. Any node on the graph can interact with any other but when one node interacts with another node, there might be a relational traversal of the critical path between the nodes.
 
 
+
+# 277. Code on a surface: JIT compiling a query
+
+Log all the code that runs and then turn it into an AST, then template the AST.
+
+# 278. While loops have tasks: Sub-virtual threads
+
+Coroutines switch between tasks and return to them when they are runnable. 
+
+Blocks that that activate.
+
+```
+task:
+	while true:
+        one();
+        two();
+        yield
+        three();
+        four();
+	
+```
+
+The `while true` has a number of potential tasks that can be returned to:
+
+``` 
+one();
+two();
+```
+
+and
+
+```
+three();
+four()
+```
+
+
+
+# 279. Advanced resolution everywhere
+
+You say what data you need and where and what needs to be overridden or overridable and the logistics are worked out at compile time.
+
+# 280. Parallel grid stream, text format
+
+We can see parallelism like a machine that knows how to parallelise certain problems, we load up the machine with items and then when it fires, it parallelises the calculation. Runtime latches
+
+We can create linear scalable parallel grid systems for mailbox style problems and broadcast systems. 
+
+```
+1:
+usermoved
+calculatetick
+
+
+2:
+
+```
+
+# 281. Directional effects
+
+Can program something from any direction. Interactions between components.
+
+If I build one thing on top of another, the flow of behaviour goes from up to down.
+
+# 282. Non-reflow animated table
+
+Task manager on Windows 11 reflows the table when things change, this makes it hard to see the overall state of the system. You can sort the processes by name and the processes stay static.
+
+# 283. A* on trees
+
+# 284. Block Graph animated
+
+If our website has 25 active users, then we show a stable y-column identity for that user and animate blocks of their actions.
+
+# 285. An incremental and online algorithm behaviour is very flexible for integration work
+
+# 286. Generated behaviours on objects - standardised object extensions
+
+All objects that have collections are like databases.
+
+# 287. Linear scalability design
+
+Designed to scale linearly from day 1. My [eventually-consistent-mesh](https://github.com/samsquire/eventually-consistent-mesh) keeps nodes synchronized. at the data layer.
+
+What gets scaled, capacity, events. Traditional database has fixed capacity for scaling.
+
+Intra-request, across requests
+
+We need to support:
+
+* shared broadcast scalability
+* point-to-point scalability
+
+# 288. Online scheduling
+
+Generate a sequence of schedule events, infer the current state and history.
+
+# 289. Simple column typesetting
+
+Sometimes I just want to align a number of things from left to right but independently.
+
+# 290. Message passing and parallelism
+
+Can we send multiple messages at once?
+
+# 291. Instruction Reordering for parallelisation
+
+We know these lines don't depend on each other.
+
+# 292. Every call site is an AST
+
+# 293. Psuedo-code for tasks
+
+
+
+# 294. Pieces: straight line work divided into pieces
+
+Just code what you want to happen in a straight line.
+
+Do this, then that, pseudocode of a task, it might run elsewhere. AOT. Concerns rerouted for scalability and parallelism. Automate microservice generation.
+
+You say what needs to happen. It's a scheduling problem where it happens.
+
+```
+"POST /create-user"
+create-user:
+	users.create_user()
+	:
+```
+
+
+
+# 295. Matrix multiplication of meaning
+
+# 296. Should method calls be events?
+
+# 297. Secure data flow
+
+Security is difficult and I am not an expert, but when it comes to protocols, surely the exchanges between servers could be modelled as a data flow problem and interrogated?
+
+# 298. What people should be working on
+
+
+
+# 299. Pagequery
+
+# 300. AST passthrough, advanced resolution and the futuristic stage after virtualization
+
+Efficient FFI
+
+
+
+# Forgotten ideas
+
+Using variables for pivots/associations between things such as in state formulation
+
+And paralleisation
 
 
 
