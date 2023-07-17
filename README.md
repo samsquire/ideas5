@@ -2082,13 +2082,73 @@ Security is difficult and I am not an expert, but when it comes to protocols, su
 
 # 298. What people should be working on
 
+Compiler documentation
+
 
 
 # 299. Pagequery
 
+A query that describes data for an entire page.
+
 # 300. AST passthrough, advanced resolution and the futuristic stage after virtualization
 
 Efficient FFI
+
+# 301. There is no fundamental unit
+
+LISP, everything is a list and an AST. But forcing everything into a hierarchy 
+
+# 302. Unit of parallelisation
+
+I am trying to find a model that easily paralellises work to do. This invariably leads to thinking of data structures. One idea that comes up repeatedly is the idea of "events". 
+
+# 303. Efficient incremental  algorithms
+
+Add behaviour over time. Do extreme or extremely little amounts of work, depending.
+
+# 304. Text Mailbox serialisation
+
+When I'm writing command line utilities or software, I think it would be nice if I could visualise the output of the application without spending lots of time building GUIs.
+
+This idea is a line format that is routed into collections and then into GUI elements. This is inspired by [ideas4, 775. Message passing GUI powered by text](https://github.com/samsquire/ideas4#775-message-passing-gui-powered-by-text). We could even use [ideas4, 493. Rich method name parsing](https://github.com/samsquire/ideas4#493-rich-method-name-parsing).
+
+The following sends items to the **contacts-list** collection.
+
+```
+contacts-list 0 {"name": "Samuel"}
+contacts-list 1 {"name": "John"}
+contacts-list 2 {"name": "Mark"}
+```
+
+This moves data from one collection to another:
+
+```
+
+```
+
+
+
+# 305. Instant GUI playground
+
+Use ideas4, 304. Text mailbox serialisation to and ideas4 775. Message passing GUI powered by text to create a playground for GUIs.
+
+# 306. "The standard cycle" and its package manager
+
+Bash code, stateful code is unreliable. The standard cycle is the idea that all stateful code should have a well designed lifecycle that prevents the getting into impossible to recover from states. We can "recover" and retry the state machine, not get stuck in the same state.
+
+We can use control loops to manage the lifecycle of stateful things. It's always possible to recover state that uses the standard cycle.
+
+| State                                                        | Description |
+| ------------------------------------------------------------ | ----------- |
+| Initial state                                                |             |
+| Install package                                              |             |
+| - the package was uninstalled<br />- the package was already installed<br />- the package installed with an error<br />- the package failed to install |             |
+
+# 307. Plotwork scheduling
+
+# 308. How can we use SIMD and threads together?
+
+
 
 
 
@@ -2100,6 +2160,6 @@ And paralleisation
 
 
 
-
+need a epoll-server with websockets
 
 I need to write a parser for C and look at analysing Postgres sourcecode or something.
