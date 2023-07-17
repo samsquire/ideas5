@@ -2148,6 +2148,31 @@ We can use control loops to manage the lifecycle of stateful things. It's always
 
 # 308. How can we use SIMD and threads together?
 
+# 309. Greedy coroutine scheduling
+
+Imagine we have 4 tasks for building a search engine:
+
+```
+task download-url
+	for url in urls:
+		download(url)
+
+task extract-links
+	parsed = parse(document)
+	return parsed
+
+task fetch-links
+	for link in document.query("a")
+		return link
+
+task save-data
+	db.save(url, link)
+```
+
+Here's how the schedule would look:
+
+![Slide2](https://github.com/samsquire/ideas5/assets/1983701/b46485c8-fe5f-43ea-b840-d0d63dab4a51)
+
 
 
 
