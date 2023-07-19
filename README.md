@@ -1764,7 +1764,7 @@ If we move things around, we can move things around in parallel.
 
 # 263. Lock turn-taking distribution
 
-
+Sqlite has this problem. it uses a sleep. I had this problem with my parallel interpreter, some threads were ahead of other threads. need to wait for something to become true.
 
 # algorithm crystallization
 
@@ -2144,9 +2144,12 @@ We can use control loops to manage the lifecycle of stateful things. It's always
 | Install package                                              |             |
 | - the package was uninstalled<br />- the package was already installed<br />- the package installed with an error<br />- the package failed to install |             |
 
+The package manager lets us test if some code does what w
+
 # 307. Plotwork scheduling
 
 # 308. How can we use SIMD and threads together?
+
 
 # 309. Greedy coroutine scheduling
 
@@ -2172,6 +2175,62 @@ task save-data
 Here's how the schedule would look:
 
 ![Slide2](https://github.com/samsquire/ideas5/assets/1983701/b46485c8-fe5f-43ea-b840-d0d63dab4a51)
+=======
+# 309. Desktop command driven
+
+# 310. Emit return values are events
+
+# 311. Software specs
+
+# 312. Everything is a loop
+
+# 313. The secret is that control flow is data flow and a data problem
+
+# 314. Fake wait
+
+# 315. Work or state is a schedulable plan, latches everywhere
+
+You can do other things while waiting for IO. And do other things while waiting for other CPU tasks elsewhere.
+
+The hierarchy is actually:
+
+* event
+* state
+* block
+* loop
+* lightweight task/coroutine
+* threads
+
+# 316. Loops, OOP/Method calls, Collections are relational data streams of events and the latch grid
+
+We can think of objects sending messages
+
+```
+server_loop:receive -> players.add_player
+
+```
+
+What if we want to handle an event sequence that includes "AND" or "WHEN" The stream processor handles control flow and it is a strange event loop. Numeric latch grids can be used for efficient sequence triggering.
+
+# 317. Composeable event loops
+
+# 318. Events are serialization, for free
+
+# 319. Interlocking state machines and latches and stream processing and deriving control flow from state machines and latches
+
+# 320. Structured Latch trees
+
+These represent what is going on currently, the state, at a point in time.
+
+# 321. Relationship of structure to events
+
+The structure of contexts are a tree of state.
+
+# 322. How to parallelise event streams
+
+If we parallelise event streams, we can parallelise arbitrary code.
+
+Load balancing? What about the latch? Data flow.
 
 
 
