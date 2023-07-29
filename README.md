@@ -16,7 +16,7 @@ Any variable can contain any type of data, but once it is set to a type, its typ
 
 # 2. Matrix multiplication on matrixes of movements of identities
 
-Matrix multiplication is very useful, but what if matrix multiplication can be useful with the movement of identities through a program space? A matrix multiplication is similar to a breadth first search.
+Matrix multiplication is very useful, but what if matrix multiplication can be useful with the movement of identities through a program space? A matrix multiplication is similar to a breadth first search and a rotation.
 
 # 3. VLIW software
 
