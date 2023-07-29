@@ -1725,6 +1725,8 @@ This is inspired by Scrapscript and Val town. These are my dependencies for imag
 | create-sqlite-connection   |             |
 |                            |             |
 
+These functions also have lifecycles. We can use Latch based programming
+
 # 256. 2 phase commit and thoughts on just updating everything in parallel
 
 # 257. Data flow between collections
@@ -2512,13 +2514,15 @@ Can render everything to a grid and reorganise its relationships. Movements in o
 
 # 350. Structured interaction programming: Trying to restrict interaction complexity and implement arbitrary software composability of abstractions
 
-**This idea is to use state combination traversal of behaviours to generate useful new types and also match those types-to-functions/code for dispatch. The idea is that we introduce tooling to generate or determine important, fundamental interaction permutations/combinations and abstraction and mappings that we absolutely must implement to fulfil all our desired behaviour in the most extensible, composeable way. This is inspired by TLA+ state spaces.** Sum types are useful and exhaustive type checking can help handle interactions but they're not automatic.
+**This idea is to use state combination traversal of behaviours to generate useful new types and also match those types-to-functions/code for dispatch. The idea is that we introduce tooling to generate or determine important, fundamental interaction permutations/combinations and reveal abstractions that cover them all and mappings that we absolutely must implement to fulfil all our desired behaviour in the most extensible, composeable way. This is inspired by TLA+ state spaces.** Sum types are useful and exhaustive type checking can help handle interactions but defining sum types is not automatic. This idea is like permuting operational semantics and uncovering critical paths through behaviours.
 
 **How do I write programs that work on Windows, Mac and Linux?**
 
 **How do I use a thing designed to do X in a Y context?**
 
 **How do I integrate two pieces of code together that must mutually interact off eachother to properly function to maintain both behaviours?**
+
+**Do I need to rewrite my codebase to switch from one thread per socket to change it to be multiple sockets per thread? (For performance)**
 
 **How do I write programs that work on iOS and Android?**
 
@@ -2596,7 +2600,13 @@ ios
 android
 ```
 
-* **Create MULTIPLE graphs of event relationship that are noteworthy** This is the inspiration of neuron's synaptic's clefts. These are also things, or facts or **contexts**. For example the following graph might be used in an architecture of software where there is a **1 thread per socket** matches a socket that owns a thread. This is inspired by pattern matching and selecting on the entire graph.
+* **Create MULTIPLE graphs of event/data relationships that are noteworthy** These are effectively interfaces or skeletons which are used for pattern matching later.  These are also things, or facts or **contexts**.
+
+* For example, take this interaction model
+
+  
+
+* For example the following graph might be used in an architecture of software where there is a **1 thread per socket** matches a socket that owns a thread. 
 
   ![thread_per_socket](https://github.com/samsquire/diagrams/blob/main/thread_per_socket.png?raw=true)
 
@@ -2604,9 +2614,11 @@ android
 
   ![sockets_per_thread](https://github.com/samsquire/diagrams/blob/main/sockets_per_thread.png?raw=true)
 
-**All the nodes in the graph or unbound or bound, like Prolog facts. They define a template.**
+* **Define what effects what**
+* This is inspired by pattern matching and selecting on the entire graph.
+* **State space is permuted on the interaction between all possible events and noteworthy cases** Then we find out unique traversals that cover the most ground - that cover ALL noteworthy cases.
 
-They can be recursive.
+
 
 For example in the middle of this ASCII diagram represents the gap between multiple things on the left and right. This is our ambient state space that all the previous events affected. I call this the **gap**.
 
@@ -2628,15 +2640,32 @@ function reduce(gap, event) {
 
 Because we have multiple such reductions all happening in parallel. We cannot just talk of just one! And they mutually interact!
 
+
+
 * Fixpoint graph search compilation of state space
+
 * **Extensibility through graph matching** Features can interact with eachother.
+
 *  **Things relate to other things** 
+
 * **We can now walk state space and infer types** My code 
+
 * orthogonality and plurality problem
+
+* Abstraction generator
+
 * **Useful, interesting, important permutations** This idea is that we can use software to generate useful permutations and abstractions.
+
+* **All the nodes in the graph or unbound or bound, like Prolog facts. They define a template.**
+
+  They can be recursive.
+
 * **Time, context, order**
+
 * Eventually we map this to control flow and code dispatch in compilation and scheduling.
+
 * **Every event thing interacts with every other thing and the gap** maps to another thing - an interaction. For example the event "scope-enter" causes the generation of more facts, such as a new scope.
+
 * **Effectively exhaustive type search, exploration and automatic interaction discovery** We can discover types.
 
 * **Things are activated in the gap and in an order, as a traversal** Activates things are like a multidimensional AST.
@@ -2809,7 +2838,7 @@ a method call is a graph (OOP), actors
 it's also a traversal
 
 ```
-when mentioned do this
+when mentioned in a method call do this
 ```
 
 are points on a graph in multidimensional space?
@@ -2853,7 +2882,420 @@ I did this
 
 
 
+# 367. Programming RTS
+
+# 368. Two-way binding grid/graph
+
+Topo sort the grid.
+
+# 369. Circular interactions override
+
+it's simple to think of the thing you're build on as as surface, but what if on the other side that thing is using you as a surface?
+
+How do we merge relationships and behaviour?
+
+is it a unification problem?
+
+```
+A interactions B=One, C=Two, D=Three
+C interactions B=Two C=Three D=Four
+A×C = B[One|Two] C=[Two|Three] D=[Three|Four]
+```
+
+How do you merge behaviours One and Two?
+
+Tuple that stores the output of One+Two, maybe pipes them, or every reference to B refers to which of B to use.
+
+Contexts that interaction with B
+
+AST, in scope
+
+Lisp that is scope based, address any parent
+
+```
+garbage_collection(thread)
+new_thread
+```
+
+graph merging?
+
+```
+A causes A -> B -> C
+B causes B -> D -> C
+```
+
+
+
+# 370. Control flow stop
+
+# 371. No SEO website
+
+# 372. Bind up some logic
+
+A static diagram that you interact with to program, A diagram of existing logic, that you bind to existing things. Better than nodal programming.
+
+A web server, database diagram
+
+# 373. The Architecture of Society
+
+# 374. Timeline grid programming
+
+A bit like a clever callback, things are scheduled in the future. Every system needs lifecycle or has one.
+
+Structured concurrency append to the future
+
+# 375. Interact With Sam.com
+
+# 376. Spread out and magnetism
+
+Lay things out independently and then link things together,
+
+Tree traversals do not let things be spread out in relation to eachother.
+
+# 377. Latch based programming
+
+We can nest latches and transform them into event loops.
+
+Many things have lifecycles and lifecycles can overlap. Latches are like coroutines.
+
+When gears turn they can latch. This is like an IO monad.
+
+We can queue up work in different places. 
+
+Is the latch a context?
+
+Is the latch a generator?
+
+Can the type system communicate some future behaviour?
+
+
+
+```
+variable = 6
+latch variable == 7
+	// this code runs when the latch is fired
+}
+variable = 8
+tcp = create-tcp-connection("127.0.0.1", 6778)
+
+rr = tcp.latch ready-to-receive {
+	message = tcp.receive(100)
+}
+rw = tcp.latch ready-to-write {
+	tcp.send("MESSAGE")
+}
+
+```
+
+drain the latch? futures?
+
+Closures are strange, code and data
+
+moveable variables
+
+named latches
+
+structured concurrency?
+
+scheduling
+
+a program communicates code and latches
+
+latches are signals
+
+# 378. Lightweight, perpetually light independent computing
+
+Concerns with low tech solutions.
+
+Auth is a separate service.
+
+Payment
+
+Everything is a separate service but data is integrated on the backend
+
+# 379. Reverse API
+
+Come to my website and implement some of my logic.
+
+
+
+# 380. Everything is hookable with the right independent contexts
+
+For example, memory handles make garbage collection easier.
+
+# 381. Coroutines for single threaded but also useable in a multithreaded context
+
+# 382. Optimisations related to locality
+
+Coroutines on the same thread versus a cross thread parallelisation. 
+
+# 382. Stating what should happen
+
+How would you describe exactly what the state of the art garbage collectors do?
+
+# 383. Thoughts about assembly jumps
+
+# 384. CRUD playground
+
+Insert text based format that generates forms, data tables and create relationships between things.
+
+# 385. A third context for code - the compiler determined other place insertion at callsite
+
+You need latches. You can't do what you want in this area of the code if you compile for it.
+
+send a latch to the switch statement that handles it
+
+# 386. Swap in compatible
+
+Anything is hookable in.
+
+# 387. Closure Inbox
+
+Sending behaviour between parts of code.
+
+# 388. Loops over state versus incremental state building
+
+Programs either loop over entire state at a snapshot in time or they are incremental.
+
+# 389. 2d Instruction grid and latches
+
+Can we code with table blocks? Where columns represent latches, future states? Transpose for timeline view
+
+Like a "carry" operation in mathematics or the IO monad.
+
+And parallleism is automatic
+
+```
+table1: 						table2:
+create-email					
+tcp = create-tcp-connection
+tcp.ready_read:
+	val = tcp.read()	    
+    tcp.ready_read:
+	val2 = tcp.read()
+	print(val, val2)
+	
+		
+tcp.ready_write:
+
+```
+
+
+
+latches can nest
+
+efficient scheduling of the event loop is handled by the compiler
+
+nested latches are an event loop
+
+mutable control flow and latches
+
+# 390. Overlapping contexts
+
+For extendaibility, if we reorder the output stream with a reason given, we can reorganise the scheduling
+
+Bidirectional scheduling
+
+# 391. Protocols, parsing and latches
+
+# 392. System surface
+
+Is the interesting work the interaction with the kernel?
+
+# 393. Combinations of execution models
+
+Execute each line serially
+
+```
+SERIAL
+one
+two
+three
+```
+
+Execute all lines simultaneously:
+
+```
+PARALLEL
+one
+two
+three
+```
+
+These two serial processes can run in parallel:
+
+```
+SERIAL
+	one
+	two
+	three
+SERIAL
+	one
+	two
+	three
+```
+
+
+
+# 394. Latches correspond to method calls and events
+
+# 395. Let the compiler work out all scheduling
+
+```
+```
+
+# 396. OOP programming is a tree
+
+We tell things what to do. But when you're deep, you don't have much control over global context. This is what I want to change.
+
+# 397. Can change future behaviour
+
+Control flow changed at runtime.
+
+How do we represent change of behaviour in the future, to a lifecycle command?
+
+# 398. Map of the software
+
+valuable keywords
+
+# 399. Timeline plot can be used to optimise, reorder code
+
+Program to do what it wants to generate a timeline plot of what it did, we can use the schedule to optimise what works gets done, when.
+
+Delete whitespace from the timeline
+
+# 400. Function over the future
+
+Write a function to layout the execution of future events.
+
+# 401. Coming up with an abstraction to make a program's behaviour animatable, adjustable or mutating the program's behaviour directly and reserialising the program back to code
+
+When writing visual programs or GUIs, we can write a program that directly shows what we want it to show. But when we want to add features such as animation or adjustment to behaviour, how do we edit the program so that it does the right thing? It's an enormous undertaking.
+
+behaviour and its relationship to scheduling and timelines and contexts, structured concurrency
+
+# 402. Is context a graph or a tree? Structured context programming
+
+Advanced resolution to context and graph. Push context into an object for resolution.
+
+# 403. Timeline to function application stack
+
+# 404. Useful work
+
+We should always be doing useful work that can be reused.
+
+# 405. Virtual lock
+
+Guard sensitive spots in code and scheduler schedules accordingly.
+
+# 406. Update a single location speed
+
+Multithreading is slow because multiple items need to update the same location. T his is the fundamental scaling bottleneck.
+
+And it's relation to deltas, gradients and calculus. Calculus models change itself.
+
+If we model the change directly and the system processes changes instead of the actual value.
+
+# 406. It's always safe to run it in a thread: Latches are safe synchronization
+
+I feel code should be written that can always run on different threads and simultaneously. If there's an event that requires synchronization, it's actually latch to wait on.
+
+# 407. The code itself can be put on a timeline
+
+# 408. Render along a dimension: horizontal, vertical, program space
+
+If we rerun a program in a rhythm, there are commonalities where things don't change, such as virtual DOM. The things that are the same are horizontal lines and the time is the vertical line. So the program is in space. And between invocations, some points shall change. The code becomes something that data flows through.
+
+the central line is time
+
+# 409. Server map, client reduce
+
+Distribute your data and operations across a cluster, but have the client side do the reduction from each server. Fast.
+
+# 410. Multitraversal and its division
+
+Each thread cannot observe the output of other threads. Can we divide traversals?  In A* for example, we calculate an fScore of costs. Other threads cannot perceive this. 
+
+# 411. Representing interlocking
+
+# 412. Lightweight scheduling and coroutines
+
+Coroutines have a minimal scheduler.
+
+# 413. 
+
+# 414. Configure a runtime
+
+Import statements should feel valuable and they are my main API.
+
+
+
+# 415. View the events and insert your behaviour inbetween as plaintext
+
+If contextual information is everywhere, you can add to the right context.
+
+# 416. Breadcrumbs context
+
+Log line shows contextual breadcrumbs
+
+# 417. Abstracting streams and multithreading
+
+If I have a method that takes a stream and I want to multiplex it over threads?
+
+# 418. Elegant representation, workspray
+
+# 419. Parallel work tree
+
+Either you run the whole program in parallel with different inputs, or you parallelise different chunks (such as loops)
+
+# 420. How do you merge CRDTs + merkle trees?
+
+# 421. How things are, properties that are useful to know, how things should be
+
+
+
+# 422. Multiply behaviour operator, parallel envelope
+
+Composition is how behaviour is typically merged, but what if we had an operator that let us merge behaviours together?
+
+```
+```
+
+# 423. Rectangles are loops, circuitboards
+
+Memory is just a rectangle, a loop is a rectangle.
+
+# 424. Can control flow be simplified?
+
+And reserialized into a simpler codebase?
+
+# 425. Thunking of control flow
+
+Don't actually execute, just schedule types, like a repl.
+
+# 426. Structured context
+
+# 427. Substream
+
+SIMD channels
+
+# 428. Critical insight knowledgebase
+
+
+
+# Ideas
+
+mini os, scheduling
+
 # Forgotten ideas
+
+fusion of a beautiful API with data structures
+
+speedometer revs, accelerate when add thread, server
+
+conveyor belts design
+
+LMAX Disruptor barriers for ringbuffers for app threads, one disruptor with barriers for each thread
 
 Using variables for pivots/associations between things such as in state formulation
 
@@ -2864,3 +3306,78 @@ have invented the IO monad [This sounds almost like you've just invented Haskell
 need a epoll-server with websockets
 
 I need to write a parser for C and look at analysing Postgres sourcecode or something.
+
+circular observers
+
+A uses B that caused X
+
+B uses A that causes Y
+
+loops with conditions are latches
+
+blocking hierarchy
+
+you decide how you block when and where
+
+efficient blocking
+
+decide what blocks
+
+control flow  while (!something) is like a latch
+
+blocking to pending
+
+decide what to block on
+
+interleaved latches in one program and single thread
+
+while !a:
+
+​	wait(b)
+
+​	while !b:
+
+​		wait(b)
+
+mark a thread as blocking
+
+while a:
+
+​	while b:
+
+
+
+Hi everyone, I think that many interactions between features are pretty hard to think about, so i'm trying to model the interactions between features and emit the layering of abstractions that covers the most ground, for example, references, mutability, async/sync functions, type inference, generics, garbage collection, memory management, blocking/nonblocking and so on....it feels very complicated to me...so much detail
+I want the computer to tell me the base case of a combination of interactions, that are like the master sum types that handle permutations
+A interactions B=One, C=Two, D=Three
+C interactions B=Two C=Three D=Four
+A×C = B=[One|Two] C=[Two|Three] D=[Three|Four]
+[12:47]
+I wrote a list of things that i imagine a language must compile things for, like a list of operational semantics i think, that i see as events, each event affects a context, then different interactions apply depending on whats in the context and the next event
+[12:48]
+initialize-variable
+scope-enter
+scope-exit
+http-request
+borrowed
+new-scope
+leave-scope
+stackframe
+create-stackframe
+drop-stackframe
+drop
+refcount-increment
+garbage-collect
+make-channel
+send-down-channel
+read-from-channel
+yield
+fork
+await
+local-variable
+global-variable
+new-thread
+[12:49]
+for example, borrowed affects what happens in a scope-exit, or scope-enter
+
+​	
