@@ -1713,17 +1713,22 @@ Even databases are just loops ultimately.
 
 This is inspired by Scrapscript and Val town. These are my dependencies for imaginary software.
 
-| Dependency name            | Description |
-| -------------------------- | ----------- |
-| create-email               |             |
-| create-file                |             |
-| create-tls-connection      |             |
-| create-tcp-connection      |             |
-| create-https-connection    |             |
-| create-http-connection     |             |
-| create-postgres-connection |             |
-| create-sqlite-connection   |             |
-|                            |             |
+| Dependency name             | Description                                            |
+| --------------------------- | ------------------------------------------------------ |
+| create-email                |                                                        |
+| create-file                 |                                                        |
+| create-tls-connection       |                                                        |
+| create-tcp-connection       |                                                        |
+| create-https-connection     |                                                        |
+| create-http-connection      |                                                        |
+| create-postgres-connection  |                                                        |
+| create-sqlite-connection    |                                                        |
+| create-tcp-listening-socket |                                                        |
+| create-ringbuffer           |                                                        |
+| create-thread               |                                                        |
+| create-latch                |                                                        |
+| drain-latch                 | yields queued up events are run until they're all done |
+| spawn                       | spawn a closure for running by the scheduler           |
 
 These functions also have lifecycles. We can use Latch based programming
 
@@ -3092,7 +3097,7 @@ mutable control flow and latches
 
 # 390. Overlapping contexts
 
-For extendaibility, if we reorder the output stream with a reason given, we can reorganise the scheduling
+For extendability, if we reorder the output stream with a reason given, we can reorganise the scheduling
 
 Bidirectional scheduling
 
@@ -3265,7 +3270,7 @@ Composition is how behaviour is typically merged, but what if we had an operator
 
 Memory is just a rectangle, a loop is a rectangle.
 
-# 424. Can control flow be simplified?
+# 424. Can control flow be reified and then simplified?
 
 And reserialized into a simpler codebase?
 
@@ -3280,6 +3285,22 @@ Don't actually execute, just schedule types, like a repl.
 SIMD channels
 
 # 428. Critical insight knowledgebase
+
+# 429. Control flow is a very important part of a program, what's the most efficient approach to queue control flow?
+
+# 430. Decouple templates from styling
+
+# 431. Networked application definition
+
+the serialization of program's behaviour, from a certain high level, aren't networked software similar? but any change is fundamental
+
+# 432. Methods on classes are latches
+
+We can drain multiple latches simultaneously.
+
+```
+latches(server.broadcast_players, server.update_highscore).drain()
+```
 
 
 
