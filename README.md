@@ -1441,6 +1441,8 @@ I see examples of async runtimes where delays are implemented as Thread.sleep. I
 
 Parse sourcecode, create cut-down diagrams of code calls flowcharts.
 
+Method call -> submethod -> method
+
 # 220. LINQ rewriting
 
 # 221. React! Handle all cases
@@ -1730,7 +1732,7 @@ This is inspired by Scrapscript and Val town. These are my dependencies for imag
 | drain-latch                 | yields queued up events are run until they're all done |
 | spawn                       | spawn a closure for running by the scheduler           |
 
-These functions also have lifecycles. We can use Latch based programming
+These functions also have lifecycles. We can use [ideas5, 377. Latch based programming](https://github.com/samsquire/ideas5#377-latch-based-programming)
 
 # 256. 2 phase commit and thoughts on just updating everything in parallel
 
@@ -1991,7 +1993,7 @@ four()
 
 You say what data you need and where and what needs to be overridden or overridable and the logistics are worked out at compile time.
 
-# 280. Parallel grid stream, text format
+# 280. Parallel grid stream, text format to load up items
 
 We can see parallelism like a machine that knows how to parallelise certain problems, we load up the machine with items and then when it fires, it parallelises the calculation. Runtime latches
 
@@ -2190,6 +2192,8 @@ Here's how the schedule would look:
 # 310. Emit return values are events
 
 # 311. Software specs
+
+Wouldn't it be interesting if softare was benchmarked on the distribution server and was given specs that could be inspected such as 25,000 requests per second?
 
 # 312. Everything is a loop
 
@@ -2609,7 +2613,12 @@ android
 
 * For example, take this interaction model
 
-  
+* ```
+  create-thread
+  accept-socket
+  accept-socket
+  accept-socket
+  ```
 
 * For example the following graph might be used in an architecture of software where there is a **1 thread per socket** matches a socket that owns a thread. 
 
@@ -2619,7 +2628,11 @@ android
 
   ![sockets_per_thread](https://github.com/samsquire/diagrams/blob/main/sockets_per_thread.png?raw=true)
 
-* **Define what effects what**
+* **Define what effects what** There is an interaction of thread safety when there are multiple threads and they need to interact with the same resource:
+
+![threadsafety](https://github.com/samsquire/diagrams/blob/main/threadsafety.png?raw=true)
+
+* **Bindings of behaviour to patterns**
 * This is inspired by pattern matching and selecting on the entire graph.
 * **State space is permuted on the interaction between all possible events and noteworthy cases** Then we find out unique traversals that cover the most ground - that cover ALL noteworthy cases.
 
@@ -2935,7 +2948,7 @@ B causes B -> D -> C
 
 # 371. No SEO website
 
-# 372. Bind up some logic
+# 372. Interactive diagrams - Bind up some logic from the diagram
 
 A static diagram that you interact with to program, A diagram of existing logic, that you bind to existing things. Better than nodal programming.
 
@@ -3028,7 +3041,11 @@ Come to my website and implement some of my logic.
 
 For example, memory handles make garbage collection easier.
 
+Context merge, interleave
+
 # 381. Coroutines for single threaded but also useable in a multithreaded context
+
+How should coroutines communicate with other threads? async/await? CSP between threads?
 
 # 382. Optimisations related to locality
 
@@ -3046,7 +3063,7 @@ Insert text based format that generates forms, data tables and create relationsh
 
 # 385. A third context for code - the compiler determined other place insertion at callsite
 
-You need latches. You can't do what you want in this area of the code if you compile for it.
+You can't do what you want in this area of the code if you compile for it. You need latches.
 
 send a latch to the switch statement that handles it
 
@@ -3060,32 +3077,34 @@ Sending behaviour between parts of code.
 
 # 388. Loops over state versus incremental state building
 
-Programs either loop over entire state at a snapshot in time or they are incremental.
+Programs either loop over entire state at a snapshot in time or they are incremental. Think of compilers that do queries across the code.
 
 # 389. 2d Instruction grid and latches
 
-Can we code with table blocks? Where columns represent latches, future states? Transpose for timeline view
+Can we code with table blocks?
+
+We can `create-thread` which are separate tables in a grid and also `create-latch` for events in each grid item.
+
+Where columns represent latches, future states? Transpose for timeline view
 
 Like a "carry" operation in mathematics or the IO monad.
 
 And parallleism is automatic
 
 ```
-table1: 						table2:
-create-email					
-tcp = create-tcp-connection
-tcp.ready_read:
-	val = tcp.read()	    
-    tcp.ready_read:
-	val2 = tcp.read()
-	print(val, val2)
+table1: 						table2:						table3:
+create-email												tcp.ready_read:
+tcp = create-tcp-connection									val = tcp.read()  
+@tcp.ready_read:
+val2 = tcp.read()
+print(val, val2)
 	
 		
 tcp.ready_write:
 
 ```
 
-
+each table is an event loop
 
 latches can nest
 
@@ -3094,6 +3113,8 @@ efficient scheduling of the event loop is handled by the compiler
 nested latches are an event loop
 
 mutable control flow and latches
+
+
 
 # 390. Overlapping contexts
 
@@ -3162,6 +3183,8 @@ How do we represent change of behaviour in the future, to a lifecycle command?
 # 398. Map of the software
 
 valuable keywords
+
+valuable icons
 
 # 399. Timeline plot can be used to optimise, reorder code
 
@@ -3239,6 +3262,8 @@ Import statements should feel valuable and they are my main API.
 
 If contextual information is everywhere, you can add to the right context.
 
+Maintain existing behaviour with customisations.
+
 # 416. Breadcrumbs context
 
 Log line shows contextual breadcrumbs
@@ -3256,6 +3281,8 @@ Either you run the whole program in parallel with different inputs, or you paral
 # 420. How do you merge CRDTs + merkle trees?
 
 # 421. How things are, properties that are useful to know, how things should be
+
+Every X number of instructions is a branch.
 
 
 
@@ -3280,6 +3307,8 @@ Don't actually execute, just schedule types, like a repl.
 
 # 426. Structured context
 
+every function call, action is a separate context.
+
 # 427. Substream
 
 SIMD channels
@@ -3287,6 +3316,8 @@ SIMD channels
 # 428. Critical insight knowledgebase
 
 # 429. Control flow is a very important part of a program, what's the most efficient approach to queue control flow?
+
+Is it a list of closures, a list of jumps?
 
 # 430. Decouple templates from styling
 
@@ -3302,13 +3333,288 @@ We can drain multiple latches simultaneously.
 latches(server.broadcast_players, server.update_highscore).drain()
 ```
 
+# 433. Data poke - fun administration and verbs
+
+Poke your data into a CRUD data explorer and pre-process it.
+
+# 434. Automatic abstraction
+
+A boundary between components. There is the opportunity to abstract. But what if things are not parameterized? 
+
+# 435. Data traversal to algorithm
+
+Relational data sets can be turned into algorithms.
+
+# 436. Versions and reachability
+
+Can existing code reach all states when upgraded? How do you know it will work?
+
+# 437. Latch "was" API
+
+Identify efficiency
+
+```
+Pack_tightly(cpu_work)
+When(cpu_task).was("running", 10, "microseconds").pause()
+```
+
+# 438. What is the computation?
+
+What do all developer tools actually do?
+
+# 439. Auto parameter
+
+Don't provide arguments, parameters are inferred and the IDE shows them.
+
+# 440. Referring to a latch waits for it
+
+I want to promote straight-line control flow with minimal indentation. But we still need latches to define when things are ready.
+
+```
+tcp = create-tcp-connection
+data_to_send = []
+tcp.ready_for_read
+data_to_send.append(tcp.read())
+@tcp.ready_for_write
+# this line of code won't be reached until the latch fires
+tcp.ready_for_write:
+# this line of code will be fired when there is availability for a write
+for data in data_to_send:
+	tcp.send(data)
+```
+
+How to refer to multiple latches?
+
+```
+tcp = create-tcp-connection
+file = open("file").read()
+tcp.ready_for_read & bytes = file.read
+@tcp.ready_for_write
+tcp.ready_for_write:
+tcp.send(bytes)
+```
+
+The following shows creating a custom latch. It's also possible to chain up alternatives by using the pipe symbol.
+
+```
+task high_cpu_logic():
+    for (int x = 0 ; x < 10000; x++) {
+        sqrt(x);
+    }
+    fire done
+
+cpu = high_cpu_logic()
+cpu.done
+print("The cpu logic is done")
+|
+print("I can be done while waiting for cpu.done")
+```
+
+What if we want to do something while a latch is true and automatically load balance the latches inside:
+
+```
+while latch1:
+	while latch2:
+		do_something();
+    while latch3:
+    	do_something_else()
+```
+
+This causes the following pattern if latch1, latch2 and latch3 are fired:
+
+```
+do_something()
+do_something_else()
+do_something();
+do_something_else()
+```
+
+This is transformed into:
+
+```
+while latch1:
+	select
+		case latch2:
+			do_something()
+		case latch3:
+			do_something_else();
+		
+```
+
+# 441. Collect calls and rearrange in an architecture
+
+write a program to create the correct platform calls, and then they are rearranged by analysis into an efficient pattern architecture.
+
+# 442. A desktop computer which is command and control of processes
+
+Each window is a unit, like transport tycoon.
+
+# 443. Coordinate how everything should effect other things: system level AST
+
+Protocol manager. Invariant list.
+
+context bag pattern.
+
+write code and it goes to the right place
+
+
+
+# 444. Shown potential interactions Define the correct interaction
+
+But not the action, that's compiled after the fact.
+
+# 445. Animated latches
+
+Circles with lines to indicate indicators, that spin between states, to represent multiple latches.
+
+# 445. Autolatch
+
+Can state machine formulation detect latches that need to be created and interactions between statelines?
+
+# 446. Show fact coalescing
+
+A syntax for building up programmatic GUIs based on animation between show facts commands. Take a model and turn it into an efficient GUI with space effectively used.
+
+```
+show(filename -> file_details)
+```
+
+Data is like water that finds a place to settle, various sorts into slots.
+
+# 447. Work that suits me
+
+# 448. 2d grid table, horizontal as vertical scroll, latches
+
+Write a command or click a command, then lifecycle answer pops into the cell to the right.
+
+Prefilled event lifecycle commands pop up in a new table
+
+Render nested tables horizontally but use vertical scrolling to scroll them
+
+animate the focused table to the top left, so we can always queue things left to right
+
+minimap of tables
+
+breadcrumbs of context
+
+```
+
+```
+
+
+
+# 449. "Blocking" and Fire continue
+
+```
+tcp = blocking(continue([1, 2, 3]))          tcp.connection_established:
+      tcp-connection(127.0.0.1, 6769)        fire continue(2)                  
+                                             tcp.send_ready:
+                                             fire continue(1)
+                                             tcp.write_ready:                                          
+                                             fire continue(3)
+
+
+
+```
+
+# 450. What to do now and what to do elsewhere
+
+# 451. Elaborate information system machine that does what it does
+
+# 452. Managed AWS services
+
+An infrastructure that uses AWS resources in an organised fashion that connects everything together properly.
+
+# 453. Latch as a keyword, variables are latches and interlocking parallel processes
+
+Latches are a very powerful control flow technique. The code is written is the order that control flow is weaved into. The latch keyword is a handler for an event that interlocks with other latches. And each instruction runs in parallel, like interlocking gears or wheels.
+
+```
+tcp = tcp-connection("127.0.0.1", 6769)                   
+latch tcp_established wait tcp.established:               
+email = create-email()                                    
+fire email-created
+latch tcp.ready_read:
+latch value_was_password value == "PASSWORD":                                         
+print("password was correct")                                      
+messages.push("password was correct")
+fire user_logged_in
+else latch value_incorrect_password != "PASSWORD":
+messages.push("password was incorrect")
+fire user_invalid_incorrect
+latch tcp.established:
+latch wait email-created
+print("Email prepared")
+value = tcp.read(100)
+email.send(value)
+latch tcp.ready_write:
+tcp.write(messages.pop())
+```
+
+Code can be waiting for a latch, code can happen after a latch, code can be against a latch
+
+Turned into a well ordered tree AST that handles dependencies. variables are latches, can determine execution order based on latch relationships
+
+Latch notifications can be local to a thread (likea coroutine) or across threads
+
+it's not too late to define latches even after execution
+
+like super callbacks as they go in both directions, two way callbacks
+
+run a program to output duplicate latches, then disambiguate interaction order by reordering the file
+
+Latches can be networked and can be used to build APIs automatically based on coordination problems.
+
+```
+latch one:
+print("one begin")
+print("one")
+fire two
+latch wait two.handled
+print("one end")
+fire four
+
+latch two:
+print("two begin")
+fire three
+print("two end")
+
+latch tree:
+print("three")
+
+latch four:
+print("four")
+```
+
+```
+one begin
+one
+two begin
+three
+two end
+one end
+four
+
+
+```
+
+latch to closure
+
+# 454. Markdown to system
+
+# 455. There's no such thing as global variables in a system that turns everything local automatically
+
 
 
 # Ideas
 
+division calculus
+
+process must not overhang, end synchronization barrier
+
 mini os, scheduling
 
-# Forgotten ideas
+"fire" events over the network, parsing, state machine formulation
 
 fusion of a beautiful API with data structures
 
