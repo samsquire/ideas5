@@ -402,6 +402,10 @@ Enable/disable log lines after running and show/hide log lines that came from th
 
 # 60. Product mixer
 
+I have a number of skills that can be mixed together to produce something useful. But alone I can only do so much unless I push through unchartered territory. Wouldn't it be good if we could define our skills and our operations and allow others to communicate with us to mix things into new products?
+
+Could use LLMs too.
+
 # 61. High level low level concern mixing, whenever syntax
 
 How do you mix high level and low level concerns?
@@ -2635,6 +2639,7 @@ android
 * **Bindings of behaviour to patterns**
 * This is inspired by pattern matching and selecting on the entire graph.
 * **State space is permuted on the interaction between all possible events and noteworthy cases** Then we find out unique traversals that cover the most ground - that cover ALL noteworthy cases.
+* 
 
 
 
@@ -3250,7 +3255,11 @@ Each thread cannot observe the output of other threads. Can we divide traversals
 
 Coroutines have a minimal scheduler.
 
-# 413. 
+# 413. Variated solution
+
+For many cases you might use technique X to do something, but in a rare case you might do something slightly different.
+
+
 
 # 414. Configure a runtime
 
@@ -3532,21 +3541,25 @@ Latches are a very powerful control flow technique. The code is written is the o
 ```
 tcp = tcp-connection("127.0.0.1", 6769)                   
 latch tcp_established wait tcp.established:               
-email = create-email()                                    
+email = create-email()
 fire email-created
+
 latch tcp.ready_read:
 latch value_was_password value == "PASSWORD":                                         
-print("password was correct")                                      
+print("password was correct")
 messages.push("password was correct")
 fire user_logged_in
+
 else latch value_incorrect_password != "PASSWORD":
 messages.push("password was incorrect")
 fire user_invalid_incorrect
+
 latch tcp.established:
 latch wait email-created
 print("Email prepared")
 value = tcp.read(100)
 email.send(value)
+
 latch tcp.ready_write:
 tcp.write(messages.pop())
 ```
@@ -3554,6 +3567,8 @@ tcp.write(messages.pop())
 Code can be waiting for a latch, code can happen after a latch, code can be against a latch
 
 Turned into a well ordered tree AST that handles dependencies. variables are latches, can determine execution order based on latch relationships
+
+Transformed into an event loop.
 
 Latch notifications can be local to a thread (likea coroutine) or across threads
 
@@ -3563,7 +3578,7 @@ like super callbacks as they go in both directions, two way callbacks
 
 run a program to output duplicate latches, then disambiguate interaction order by reordering the file
 
-Latches can be networked and can be used to build APIs automatically based on coordination problems.
+Latches can be networked and can be used to build communicating APIs automatically based on coordination problems.
 
 ```
 latch one:
@@ -3600,13 +3615,87 @@ four
 
 latch to closure
 
+post-order traversal, custom traversal, open text editor of events and you can insert an X to select a place, and it tells you where to add the code.
+
+can render a timeline of latches
+
+how to compile latches?
+
+relationship to algebraic effects
+
 # 454. Markdown to system
 
-# 455. There's no such thing as global variables in a system that turns everything local automatically
+# 455. There's no such thing as global variables in a system that turns everything local/contextual automatically
+
+# 456. Phased iterators
+
+You might have a file viewer and you can create a batched iterator that the GUI drives sparingly, such as on scroll.
+
+# 457. Correspond to other things
+
+Build one thing, how does it correspond to every other thing? For example, a web framework that abstracts the standard CRUD cycle. But there's also a feed mailbox which is updated on a schedule. How does this all interact and correspond?
+
+# 458. System typography
+
+Typeset a system from an information system.
+
+# 459. Promote taking action in computing idea
+
+# 460. Cost/income scaling
+
+Scale up based on income.
+
+# 461. Slotted combination behaviours
+
+Windows_create_thread, Mac_create_thread, Linux_create_thread
+
+# 462. Meaning space
+
+Operating systems, symbols, keywords arranged in a 3d mesh
+
+# 463. Latch as a protocol
+
+Latches can be mapped to parsing train tracks.
+
+# 464. Solving the distributed system update problem
+
+# 465. Logs are kind of like state machine emitters
+
+# 466. What do you want to do, is the language cognizant of what you potentially want to combine?
+
+Rust isn't.
+
+OCaml is hard to read for me. But it's expressive in terms of ordering.
+
+# 467. Do keywords have enough meaning to describe how to do something?
+
+For example, if I describe the following:
+
+```
+distributed
+parallel
+multi availability zone
+```
+
+Can this be turned into a schematic that generates distributed, parallel and multi availability zone software?
+
+The "distributed" has an interface, what are we describing as distributed? A field? A value in a database?
+
+# 468. Window management generalisation - what is the atom that you want to arrange?
+
+Regions that reflow their contents. 
+
+# 469. Standard GUI layouts
 
 
 
 # Ideas
+
+are most of my ideas desired interactions?
+
+the most interesting part of types is control flow and accurate picture of state at any given line
+
+need to understand algebraic effects better, it's similar to my InteractionReader
 
 division calculus
 
