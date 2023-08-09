@@ -921,7 +921,7 @@ Need a high level beautiful API and some mechanism for it to be compiled to effi
 
 There needs to be a low level abstraction that can implement all the desired features of the 137. Thoughts on marrying coroutines and threads, an underlying pervasive execution model
 
-# 151. Named stack
+# 151. Named stack, all combinations
 
 What's on the stack at any given point?
 
@@ -1256,6 +1256,8 @@ For 100,000 requests per second
 
 
 # 183. Database query engines as scheduling
+
+Database query engines use volcano pattern for coordinated iterators, can this be used for scheduling processes?
 
 # 184. Do you want to really want configure with a programming language?
 
@@ -2050,7 +2052,7 @@ We need to support:
 
 # 288. Online scheduling
 
-Generate a sequence of schedule events, infer the current state and history.
+Generate a sequence timeline of schedule events, plot it and infer the current state and history and the logic for the "next event". Writing an algorithm to do it straight away is hard without knowing what the correct answer is.
 
 # 289. Simple column typesetting
 
@@ -2108,6 +2110,8 @@ A query that describes data for an entire page.
 # 300. AST passthrough, advanced resolution and the futuristic stage after virtualization
 
 Efficient FFI
+
+pass an AST to host virtual machine, for efficient FFI
 
 # 301. There is no fundamental unit
 
@@ -2518,6 +2522,8 @@ plurality
 incrementality and reference
 
 # 347. Multidimensional graphs and multidimensional ASTs
+
+The instructions and the context (application state) are each ASTs. and there is an interaction between the current instruction and the current context (and all previous instructions). It's a multidimensional AST.
 
  # 348. The Truth is that everything interacts
 
@@ -3687,7 +3693,9 @@ Regions that reflow their contents.
 
 # 469. Standard GUI layouts
 
+# 470. Decoupling execution to AST object generation
 
+We can run code without running it and see what shape obejcts come back. See [425. Thunking of control flow]()
 
 # Ideas
 
