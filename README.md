@@ -2531,6 +2531,10 @@ The instructions and the context (application state) are each ASTs. and there is
 
 Can render everything to a grid and reorganise its relationships. Movements in one plane correspond to movements in another. LinkedIn Latency of their website, projection then mapping. And backwards. Mappings cause-to-effect and effect-to-cause.
 
+What is a bidirectional tree structure? We need homicionicity, to map reordering of output to reordering of input.
+
+relationships between output lines (contexts) and relationships of inputs (parameters relationships), calldepth
+
 # 350. Structured interaction programming: Trying to restrict interaction complexity and implement arbitrary software composability of abstractions
 
 **This idea is to use state combination traversal of behaviours to generate useful new types and also match those types-to-functions/code for dispatch. The idea is that we introduce tooling to generate or determine important, fundamental interaction permutations/combinations and reveal abstractions that cover them all and mappings that we absolutely must implement to fulfil all our desired behaviour in the most extensible, composeable way. This is inspired by TLA+ state spaces.** Sum types are useful and exhaustive type checking can help handle interactions but defining sum types is not automatic. This idea is like permuting operational semantics and uncovering critical paths through behaviours.
@@ -3320,6 +3324,8 @@ And reserialized into a simpler codebase?
 
 Don't actually execute, just schedule types, like a repl.
 
+See [ideas5 470. Decoupling execution to ast object generation](https://github.com/samsquire/ideas5#470-decoupling-execution-to-ast-object-generation)
+
 # 426. Structured context
 
 every function call, action is a separate context.
@@ -3685,7 +3691,7 @@ multi availability zone
 
 Can this be turned into a schematic that generates distributed, parallel and multi availability zone software?
 
-The "distributed" has an interface, what are we describing as distributed? A field? A value in a database?
+The "distributed" has an interface, what are we describing as distributed? A field? A value in a database? What words have their meaning changed when applied to "distributed".
 
 # 468. Window management generalisation - what is the atom that you want to arrange?
 
@@ -3695,9 +3701,144 @@ Regions that reflow their contents.
 
 # 470. Decoupling execution to AST object generation
 
-We can run code without running it and see what shape obejcts come back. See [425. Thunking of control flow]()
+We can run code without running it and see what shape objects come back. See [ideas5, 425. Thunking of control flow](https://github.com/samsquire/ideas5#425-thunking-of-control-flow)
+
+# 471. Room programming
+
+Go shopping, place things around in a room.
+
+# 472. Thoughts about stacks and ordering
+
+```
+c(a(b(), b(), ))
+```
+
+# 473. Bidirectional orderings
+
+To have bidirectional orderings we need to understand context of an item.
+
+The following code should be derived:
+
+```
+def one
+	print("one")
+def two
+	print("two")
+def three
+	print("three")
+def four
+	print("four")
+def main
+	one()
+	result = two(three())
+	four(result)
+	
+```
+
+From this output:
+
+```
+one
+three
+two
+four
+```
+
+
+
+Context works more like this:
+
+![context.png](context.png)
+
+# 474. Describing interactions
+
+How do you describe an interaction with a computer or data? It's actually very difficult.
+
+# 475. Scheduling is a pipeline itself
+
+# 476. Coloured functions is an example of what is running, what is not running
+
+An async function is not running.
+
+# 477. Context is very important to understanding
+
+# 478. Functional programming function application is trees
+
+A recursive function with calls to other recursive functions is like a tree traversal
+
+# 479. Queue keys
+
+In your administration interface, you can can queue and backpressure every structured contextual key or group of keys as one item. This allows you to respond and handle noisy neighbours or repeat failing processes.
+
+This can be extremely helpful with working around abuse.
+
+# 480. Compiling control flow into SIMD
+
+I've done some thinking about SIMD control flow acceleration, I think this could work, the idea is that we map every state space permutation through the code as an integer and use SIMD CMP instructions to run every if statement in parallel across multiple data items in parallel - think it as control flow polymorphisation, then we do the following SIMD instructions.
+```
+if (predicate1(data)) {
+
+}
+if (predicate2(data)) {
+
+}
+if (predicate3(data)) {
+
+}
+```
+we add a constant after each CMP to raise the integer space into that bucket of permutations. so if predicate1 is 0, predicate2 is 0, predicate3 is 0, we CMP three times and add 3 constants, we can work out which predicates failed or passed based on a single number
+```
+data_vector = 1, 2, 3, 4, 5
+case_vector = 0, 0, 0, 0, 0
+predicate_1_cmp = SIMD CMP predicate1 data_vector
+SIMD ADD case_vector predicate_1_cmp
+SIMD ADD predicate1_distinguisher case_vector  // this raises the integer into this if-statements/branches integer space
+predicate_2_cmp = SIMD CMP predicate2 data_vector
+SIMD ADD case_vector predicate_2_cmp
+SIMD ADD predicate2_distinguisher case_vector 
+
+// ideally in separate threads
+switch (case_vector[idx]) {
+    // every permutation of code attached to data item
+}
+```
+it's based on the principle that 2 SIMD instructions per branch for  256 or 512 bits of if statements is faster than running an if statement 256/8 = 32 if statements
+
+Can an addition map to all the sequences of steps that must be done?
+
+If we run a number of SIMD CMP instructions and fill a vector, then add them together. Do you know which order the CMPs were?
+
+Then a giant switch at the end to run every permutation.
+
+if you want to turn this control flow code into a SIMD accelerated program, we can execute multip IF statements simultaneously, effectively doing control flow in parallel.
+
+
+
+# 481. Representing divergence easily, without worrying about data structure maintenance
+
+# 482. Yielding data structures easily
+
+# 483. The code structure is a data structure
+
+# 484. Highlight and label
+
+# 485. Draw lines axes over data and you have a grid or tree automatically
+
+# 486. Automatic arrangement, emit something to the right place
+
+# 487. SIMD optimized data structures, each record is a segment of every collection
+
+# 488. Yielding AST code
+
+Like an IO monad but for execution, a bucket.
+
+
+
+
 
 # Ideas
+
+spheres with hands that orient themselves and spin in different dimensions of freedom
 
 are most of my ideas desired interactions?
 
