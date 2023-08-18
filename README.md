@@ -487,6 +487,8 @@ For example, all the methods that must be called in the right order to create a 
 
 Each API call is a mini process with a behaviour.
 
+This could be combined with Overstates.
+
 # 79. Omnichannel distributed system
 
 Frontend and backend cordinated from same codebase.
@@ -3548,7 +3550,9 @@ An infrastructure that uses AWS resources in an organised fashion that connects 
 
 # 453. Latch as a keyword, variables are latches and interlocking parallel processes
 
-Latches are a very powerful control flow technique. The code is written is the order that control flow is weaved into. The latch keyword is a handler for an event that interlocks with other latches. And each instruction runs in parallel, like interlocking gears or wheels.
+Latches are a very powerful control flow technique, a simplification of algebraic effects. The code is written into what should happen and in the order it should happen in. The compiler weaves the right primitives to get that ordering. The latch keyword is a handler for an event that interlocks with other latches. And each instruction runs in parallel, like interlocking gears or wheels.
+
+![circles](circles.png)
 
 ```
 tcp = tcp-connection("127.0.0.1", 6769)                   
@@ -3746,7 +3750,7 @@ four
 
 
 
-Context works more like this:
+Context works more like this. There's a bit before the context and a bit afterward on both sides.
 
 ![context.png](context.png)
 
@@ -3758,7 +3762,7 @@ How do you describe an interaction with a computer or data? It's actually very d
 
 # 476. Coloured functions is an example of what is running, what is not running
 
-An async function is not running.
+An async function is not running at the point they are called. There needs to be some kind of event loop. There is nothing to attach future behaviour to.
 
 # 477. Context is very important to understanding
 
@@ -3786,7 +3790,7 @@ if (predicate3(data)) {
 
 }
 ```
-we add a constant after each CMP to raise the integer space into that bucket of permutations. so if predicate1 is 0, predicate2 is 0, predicate3 is 0, we CMP three times and add 3 constants, we can work out which predicates failed or passed based on a single number
+we SUB each CMP from a case vector to lower the integer space into that bucket of permutations. so if predicate1 is 0, predicate2 is 0, predicate3 is 0, we CMP three times and add 3 constants, we can work out which predicates failed or passed based on a single number
 ```
 data_vector = 1, 2, 3, 4, 5
 case_vector = 0, 0, 0, 0, 0
@@ -3816,21 +3820,345 @@ if you want to turn this control flow code into a SIMD accelerated program, we c
 
 # 481. Representing divergence easily, without worrying about data structure maintenance
 
+Want to generate permutations and variations and return to previous permutations easily.
+
 # 482. Yielding data structures easily
 
-# 483. The code structure is a data structure
+# 483. The code structure is a data structure but not necessarily an AST.
+
+
 
 # 484. Highlight and label
+
+It's a group of items.
 
 # 485. Draw lines axes over data and you have a grid or tree automatically
 
 # 486. Automatic arrangement, emit something to the right place
+
+When looping over data and yielding data, you might want to reuse past items in the next iteration.
 
 # 487. SIMD optimized data structures, each record is a segment of every collection
 
 # 488. Yielding AST code
 
 Like an IO monad but for execution, a bucket.
+
+# 489. Cannot be stopped
+
+Code that cannot be accidentally taken down.
+
+# 490. There's something more beautiful than LISP
+
+I think LISP and functional programming are interesting, but not superior.
+
+It's to do with directioning.
+
+# 491. Code has a direction
+
+# 492. Transforming control flow ordering
+
+The problem with LISP and functional programming is that substitution is not always obvious what is going on.
+
+The fix point combinator
+
+```
+cos(0.73908513321516067) = 0.73908513321516067
+cos(cos(X)) = X
+```
+
+# 493. Combinators, pratt parsers and twisting
+
+# 494. Changing the expanded functions
+
+# 495. The expanded code is the data
+
+If I have a function application that recurses, then that's a data structure. that has repeated for each item. 
+
+```
+(a(a(a(a(a(5))))))
+```
+
+What if this information could be detected as a process and interrogated in a viewer?
+
+# 496. How to represent behaviour with function application patterns
+
+The order of operations from a descent of a recursive function.
+
+# 497. Defining work
+
+There's a part of computing that is just hard work.
+
+# 498. Addition is control flow, matrix multiplication control flow
+
+**If you're representing things by their positions, then adding is control or data flow.** So we can use matrix multiplication for computation of control flow.
+
+everything becomes a list to process in a hot loop
+
+# 499. Mental model database
+
+# 500. How things are, and how things could be are two separate things
+
+# 501. Parsing and actors
+
+A context switch between coroutines in Go is expensive if your work could be done completely in a local loop.
+
+# 502. Contextual alignment injection
+
+Code written against a context, context injected in.
+
+Can contexts by a hierarchy like a filesystem? or sets?
+
+# 503. Standalone GUI elements
+
+Importing a GUI is easy. but if you want to customise it's behaviour, that's difficult.
+
+# 504. Atomicity in the operating system
+
+# 505. Person scaleups
+
+Person Stack, Line of people, multiply the work of each person
+
+# 506. The solution to "garbage management" is a solution to management of general things
+
+How do you place things so you don't forget that you've placed them there.
+
+# 507. GUI REPL
+
+Each line of output corresponds to a set of GUI elements.
+
+# 508. Local problems, global problems
+
+Writing low level code, you have low level preferences, of what you want to maintain. Then you have the global picture of what you want to maintain. How do you combine the two with interactions from both being applied?
+
+# 509. Finding useful rotations
+
+# 510. Tree of scenarios that are interleaved
+
+You request a scenario, with data arranged how you want it to be. Then you command your behaviour, then it gets combined into a seamless whole.
+
+# 512. Computation materialized views
+
+Rather than think of computation as what steps to do, we think of it as outcome. We pretend-execute and check the outcomes. And find journeys that lead to the same calculation or outcome.
+
+# 513. Sideways through a collection is faster
+
+We either process the entire collection or process the collection sideways, so it never slows down.
+
+# 514. Overbuffer
+
+We could allocate an amount of space for a buffer and not worry about offcuts.
+
+realised I can scan ahead for size of string and then allocate enough space, but then I have to loop back. 
+
+# 515. That behaviour but without that and re-place behaviour somewhere else
+
+Write messy code that does the right thing, plot the code, then remove the behaviours you don't want that were added by the messiness. And relayout the code. Replace it into the right place, where it belongs.
+
+# 516. Overstate
+
+This is how you merge behaviours together in any permutation.
+
+We can draw a timeline graph of different things and plot their events. Then we can draw another line that covers any arrangement of their lifecycles. We can then rearrange those events on that timeline, this is the overstate, it remembers things between lifecycle commands. If you have two or more pieces of behaviour and you want to combine them, you want composition. So you import them together and define their interactions. This is an "overstate", it's something that exists that is contextual to those two things interacting. Someone can create an overstate of these interactions. **An overstate is a subtype of its children**.
+
+If you think of each object as having a lifecycle of methods and interactions with other objects, we really need to introduce a context across lifecycles between objects. This is the underlying principle behind incremental algorithms. We do things as we go but we remember things.
+
+The overstate can affect the lifecycle of its children. It is in itself a context.
+
+
+
+
+
+![overstate](overstate.png)
+
+We can take behaviour from any matching overstate. Event reordering. Event scheduling in relation to other events.
+
+```
+behaviour:
+	import tcp-server
+	import load-balancer
+	import server-payload
+```
+
+I imagine a GUI feature that has GUI command "introduce overstate" that can be selected when highlighting different things.
+
+Internal state of objects can be maintained but their effects can be delayed through reordering of events in relation to other events.
+
+Sorting events
+
+| Overstate behaviour | Description |
+| ------------------- | ----------- |
+| delay until         |             |
+| after               |             |
+| before              |             |
+| interleave          |             |
+
+```
+behaviour greeter:
+	import tcp-server
+	import load-balancer
+	
+	greet:
+		before
+		after
+```
+
+set matching O(1) lookup
+
+# 517. Event loop to parallelisation
+
+If we have interacting objects, how do we parallelise their processing? Do we run multiple objects in multiple threads?
+
+# 518. Program is binpacking of behaviour to events
+
+You can always extend the existing behaviour with binpacking. Diagram grid of what goes on in a cycle. We can always introduce overstate. To extend things across cycles.
+
+Can architecture be inferred by the binpacking? Without effecting the output layout?
+
+# 519. How do you parallelise behaviour?
+
+We're limited by the [ideas5 323. Cannot update the same memory location due to contention...](https://github.com/samsquire/ideas5#323-cannot-update-the-same-memory-location-due-to-contention-but-if-the-memory-locations-are-independent) problem.
+
+# 520. Targeting an end state first
+
+Much of development is trial and error. Trying something and then fixing it when it fails. What if we could create the correct end state from the beginning?
+
+# 521. The stack is forkable and redeployable from day 1
+
+# 522. Why is getting things to run everywhere a nontrivial engineering effort?
+
+# 523. Scheduling as a deterministic function, as data
+
+# 524. Control flow graphs as a primitive
+
+I can ask the future for metadata about the future code control flow.
+
+```
+new_thread_creations = scan({ new Thread()})
+
+```
+
+# 525. Error Prone: Security is error prone
+
+# 526. Overstate, events and control flow
+
+A btree or quicksort. How does it map to events? Or segments of code?
+
+# 527. What's a useful log?
+
+What's a generalisation of what `printf` debugging is?
+
+Event logging.
+
+# 528. Paged pipes
+
+# 529. Outsourcing storage replication to the object storage
+
+# 530. Come up with an approach that works everytime
+
+[I read this article on debugging a futex crash (rustylife.github.io)](https://rustylife.github.io/2023/08/15/futex-crash.html).
+
+# 531. Fictional operating system
+
+# 532. Desired Abstractions and algebra
+
+[Materialized is symbolic differentiation](https://news.ycombinator.com/item?id=37145664)
+
+# 533. Strange server and static host, bring your own hosting
+
+Interlocking clients and servers. The client connects to a static server for the app, then submits items to object storage and my desktop computer processes them.
+
+The user can paste in their access key
+
+# 534. Patterns representable by the code, Data structures that you want to represent
+
+# 535. Accelerated dynamic reorganization
+
+# 536. Relations applied to software architecture
+
+# 537. Cost of keeping something up
+
+Cost scalability.
+
+permanent code running, stays up
+
+deploying resources to problems,
+
+# 538. Code as asynchronous group chat between people
+
+Asked to do something, you reply with what states should be created and a lifecycle.
+
+# 539. The discoverability problem
+
+# 540. Abstraction of interactions effects
+
+Each frontend framework works internally in a different way to how we describe the changes to the screen. If only we could describe the changes in a high level way.
+
+# 541. Event lifecycle and event buses and omnichannel
+
+Send to SMS, phone notifications, webchat.
+
+# 542. Frontend facade
+
+Write tiny services that can be updated in isolation.
+
+Separate your code from the frontend and platform code so you can always update your frontend libraries.
+
+
+
+# 543. Kinematics applied to 3d or multidimensional graphs
+
+# 544. Codegen and dynamic call sites
+
+(spring authentication token provider)
+
+dynamic protocol manager
+
+
+
+# 545. Implement communicating protocols, not interfaces
+
+# 546. Generative GUIs
+
+The GUI can be completely AI generated, with stable diffusion or similar approaches.
+
+The prompt shall describe what is to be displayed.
+
+# 547. Screen graph
+
+The flow through GUIs.
+
+# 548. Naive Scalability
+
+The data flow approach of [How we reduced the cost of building Twitter at Twitter-scale by 100x – Blog (redplanetlabs.com)](https://blog.redplanetlabs.com/2023/08/15/how-we-reduced-the-cost-of-building-twitter-at-twitter-scale-by-100x/) is extremely powerful. But I would still want to accomplish naive scalability through naive code.
+
+# 549. Structure of code determines data flow and is very important
+
+This blog post shows how important for scalability that the structure of code is. [How we reduced the cost of building Twitter at Twitter-scale by 100x – Blog (redplanetlabs.com)](https://blog.redplanetlabs.com/2023/08/15/how-we-reduced-the-cost-of-building-twitter-at-twitter-scale-by-100x/) 
+
+# 550. Parallelism can be imitated with t()
+
+# 551. Depend on me and cost scaling
+
+# 552. Streams of data or events, graphs of data flow and implementing behaviour
+
+Is behaviour just additional events? How do you accelerate behaviour?
+
+How do you generate new events from a mathematical operation? 
+
+# 553. Virtual Machines and FFI
+
+# 554. Label your callsites
+
+# 555. Number grids and location
+
+Data can be in a space, or location at a time. We need a query that scans multidimensional data and streams it, outputs it.
+
+We can use 
+
+Parallelise relationships
+
+Counting sets
 
 
 
