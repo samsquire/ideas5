@@ -3790,16 +3790,18 @@ if (predicate3(data)) {
 
 }
 ```
-we SUB each CMP from a case vector to lower the integer space into that bucket of permutations. so if predicate1 is 0, predicate2 is 0, predicate3 is 0, we CMP three times and add 3 constants, we can work out which predicates failed or passed based on a single number
+we SUB each CMP from a case vector to lower the integer space into that bucket of permutations. so if predicate1 is 0, predicate2 is 0, predicate3 is 0, we CMP three times and OR 3 constants, we can work out which predicates failed or passed based on a single number
 ```
 data_vector = 1, 2, 3, 4, 5
 case_vector = 0, 0, 0, 0, 0
 predicate_1_cmp = SIMD CMP predicate1 data_vector
 SIMD ADD case_vector predicate_1_cmp
-SIMD ADD predicate1_distinguisher case_vector  // this raises the integer into this if-statements/branches integer space
+LEFTSHIFT 1 predicate_1_cmp
 predicate_2_cmp = SIMD CMP predicate2 data_vector
 SIMD ADD case_vector predicate_2_cmp
-SIMD ADD predicate2_distinguisher case_vector 
+LEFTSHIFT 2 predicate_2_cmp
+SIMD OR predicate_1_cmp case_vector 
+SIMD OR predicate_2_cmp case_vector
 
 // ideally in separate threads
 switch (case_vector[idx]) {
@@ -3870,6 +3872,8 @@ cos(cos(X)) = X
 # 493. Combinators, pratt parsers and twisting
 
 # 494. Changing the expanded functions
+
+You expand a recursion into its expanded form, but you want to change the expanded form.
 
 # 495. The expanded code is the data
 
@@ -4144,7 +4148,80 @@ This blog post shows how important for scalability that the structure of code is
 
 Is behaviour just additional events? How do you accelerate behaviour?
 
-How do you generate new events from a mathematical operation? 
+Is behaviour writing to memory?
+
+How do you generate new events from a mathematical operation?
+
+How do you append to a list in parallel? You use multiple lists, you shard the lists. 
+
+I am inspired by [How we reduced the cost of building Twitter at Twitter-scale by 100x – Blog (redplanetlabs.com)](https://blog.redplanetlabs.com/2023/08/15/how-we-reduced-the-cost-of-building-twitter-at-twitter-scale-by-100x/)
+
+Loops, streams, slicing a loop
+
+data flow
+
+if you want to divide this code into a paralellizable structure:
+
+```
+    for file in glob.glob('*.jpg'):
+      data.append(load_file(file))
+```
+
+Every function and loop is bucketed in source and output, which are separate streams.
+
+Double buffering AND Bucketing (per thread) AND batching.
+
+```
+glob.glob = streams(12)
+for = streams(12)
+load_file = streams(12)
+data = streams(12)
+4 actors sequential actors on each of 12 threads
+
+either run end-to-end on each thread (column paralellism)
+or run each step in a different thread (row parallelism)
+would like to support both styles
+```
+
+How to apply SIMD to this?
+
+Do we need latches?
+
+don't need double buffering within a thread
+
+SIMD is like a chunk of data that is a batch from each collection
+
+Can SIMD accelerate the creation of events?
+
+SIMD is a loop in itself
+
+use SIMD move instructions between buffers of each stream
+
+collect instructions for SIMD subinstruction
+
+need an efficient latch implementation
+
+what does most code do anyway? mov
+
+```
+hashmap->key[hsh].len = key_length;                                                                                                                                     
+    276f: 48 8b 4d e8           mov    -0x18(%rbp),%rcx                                                                                                                     
+    2773: 48 8b 55 f8           mov    -0x8(%rbp),%rdx                                                                                                                      
+    2777: 48 89 d0              mov    %rdx,%rax                                                                                                                            
+    277a: 48 c1 e0 08           shl    $0x8,%rax                                                                                                                            
+    277e: 48 01 d0              add    %rdx,%rax                                                                                                                            
+    2781: 48 c1 e0 02           shl    $0x2,%rax                                                                                                                            
+    2785: 48 01 c8              add    %rcx,%rax                                                                                                                            
+    2788: 48 8d 90 04 04 00 00  lea    0x404(%rax),%rdx                                                                                                                     
+    278f: 8b 45 d4              mov    -0x2c(%rbp),%eax                                                                                                                     
+    2792: 89 02                 mov    %eax,(%rdx)   
+```
+
+```
+
+```
+
+
 
 # 553. Virtual Machines and FFI
 
@@ -4159,6 +4236,227 @@ We can use
 Parallelise relationships
 
 Counting sets
+
+# 556. Transform event loops into coroutines
+
+Transform `while (true) {}` into a schedulable entity.
+
+
+
+# 557. How to implement latch based interfaces to common computer tasks
+
+Such as a `tcp-connection` Raising an item or event, you need to call the scheduler. But there's a stack in mainstream programming languages.
+
+If you're in my 3 way multithreaded architecture and there's an epoll server. How do you design the interaction with the latch runtime? Optional stack use.
+
+# 558. Compiling latches into coroutines
+
+For example
+
+![MultithreadedArchitecture.drawio](MultithreadedArchitecture.drawio.png)
+
+# 559. A tree hierarchy being held up in space, all that's there
+
+See `init`
+
+# 560. Do things my way - Service catalogues
+
+# 561. Shift reset is like going horizontal in the stack
+
+# 562. Compile to IO
+
+Preprocess AST for syscalls and then queue them up in one go.
+
+# 563. What's being changed and bugs
+
+Bugs are unintended side effects of code being changed. When there's no changes to the code, no bugs are introduced. 
+
+# 564. Just route dataflow composition
+
+# 565. Combinations of async
+
+# 566. latches are grids, future location latch
+
+place something in a future location. 
+
+# 567. Horizontal/vertical scan - add a dimension when you need one
+
+Switch dimensions when you want.
+
+# 568. Relations used for scheduling
+
+valuable relations - easy to schedule
+
+```
+tcp_connection_1
+tcp_connection_1_on_ready_read
+tcp_connection_1_on_ready_write
+
+```
+
+how to combine with overstate?
+
+creating a new overstate is just prepending a key
+
+just need to write data to memory as fast as possible.
+
+unrolled for SIMD vectors
+
+relations to amazon resources
+
+context
+
+# 569. Automicroservice, Cardinality used to split up microservices
+
+# 570. Call without stack
+
+# 571. Nonblocking Barriers as the general purpose synchronization technique
+
+If two things can never be scheduled to happen at the same time, they cannot interfere.
+
+Fetch and add.
+
+CAS compare swap token, generation
+
+
+
+```
+char * barrier = malloc(thread_count * sizeof(char))
+
+task {
+    int barrier_claim = 0;
+    barrier[this_thread] = REACHED;
+
+    int all_reached = 1;
+    for (int x = 0 ; x < thread_count; x++) {
+        if (barrier[x] != REACHED) {
+            // abort
+            all_reached = 0;
+            break;
+        }
+    }
+    if (all_reached == 1) {
+        if (cas(barrier_claim, barrier_claim, this_thread)) {
+            // this thread may continue
+        }
+    }
+}
+
+```
+
+Check other thread's state
+
+transfer ownership, send to other thread, work stealing
+
+```
+
+```
+
+
+
+# 572. Context pattern applied to assembly programming
+
+# 573. While loops spread and unfolded across time
+
+# 574. Serialised regions are queues
+
+Transform shared memory locking into queue submission.
+
+This code suffers from contention.
+
+```
+lock.lock();
+// do something to shared object
+lock.unlock();
+```
+
+
+
+# 574. While not changed
+
+A while loop that acts like a lock.
+
+# 575. Lists of things to do, done in serial
+
+# 576. Microops with multithreaded architecture
+
+# 577. Object layout and schedule around interactions from different places, contexts
+
+# 578. Line explosion towards
+
+An explosion of lines outward from a point, each does something to every point. Move toward a goal.
+
+# 579. Combining multithreading performance, events/latches, data stream processing performance
+
+We can submit events to a queue for serialisation by one serialisation thread per kind of event.
+
+How to combine future events control flow with data streams?
+
+Task is the lowest level primitive.
+
+Block until.
+Wait until.
+
+Count down latch.
+
+Epoll interface.
+
+Control flow is a tree, how to efficiently check for events. Lightweight thread interruption.
+
+```
+Event event = Event("something")
+EventDetector detector = new EventDetector()
+detector.addEvent(event)
+
+for task in detector.poll():
+	task.run()
+	task.finish()
+```
+
+```
+def poll {
+	event = this_thread_ringbuffer.pop();
+	apply_event(thread_state)
+	for task in tasks:
+		if task.schedulable(thread_state):
+			yield task
+}
+```
+
+```
+on task1:
+	task2 = fire "do-something"
+	wait_until(task2).then("task2") # this shall create a task to run
+	
+on tcp_ready_reading:
+	
+on tcp_ready_writing:
+
+```
+
+can we do something with temporal style replay?
+
+with assembly, we can jump directly, it's not a function call
+
+Flow can be similar to Rama, data streams.
+
+Tasks are vertical, Data events stream are horizontal. events turn on tasks on or off. 
+
+
+
+# 580. Pick up and drop is a stack that can be used by programs like a Forth
+
+# 581. Reordering overlay
+
+Reorder symbols in a line of code and select the right one by clicking it.
+
+
+
+# 582. Hypercomplex scheduling
+
+Scheduling due to complicated events could be extremely helpful, but it's difficult to customise schedules of most software. The big data projects solve the data processing problem but not the scheduling problem.
+
+# 583. Sharding framework and system events and graphs
 
 
 
