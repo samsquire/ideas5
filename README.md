@@ -187,6 +187,10 @@ Did you do the thing inside or outside the loop?
 
 is your loop try and except the right way round?
 
+Are you using the right variable in the loop? Are you resetting the variable between loop iterations?
+
+
+
 # 28. Distributed Match states, Connected everything, assert on anything
 
 
@@ -816,7 +820,7 @@ What do we want from lightweight processes or coroutines?
 * mutually exclusive scheduling
 * binpack work
 
-Coroutines either have an event loop or an event scheduling function, it's just hidden from the user. Coroutines at the assembly level have extremely more freedom than coroutines implemented in a high level language but the scheduler is much easier to write in a high level language.
+Async and coroutines either have an event loop that isn't a loop or an event scheduling function, it's just hidden from the user. Coroutines at the assembly level have extremely more freedom than coroutines implemented in a high level language but the scheduler is much easier to write in a high level language.
 
 It's interesting that the event scheduling function is an example of an online algorithm in the style of 142. Online (Nonblocking/Blocking) use-adaptive algorithms APIs.
 
@@ -922,6 +926,8 @@ When evaluating any technology or programming language, I think this is the most
 Need a high level beautiful API and some mechanism for it to be compiled to efficient assembly.
 
 There needs to be a low level abstraction that can implement all the desired features of the 137. Thoughts on marrying coroutines and threads, an underlying pervasive execution model
+
+Materialized views.
 
 # 151. Named stack, all combinations
 
@@ -1109,9 +1115,9 @@ Example invocations are the most useful documentation.
 
 My A* algorithm for generating code from placements.
 
-# 168. REPL+CRUD - Turing machines are not where we specify things, queries are, REPL to query
+# 168. REPL+CRUD - Turing machines are not where we should specify things, where queries talk, REPL to query
 
-Turing machines REALLY are the wrong place for specifying things because they are so rigid, specific and hard to optimise.
+Turing machines REALLY are the wrong place for specifying things because they are so rigid, specific and hard to change.
 
 Queries are different to Turing logic.
 
@@ -1181,7 +1187,7 @@ I was reading about Jetbrains Noria and it talks about its event loop.
 * cardinality
 * loop rotation
 * 
-* loops are definitional, and cheap because they are relations, not logic
+* loops could be definitional, and cheap because they are relations, not executed logic
 
 How do you shift iterators around, or hoist them for efficiency? It's loops all the way down!
 
@@ -1261,7 +1267,7 @@ For 100,000 requests per second
 
 Database query engines use volcano pattern for coordinated iterators, can this be used for scheduling processes?
 
-# 184. Do you want to really want configure with a programming language?
+# 184. Do you want to really want to configure with a programming language?
 
 Vimrc is a command language, not a programming language, Xmonad configuration file is a Haskell file. Do you really want to program to configure something? Sometimes you do, sometimes you just want to make an asssertion.
 
@@ -1293,7 +1299,7 @@ And I want to transform it to:
 
 ```
 ClienThread:
-	while True:
+	while running:
 		for connection in connections:
 			int messageType = socket.readInt()
 ```
@@ -1393,7 +1399,7 @@ Package management, code layout and structure are all inherent problems of progr
 
 # 204. 3D ROOM
 
-I think people assume that a 3 dimensional GUI requires movement around, but we can immediately move the view instead. Depth provides useful information.
+I think people assume that a 3 dimensional GUI requires movement around, but we can immediately move the view instead by rotating it around a point or a number of points. Depth provides useful information.
 
 # 205. State machines and process management, interlocking recoverable states on retry
 
@@ -2023,6 +2029,8 @@ Can program something from any direction. Interactions between components.
 
 If I build one thing on top of another, the flow of behaviour goes from up to down.
 
+This is related to fanout.
+
 # 282. Non-reflow animated table
 
 Task manager on Windows 11 reflows the table when things change, this makes it hard to see the overall state of the system. You can sort the processes by name and the processes stay static.
@@ -2066,9 +2074,11 @@ Can we send multiple messages at once?
 
 # 291. Instruction Reordering for parallelisation
 
-We know these lines don't depend on each other.
+We know these lines don't depend on each other. The code falls through.
 
 # 292. Every call site is an AST
+
+Sourcecode should be input to a program that tracks and indexes call sites and allows them to be changed in one go. 
 
 # 293. Psuedo-code for tasks
 
@@ -2097,7 +2107,11 @@ create-user:
 
 # 297. Secure data flow
 
-Security is difficult and I am not an expert, but when it comes to protocols, surely the exchanges between servers could be modelled as a data flow problem and interrogated?
+OAuth distilled into an expert system rules.
+
+Security is difficult and I am not an expert, but when it comes to protocols, surely the exchanges between servers could be modelled as a data flow problem and interrogated for security?
+
+Diffie-hellman.
 
 # 298. What people should be working on
 
@@ -2121,7 +2135,11 @@ LISP, everything is a list and an AST. But forcing everything into a hierarchy
 
 # 302. Unit of parallelisation
 
-I am trying to find a model that easily paralellises work to do. This invariably leads to thinking of data structures. One idea that comes up repeatedly is the idea of "events". 
+I am trying to find a model that easily paralellises work to do. This invariably leads to thinking of data structures. One idea that comes up repeatedly is the idea of "events".
+
+A unit of paralllisation is a series of code that needs to run sequentially.
+
+Replicated parallel in Occam.
 
 # 303. Efficient incremental  algorithms
 
@@ -2199,6 +2217,8 @@ Here's how the schedule would look:
 =======
 # 309. Desktop command driven
 
+A desktop environment that allows work to be done usefully that isn't window and menu driven but process driven.
+
 # 310. Emit return values are events
 
 # 311. Software specs
@@ -2233,7 +2253,7 @@ server_loop:receive -> players.add_player
 
 ```
 
-What if we want to handle an event sequence that includes "AND" or "WHEN" The stream processor handles control flow and it is a strange event loop. Numeric latch grids can be used for efficient sequence triggering.
+What if we want to handle an event sequence that includes "AND" or "WHEN" The stream processor handles control flow and it is a strange event loop. Numeric latch grids can be used for efficient sequence triggering. See state machine formulation.
 
 # 317. Composeable event loops
 
@@ -4358,6 +4378,8 @@ transfer ownership, send to other thread, work stealing
 
 # 573. While loops spread and unfolded across time
 
+While loops are schedulers.
+
 # 574. Serialised regions are queues
 
 Transform shared memory locking into queue submission.
@@ -4370,7 +4392,7 @@ lock.lock();
 lock.unlock();
 ```
 
-
+We turn it into a queue submission.
 
 # 574. While not changed
 
@@ -4387,6 +4409,73 @@ A while loop that acts like a lock.
 An explosion of lines outward from a point, each does something to every point. Move toward a goal.
 
 # 579. Combining multithreading performance, events/latches, data stream processing performance
+
+
+
+Computers are adding machines, they can add numbers together very efficiently. There are two kinds of flow that must be performant:
+
+1. Data flow - For data flow, we want large array buffers to process with vectorised loops. Data is frequently in the cache. Business logic, crunching, registers, stream processing.
+2. Control flow - IO, system events, to schedule work to do, method calls, task collection between threads
+
+I've written a simple algorithm that coordinates threads with a nonblocking barrier to produce the following execution pattern. What's useful about this is that threads can do useful work while waiting for other threads to arrive.
+
+```
+Thread 7 arrived Task 1
+Thread 3 arrived Task 1
+Thread 4 arrived Task 1
+Thread 9 arrived Task 1
+Thread 10 arrived Task 1
+Thread 1 arrived Task 1
+Thread 0 arrived Task 1
+Thread 2 arrived Task 1
+Thread 5 arrived Task 1
+Thread 8 arrived Task 1
+Thread 6 arrived Task 1
+Thread 11 arrived Task 1
+Thread 11 arrived Task 2
+Thread 5 arrived Task 2
+Thread 10 arrived Task 2
+Thread 3 arrived Task 2
+Thread 9 arrived Task 2
+Thread 4 arrived Task 2
+Thread 1 arrived Task 2
+Thread 0 arrived Task 2
+Thread 2 arrived Task 2
+Thread 8 arrived Task 2
+Thread 6 arrived Task 2
+Thread 7 arrived Task 2
+Thread 7 arrived Task 3 (reset)
+Thread 9 arrived Task 3 (reset)
+Thread 4 arrived Task 3 (reset)
+Thread 8 arrived Task 3 (reset)
+Thread 2 arrived Task 3 (reset)
+Thread 0 arrived Task 3 (reset)
+Thread 3 arrived Task 3 (reset)
+Thread 11 arrived Task 3 (reset)
+Thread 1 arrived Task 3 (reset)
+Thread 6 arrived Task 3 (reset)
+Thread 10 arrived Task 3 (reset)
+Thread 5 arrived Task 3 (reset)
+```
+
+We can handle events in tasks that are different per thread, this allows us to serialise stealing of events. In the following table, each row is a task position, but for each thread, we do something differently at that task position.
+
+
+
+| Thread 1     | Thread 2     | Thread 3     | Thread 4     | Thread 5     | Thread 6     |
+| ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
+| steal events |              |              |              |              |              |
+|              | steal events |              |              |              |              |
+|              |              | steal events |              |              |              |
+|              |              |              | steal events |              |              |
+|              |              |              |              | steal events |              |
+|              |              |              |              |              | steal events |
+
+How to combine with LMAX Disruptor style for data?
+
+can host a real scheduler inside a task when not stealing events
+
+Branching is slow but control flow decides what the system does.
 
 We can submit events to a queue for serialisation by one serialisation thread per kind of event.
 
@@ -4442,6 +4531,32 @@ Flow can be similar to Rama, data streams.
 
 Tasks are vertical, Data events stream are horizontal. events turn on tasks on or off. 
 
+fire can mark an event in memory and then jump back to the yield command
+
+jump landing pads
+
+could do a SIMD compare to see if they of this generation
+
+async tasks? who runs them?
+
+an activation of an async task is a pause until an event is done.
+
+task list that is kept scheduled, each item is associated with a latch grid
+
+optional synchronized tasks,
+
+how to send an event to another thread thread safety while it is busy?
+
+work stealing, you check other threads work event inboxes
+
+could use the generational barrier algorithm to do a poll
+
+task list:
+
+
+
+
+
 
 
 # 580. Pick up and drop is a stack that can be used by programs like a Forth
@@ -4458,7 +4573,407 @@ Scheduling due to complicated events could be extremely helpful, but it's diffic
 
 # 583. Sharding framework and system events and graphs
 
+# 584. Pass through scalability to price
 
+# 585. Objects can represent language level features
+
+Such as the stack, pause and resume.
+
+# 586. Basis and foundational support
+
+Use our things. Foundations.
+
+# 587. GUIS as fractal trees with cameras
+
+A data structure that unfolds deeper and deeper, like nested spreadsheets.
+
+A view is like a camera in a data structure, only the minimum needs to be rendered.
+
+Data culling
+
+# 588. Architecture and bottlenecks
+
+# 589. Arrangement of words is a structure
+
+# 590. Narrow waists
+
+I really like the `O(N+M)` idea behind a narrow waist.
+
+# 591. Try on a line
+
+Tries to run towards value
+
+# 592. Timeline parallelism - vertical line
+
+We can use barriers to synchronize multiple threads. A vertical line represents a synchronization point.
+
+# 593. Network calls inference and locations to be updated placement
+
+Couldn't we work out what really needs to be changed, and introduce network calls for scalability reasons?
+
+Microservice transactions don't work.
+
+# 594. Saving the RSP somewhere is pausing
+
+Saving the RSP somewhere is like storing the progress of things so far.
+
+But you need some way of referring to that data where it is stored, that isn't a global variable.
+
+````
+saved-context = pause-context()
+
+````
+
+
+
+# 595. Logistics of passing data along
+
+In the following function, is `a` related to `b`?
+
+```
+function(a, b)
+```
+
+If I want to pass `c` into this function, where do I get it from?
+
+There's a `join` between one fact and another fact, an association.
+
+Contexts.
+
+# 596. DB widgets
+
+Each widget on the screen is a database
+
+# 597. Single threaded and separated out into managed services
+
+
+
+# 598. Interaction programming protocol
+
+[Protocols survive](https://www.reddit.com/r/devops/comments/15p46oy/comment/jvwbyb4/?utm_source=share&utm_medium=web2x&context=3). Words work to express ideas.
+
+# 599. Fan out is slow - efficient fanout
+
+Writing to memory is slow.
+
+# 600. 64 bit computers work at 64 bits at a time × number of cores - the problem is where do we put down things so we can pick them up again?
+
+This is the problem of garbage collection too.
+
+# 601. Nested timelines are like nested spreadsheets
+
+# 602. Standard manipulation
+
+Things exposed in this API are manipulatable the same way everytime.
+
+But what if you have a sideways manipulation between two standard manipulations?
+
+# 603. System events
+
+Can we use LMAX Disruptor pattern for system events? Liburing does.
+
+# 604. Topologies can be merged
+
+# 605. It is system API calls that is useful but how would you implement complicated logic such as buffer pools
+
+The structure as is. The order of the structure maps to the code to manipulate it.
+
+# 606. Servicecloud
+
+a framework that is easy to integrate against to provide services to other people.
+
+# 607. OpenPoke
+
+Transformable architecture. Poke data into a structure.
+
+# 608. Async is stubs - Interlocking segments of code
+
+Skip over logic that you don't care about, but wait until it has happened.
+
+``` 
+
+
+```
+
+# 609. Sharded parallel lang
+
+Things that don't scale are forbidden by the compiler.
+
+Need to solve the fanout problem.
+
+# 610. Standard text layout and interactive text
+
+Can text be a useful GUI if augmented with menus?
+
+Render all the text that would have been generated by separate commands into one large page that can be scrolled but is also live.
+
+# 611. High level behaviour of dataflow - fanout
+
+Signals on wires. Easy broadcast.
+
+Can be turned into the "update location problem" and extract microservices out.
+
+# 612. Traverse by selecting
+
+# 613. Every code block is separate and introspectable, groupable and replicable
+
+# 614. Indirection as a primitive
+
+# 615. Hypercompilation
+
+If we compile to data flow, is that simpler? Database engines that compile queries into machine code.
+
+# 616. Let's go shopping: dynamic rearrangement
+
+# 617. Conversational scheduling and data flow
+
+This is a struct formation technique. Imagine having a chat room chat and we can arrange relationships and data flow and behaviours with messages that are combined into an overall definition.
+
+We can dynamically arrange an architecture based on messages that define relationships between messages for scheduling decisions.
+
+```
+user(n) <- follower(user(n), user(n))
+```
+
+```
+tcp_on_read:
+```
+
+```
+```
+
+Barrel processors process an instruction from every thread interleaved.
+
+From this, we can extract an architecture and schedule.
+
+# 618. Implementing Feeds efficiently
+
+# 619. Latch grids for behaviour, state machine formulation for ordering
+
+# 620. API surface object
+
+These methods are used by a liburing server in different situations and in different scenarios. They represent a set of APIs to be used in a different order.
+
+```
+io_uring_prep_accept
+io_uring_get_sqe                                                                                         io_uring_prep_readv(sqe, client_socket, &req->iov[0], 1, 0);                                             io_uring_sqe_set_data(sqe, req);                                                                         io_uring_submit(&ring);   
+```
+
+We want to call these methods in different contexts.
+
+```
+io_uring_prep_accept | io_uring_get_sqe | io_uring_prep_readv(sqe, client_socket, &req->iov[0], 1, 0) | io_uring_sqe_set_data(sqe, req) | io_uring_submit(&ring);   
+```
+
+Dispatch environment - matched to target environment, can call into source context
+
+```
+recv-context:
+submit-io | callback
+
+submit-io:
+io_uring_prep_accept | io_uring_get_sqe | io_uring_prep_readv(sqe, client_socket, &req->iov[0], 1, 0) | io_uring_sqe_set_data(sqe, req) | io_uring_submit(&ring) | callback  
+```
+
+arguments can be events closures which is like a latch
+
+a bit like a two sided method
+
+
+
+# 621. State machine formulation to API surface invocation and code generation
+
+We can write systems with state machine formulation and generate code stubs for filling in with parameters.
+
+```
+```
+
+
+
+manipulation between things, insert between
+
+# 622. Math of data flow and architecture inference
+
+# 623. Context in state machine formulation
+
+# 624. Microops
+
+Reconfigure a system to a different architecture.
+
+
+
+# 625. Rate of change code - segmented AST
+
+Write a program that generates output in segmented AST, and then diff the output and do dependency tracking. I use Markdown in my web applications because it's simple but it's not efficient to re-render when there is a small change.
+
+Can generate text with labelled nodes and then if anything is regenerated, it can be regenerated
+
+# 626. Standard interface
+
+How do you take payments, organise insurance, set up a scheduled workflow, write a letter to someone, send someone a message with the same API?
+
+# 627. Neural network inferred function of tuples interactions
+
+Could neural networks help infer the functions of tuple generation between interactions?
+
+```
+```
+
+
+
+# 628. Autocomplete desktop with system large language model context tokens
+
+Every piece of context on the desktop screen can be used to autocomplete the next thing. Every possible API call on a piece of data. 
+
+# 629. Eventually consistent most of the time consistent - Looking at the clock to check consistency, assume success
+
+Reserve a time that data is consistent at, if anything fails, that's when you insert a record to cancel it, ideally before the consistency time. This should scale because there is only one round trip.
+
+if there's a network partition for longer than the settlement time, then the data would be inconsistent.
+
+# 630. Bigmove - movestruct
+
+When you have so much data, it's hard to move it around. Also migrations between data structures.
+
+# 631. Sliding puzzle, data structure buffer manager on disk, upload, download, synchronization, sort
+
+Data addressing - a buffer is either on disk, in memory, or over the network, sorted, synchronized and so on. Extreme locality.
+
+# 632. What is efficiency anyway?
+
+# 633. State machine formulation and interactions between features
+
+An interaction between two features involves inserting behaviour or changes between other behaviour, between other parts of the program, without having to change it.
+
+State machine formulation defines flow between data objects.
+
+Creating a graft of behaviour is easy in state machine formulation.
+
+# 634. State machine formulation with sharding framework and nonblocking barriers
+
+This idea incorporates the ideas of [ideas4 558. State machine formulation](https://github.com/samsquire/ideas4#558-state-machine-formulation), [ideas4, 198 Sharding framework](https://github.com/samsquire/ideas4#198-sharding-framework)) and Nonblocking barriers into a multithreaded runtime.
+
+Can generate a topology by generating relations that match a syntax, it's a join between them to link them together.
+
+```
+N:T:S (thread number, thread type, socket range)
+thread0:recv:socket1-100
+thread1:send:socket1-100
+
+```
+
+Thread Topology and superstep topology can be inferred from state machine formulation. Thanks to nonblocking barriers. 
+
+This is what the task assignment looks like for 6 threads that share a system event ringbuffer. Steal events is only called by one thread at a time, so there is limited contention for the system ringbuffer.
+
+| Thread 1 (recv thread) | Thread 2 (send thread)   | Thread 3       | Thread 4       | Thread 5       | Thread 6       |
+| ---------------------- | ------------------------ | -------------- | -------------- | -------------- | -------------- |
+| epoll/liburing wait    | epoll.poll/liburing wait | run coroutines | run coroutines | run coroutines | run coroutines |
+|                        |                          | run coroutines | run coroutines | run coroutines | run coroutines |
+|                        |                          | steal events   | run coroutines | run coroutines | run coroutines |
+|                        |                          | run coroutines | steal events   | run coroutines | run coroutines |
+|                        |                          | run coroutines | run coroutines | steal events   | run coroutines |
+|                        |                          | run coroutines | run coroutines | run coroutines | steal events   |
+
+coroutines
+
+what if there's
+
+ringbuffer registry
+
+a standard lock can be used for communicating IO requests to IO threads
+
+maybe have a register command to register a context i'm interested in
+
+recvthread:sockets1-100
+
+sendthread:sockets1-100
+
+coroutines can be local - need no ringbuffer communication, but it's usually IO that would need ringbuffer callback
+
+coroutine needs to know callback from IO liburing threads
+
+steal events reads a system ringbuffer for events
+
+can separate the ringbuffers per different threads if it's a bottleneck
+
+communicate data to be sent/received, could pop ringbuffer
+
+state machine formulation vs shard framework
+
+microops, routing between components
+
+an object graph serviced by a thread
+
+multiplexing, how to do in this architecture?
+
+parallel for:
+
+```
+for (int x = 0 ; x < 100; x++) {
+	fire spawn for_loop
+}
+```
+
+parallel map:
+
+```
+```
+
+placement algorithm places the parallel for loop task in the right task scheduler in its own copy of the superstep tasks, so the next thread steal events shall pick it up
+
+scheduling can be a tree, ordering is maintained, batched for loop
+
+coroutine state is an address from the coroutine start, stored with the rsp
+
+parallel components, how to maintain ordering between events? how to wait for other thread's tasks? you just place it in different superstep
+
+```
+```
+
+sharding framework events syntax for state machine formulation dynamic arrangement
+
+``` 
+thread(1) superstep(1) post steal-events
+thread(2) superstep(2) post steal-events
+thread(3) superstep(3) post steal-events
+thread(4) superstep(4) post steal-events
+thread(5) superstep(5) post steal-events
+thread(6) superstep(6) post steal-events
+```
+
+waiting for events, it's a trie of states
+
+coroutine state
+
+```
+fire send-reply-finished
+```
+
+coroutine task readiness correspondence to latches
+
+trie/tree structure of latches with linked list through it for task/coroutine readiness? would be hard in assembly
+
+how to thread safe communicate state transitions between threads? of a latch?
+
+event to increment event in that thread?
+
+instanced state machines
+
+submitted == completions -> continue
+
+separately maintained stack of readiness
+
+```
+event = event.pop()
+event.state.completions++
+if event.state.submitted == event.state.completions:
+	stateline.ready = true
+	
+if stateline.ready:
+    for state in stateline:
+        state.submitted++
+```
 
 
 
