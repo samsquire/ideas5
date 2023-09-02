@@ -4402,6 +4402,8 @@ A while loop that acts like a lock.
 
 # 576. Microops with multithreaded architecture
 
+Reconfigure a system to a different architecture.
+
 # 577. Object layout and schedule around interactions from different places, contexts
 
 # 578. Line explosion towards
@@ -4798,7 +4800,7 @@ manipulation between things, insert between
 
 # 624. Microops
 
-Reconfigure a system to a different architecture.
+
 
 
 
@@ -4851,7 +4853,11 @@ Creating a graft of behaviour is easy in state machine formulation.
 
 # 634. State machine formulation with sharding framework and nonblocking barriers
 
-This idea incorporates the ideas of [ideas4 558. State machine formulation](https://github.com/samsquire/ideas4#558-state-machine-formulation), [ideas4, 198 Sharding framework](https://github.com/samsquire/ideas4#198-sharding-framework)) and Nonblocking barriers into a multithreaded runtime.
+This idea incorporates the ideas of [ideas4 558. State machine formulation](https://github.com/samsquire/ideas4#558-state-machine-formulation), [ideas4, 198 Sharding framework](https://github.com/samsquire/ideas4#198-sharding-framework)) and [ideas5, 571. Nonblocking barriers](https://github.com/samsquire/ideas5#571-nonblocking-barriers-as-the-general-purpose-synchronization-technique) into a multithreaded runtime.
+
+![Supersteps.drawio](Supersteps.drawio.png)
+
+![ThreadTopology.drawio.png](ThreadTopology.drawio.png)
 
 Can generate a topology by generating relations that match a syntax, it's a join between them to link them together.
 
@@ -4859,12 +4865,24 @@ Can generate a topology by generating relations that match a syntax, it's a join
 N:T:S (thread number, thread type, socket range)
 thread0:recv:socket1-100
 thread1:send:socket1-100
+N:T (thread number, thread type)
+thread2:worker
+thread3:worker
+thread4:worker
+thread5:worker
+
+thread(1) superstep(1) post steal-events
+thread(2) superstep(2) post steal-events
+thread(3) superstep(3) post steal-events
+thread(4) superstep(4) post steal-events
+thread(5) superstep(5) post steal-events
+thread(6) superstep(6) post steal-events
 
 ```
 
-Thread Topology and superstep topology can be inferred from state machine formulation. Thanks to nonblocking barriers. 
+Thread Topology and superstep topology and latch topology can be inferred from shard framework syntax and state machine formulation. Thanks to nonblocking barriers. 
 
-This is what the task assignment looks like for 6 threads that share a system event ringbuffer. Steal events is only called by one thread at a time, so there is limited contention for the system ringbuffer.
+This is what the task assignment looks like for 6 threads that have a ringbuffer back to threads. Steal events is only called by one thread at a time, so it is thread safe. 
 
 | Thread 1 (recv thread) | Thread 2 (send thread)   | Thread 3       | Thread 4       | Thread 5       | Thread 6       |
 | ---------------------- | ------------------------ | -------------- | -------------- | -------------- | -------------- |
@@ -4879,7 +4897,9 @@ coroutines
 
 what if there's
 
-ringbuffer registry
+ringbuffer registry - one for each thread or a global one?
+
+broadcast/single consumer
 
 a standard lock can be used for communicating IO requests to IO threads
 
@@ -4922,6 +4942,8 @@ parallel map:
 
 placement algorithm places the parallel for loop task in the right task scheduler in its own copy of the superstep tasks, so the next thread steal events shall pick it up
 
+a steal events would place the corresponding events in its local superstep at that position, so we can have choreographies
+
 scheduling can be a tree, ordering is maintained, batched for loop
 
 coroutine state is an address from the coroutine start, stored with the rsp
@@ -4932,15 +4954,6 @@ parallel components, how to maintain ordering between events? how to wait for ot
 ```
 
 sharding framework events syntax for state machine formulation dynamic arrangement
-
-``` 
-thread(1) superstep(1) post steal-events
-thread(2) superstep(2) post steal-events
-thread(3) superstep(3) post steal-events
-thread(4) superstep(4) post steal-events
-thread(5) superstep(5) post steal-events
-thread(6) superstep(6) post steal-events
-```
 
 waiting for events, it's a trie of states
 
@@ -4956,7 +4969,15 @@ trie/tree structure of latches with linked list through it for task/coroutine re
 
 how to thread safe communicate state transitions between threads? of a latch?
 
+delay mutations to latches in steal events step
+
 event to increment event in that thread?
+
+shared memory of latches or not?
+
+consistency of latches
+
+is it efficient to do nothing in the non-steal-events task - true serialisation
 
 instanced state machines
 
@@ -4968,12 +4989,62 @@ separately maintained stack of readiness
 event = event.pop()
 event.state.completions++
 if event.state.submitted == event.state.completions:
-	stateline.ready = true
-	
-if stateline.ready:
-    for state in stateline:
+	event.state.done = true
+
+if all(stateline.states, lambda state: state.done):
+    for state in stateline.next.states:
         state.submitted++
 ```
+
+all syntax - stateline[].ready
+
+wait states
+
+```
+do_something();
+wait thing1 | thing2
+do_something_else();
+```
+
+How would this get compiled? Split the function into segments
+
+```
+prelogue:
+thing1.waitcount = thing1.completions + 1
+thing2.waitcount = thing2.completions + 1
+
+step1:
+do_something();
+
+step2 add observer to thing1.completions which does
+thing1.completions >= thing1.waitcount
+done = true
+
+step3 add observer to thing2.completions which does
+thing2.completions >= thing2.waitcount
+done = true
+
+step4:
+do_something_else();
+```
+
+The wait state would add an observer to completions.
+
+# 635. A language that makes work easier
+
+# 636. Dynamic horizontal/vertical inversion and flip and linkup/join
+
+Switch between the two and then rejoin, parallel and  sequential and join from either direction
+
+Transpose computation
+
+# 637. State machine formulation can be turned into communications, observers
+
+# 638. State machine formulation, movement and memory management
+
+# 639. Memory management as pieces of string
+
+
 
 
 

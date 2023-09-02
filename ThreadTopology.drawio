@@ -1,0 +1,110 @@
+<mxfile host="Electron" modified="2023-09-01T10:23:10.634Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="j6jfAEpgaGPvZg3ghjAU" version="21.6.8" type="device">
+  <diagram name="Page-1" id="aIvIAXKrWWIR7JvbaUUY">
+    <mxGraphModel dx="3098" dy="2818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-1" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;IO Thread&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="485" y="-10" width="170" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-2" value="&lt;font style=&quot;font-size: 21px;&quot;&gt;SEND BUFFER&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="210" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-4" target="OQC-WP1-0CErDjN2q-YV-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-4" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;WORKER THREAD 1&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="45" width="210" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-5" target="OQC-WP1-0CErDjN2q-YV-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-5" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;WORKER THREAD 2&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="195" width="210" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-6" target="OQC-WP1-0CErDjN2q-YV-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-6" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;WORKER THREAD 3&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="335" width="210" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-7" value="&lt;font style=&quot;font-size: 21px;&quot;&gt;SEND BUFFER&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="290" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-8" value="&lt;font style=&quot;font-size: 21px;&quot;&gt;SEND BUFFER&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="370" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-9" value="&lt;font style=&quot;font-size: 25px;&quot;&gt;liburing wait send&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="505" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-10" value="&lt;font style=&quot;font-size: 21px;&quot;&gt;MUTEX&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="210" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-11" value="&lt;font style=&quot;font-size: 21px;&quot;&gt;MUTEX&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="290" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-12" value="&lt;font style=&quot;font-size: 21px;&quot;&gt;MUTEX&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="370" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-13" target="OQC-WP1-0CErDjN2q-YV-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-13" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;WORKER THREAD 4&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="480" width="210" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-18" target="OQC-WP1-0CErDjN2q-YV-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-18" target="OQC-WP1-0CErDjN2q-YV-20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="515" />
+              <mxPoint x="128" y="515" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-18" target="OQC-WP1-0CErDjN2q-YV-21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="515" />
+              <mxPoint x="273" y="515" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="OQC-WP1-0CErDjN2q-YV-18" target="OQC-WP1-0CErDjN2q-YV-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-18" value="&lt;font style=&quot;font-size: 25px;&quot;&gt;liburing wait recv&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-19" value="Worker Thread 1 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="-80" y="550" width="125" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-20" value="Worker Thread 2 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="65" y="550" width="125" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-21" value="Worker Thread 3 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="210" y="550" width="125" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-25" value="Worker Thread 1 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="45" width="125" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-26" value="Worker Thread 2 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="210" width="125" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-27" value="Worker Thread 3 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="335" width="125" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-28" value="Worker Thread 4 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="480" width="125" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-29" value="Worker Thread 4 Ringbuffer" style="rounded=0;whiteSpace=wrap;html=1;fontSize=25;" vertex="1" parent="1">
+          <mxGeometry x="360" y="550" width="125" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="OQC-WP1-0CErDjN2q-YV-31" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;IO Thread&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="280" width="170" height="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

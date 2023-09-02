@@ -1,0 +1,40 @@
+<mxfile host="Electron" modified="2023-09-01T18:17:13.466Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="wlv80fVe7DWwmB8u0ruA" version="21.6.8" type="device">
+  <diagram name="Page-1" id="afF6loQXjeUVOpGx7HEf">
+    <mxGraphModel dx="3434" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="y-0cT2srEvRFnzbuyEon-1" value="Thread 1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="390" y="360" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-2" value="Tasks for thread 2" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="260" width="390" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-3" value="Tasks for thread 3" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="340" width="390" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-4" value="Tasks for thread 4" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="410" width="390" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-5" value="Tasks for thread 5" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="-30" y="480" width="390" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-6" value="Thread 2" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="610" y="560" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-7" value="Tasks for thread 1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="520" y="650" width="390" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-8" value="Tasks for thread 3" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="520" y="730" width="390" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-9" value="Tasks for thread 4" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="520" y="800" width="390" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y-0cT2srEvRFnzbuyEon-10" value="Tasks for thread 5" style="rounded=0;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="520" y="870" width="390" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
