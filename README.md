@@ -346,6 +346,7 @@ With stateful programs, it can be difficult to reason about them when there are 
 * Trapped state detection: No path of state associations back to the global circle, so it's impossible for the circle to move forward.
 * You must write a determine state function to determine the facts about the system at the current time. Concurrent events are represented.
 * Can create incremental state machines which are snapshots of valid cases, which are stitched together.
+* Deadlocks can be avoided.
 
 For example, we want to schedule two actors, A 5 times and B 5 times and run them alternatedly. AAAAABBBBBAAAAABBBBBAAAAABBBBBAAAAABBBBBAAAAABBBBB,
 
@@ -1437,6 +1438,8 @@ Jump hierarchies are slow, when I think of assembly, it is just jumping around!
 
 # 213. We need to decouple definition from "how"
 
+Think of a drawing, compositing API or a desktop integration API. Different approaches to API design would be useful. 
+
 # 214. Scenario editor
 
 # 215. Unlimited scalable design
@@ -2045,11 +2048,11 @@ If our website has 25 active users, then we show a stable y-column identity for 
 
 # 286. Generated behaviours on objects - standardised object extensions
 
-All objects that have collections are like databases.
+All objects that have collections are like databases. Like ruby ActiveRecord.
 
 # 287. Linear scalability design
 
-Designed to scale linearly from day 1. My [eventually-consistent-mesh](https://github.com/samsquire/eventually-consistent-mesh) keeps nodes synchronized. at the data layer.
+Designed to scale linearly from day 1. My [eventually-consistent-mesh](https://github.com/samsquire/eventually-consistent-mesh) keeps nodes synchronized. At the data layer.
 
 What gets scaled, capacity, events. Traditional database has fixed capacity for scaling.
 
@@ -4642,6 +4645,12 @@ There's a `join` between one fact and another fact, an association.
 
 Contexts.
 
+How to regenerate all the code that passes by a context.
+
+merge and split contexts.
+
+plurality
+
 # 596. DB widgets
 
 Each widget on the screen is a database
@@ -4687,6 +4696,10 @@ a framework that is easy to integrate against to provide services to other peopl
 # 607. OpenPoke
 
 Transformable architecture. Poke data into a structure.
+
+Transform the relationships, transform the code.
+
+Sharding framework.
 
 # 608. Async is stubs - Interlocking segments of code
 
@@ -4855,11 +4868,15 @@ Creating a graft of behaviour is easy in state machine formulation.
 
 This idea incorporates the ideas of [ideas4 558. State machine formulation](https://github.com/samsquire/ideas4#558-state-machine-formulation), [ideas4, 198 Sharding framework](https://github.com/samsquire/ideas4#198-sharding-framework)) and [ideas5, 571. Nonblocking barriers](https://github.com/samsquire/ideas5#571-nonblocking-barriers-as-the-general-purpose-synchronization-technique) into a multithreaded runtime.
 
+We can create a nonblocking barrier that prevents threads moving past into work that other threads haven't finished yet. On a schedule, every thread takes turns stealing events from other threads that have been queued up. This is thread safe.
+
 ![Supersteps.drawio](Supersteps.drawio.png)
+
+![ThreadMailboxes.drawio.png](ThreadMailboxes.drawio.png)
 
 ![ThreadTopology.drawio.png](ThreadTopology.drawio.png)
 
-Can generate a topology by generating relations that match a syntax, it's a join between them to link them together.
+Can generate a system object topology by generating relations that match a syntax, it's a join between them to link them together.
 
 ```
 N:T:S (thread number, thread type, socket range)
@@ -4888,10 +4905,16 @@ This is what the task assignment looks like for 6 threads that have a ringbuffer
 | ---------------------- | ------------------------ | -------------- | -------------- | -------------- | -------------- |
 | epoll/liburing wait    | epoll.poll/liburing wait | run coroutines | run coroutines | run coroutines | run coroutines |
 |                        |                          | run coroutines | run coroutines | run coroutines | run coroutines |
-|                        |                          | steal events   | run coroutines | run coroutines | run coroutines |
-|                        |                          | run coroutines | steal events   | run coroutines | run coroutines |
-|                        |                          | run coroutines | run coroutines | steal events   | run coroutines |
-|                        |                          | run coroutines | run coroutines | run coroutines | steal events   |
+|                        |                          | steal events   | run defer 3    | run defer 3    | run defer 3    |
+|                        |                          | run defer 4    | steal events   | run defer 4    | run defer 4    |
+|                        |                          | run defer 5    | run defer 5    | steal events   | run defer 5    |
+|                        |                          | run defer 6    | run defer 6    | run defer 6    | steal events   |
+
+Thread safety is created by the nonblocking barrier. We can run coroutines that are ready in the supersteps that are not stealing events. We can run all tasks that are "ready", which may produce events, which we have to be careful because other threads could be reading our spawn events.
+
+When we run supersteps where another thread has a steal events stage, we can defer generating events for that superstep that is stealing. We know which thread is stealing based on superstep position.
+
+
 
 coroutines
 
@@ -4901,7 +4924,7 @@ ringbuffer registry - one for each thread or a global one?
 
 broadcast/single consumer
 
-a standard lock can be used for communicating IO requests to IO threads
+a standard lock can be used for communicating IO requests to IO threads, to guard a send buffer.
 
 maybe have a register command to register a context i'm interested in
 
@@ -5030,6 +5053,12 @@ do_something_else();
 
 The wait state would add an observer to completions.
 
+Assembly threading
+
+Buffers of memory. Swap buffers.
+
+Pollers/async in Rust
+
 # 635. A language that makes work easier
 
 # 636. Dynamic horizontal/vertical inversion and flip and linkup/join
@@ -5040,11 +5069,253 @@ Transpose computation
 
 # 637. State machine formulation can be turned into communications, observers
 
+We can turn the following state machine model into communications between threads:
+
+A notation for data flow and sharding, that is linearly scalable
+
+```
+next_free_thread = 2
+task(A) thread(1) assignment(A, 1) = running_on(A, 1) | paused(A, 1)
+
+running_on(A, 1)
+thread(1)
+assignment(A, 1)
+thread_free(next_free_thread) = fork(A, B)
+                                | send_task_to_thread(B, next_free_thread) assignment(B, next_free_thread)
+                                |   running_on(B, 2)
+                                    paused(B, 1)
+                                    running_on(A, 1)
+                               | { yield(B, returnvalue) | paused(B, 2) }
+                                 { await(A, B, returnvalue) | paused(A, 1) }
+                               | send_returnvalue(B, A, returnvalue) 
+```
+
+It can be read as this paragraph: "When thread 2 is free and task A is assigned to thread 1 and task A is running on thread 1 and task A forks to task B, we send task B to the next free thread which is 2, then B is running on thread 2 and B is paused on thread 1, then we wait for either a yield in which case B pauses on thread 2, or task A awaits then task A pauses on thread 1, then when both these cases are true we send a return value from B task to task A"
+
+There is a cross thread communication:
+
+* fork(A, B) transmits between thread(1) and thread(2) because A is assigned to thread(1) and B is assigned to thread(2)
+* yield = thread(2) -> thread(1)
+* await -> thread(1) -> thread(2)
+
+We need local computation, or pockets of local computation to be representable with this syntax.
+
+Observers can be created so that when assignment(task, thread) is changed, it fires code to run.
+
+
+
 # 638. State machine formulation, movement and memory management
 
 # 639. Memory management as pieces of string
 
+We can stretch a piece of memory location to identify it's beginning and end and wire the free to occur when the end of string is reached.
 
+# 640. Don't write graphs or pipelines, write output interleavings and simultaneity representation
+
+Parallelism, concurrency and coroutines.
+
+In [# 393. Combinations  of execution models](https://github.com/samsquire/ideas5#393-combinations-of-execution-models), we can arrange sequential/parallel with latches between sections
+
+```
+PARALLEL
+	SEQUENTIAL
+		one
+		? wait
+		three
+    SEQUENTIAL
+    	? wait
+    	two
+    	three
+    SIMULANEITY
+    	one
+    	two
+```
+
+Simultaneity sequential or parallel.
+
+# 641. Coroutines are simultaneously progressing, pauseable things
+
+Could loops also be coroutines, that output to buffers or a value at a time?
+
+# 642. Multimovement through space
+
+Adding tasks to other threads is branch heavy and nested loops.
+
+Loops through data in different directions at a time.
+
+# 643. Fallthrough loops
+
+You don't need to initialize the loop every time, you can have two loops that linked but separately re-entrant resumable.
+
+```
+int x = 0;
+int t = 0;
+
+program:
+for (; x < tasks.size(); x = (x + 1), t = 0) {  
+    for (; t < threads.size() ; t++) {
+	}
+}
+```
+
+
+
+# 644. Inflating a balloon against a line
+
+The line moves with the balloon.
+
+# 645. Turn all parameters into an request object
+
+# 646. Sliding puzzle, valid combinations
+
+Creating pthread, the right types, sizes for everything, complexity of structs
+
+# 647. What is performance anyway?
+
+Sideways through a collection?
+
+Even a complicated sequence of steps can speed up something.
+
+computers have a set number of records they can process at a time. we can build for this.
+
+
+
+# 648. What stays the same regardless
+
+Just logistics.
+
+the instruction set? Linux 0.0.1 building, 
+
+
+
+# 649. Version Launchpad
+
+A grid of versions that you can click to activate.
+
+# 650. Trees that synchronize and server programming
+
+We can get speed ups by paralellising and sharding problems, but at some point we might need to synchronize to work from the same data.
+
+```
+```
+
+
+
+where do data centric applications, such as social networks fit in?
+
+Sharding framework and parallel work trees
+
+```
+thread1:iorecvthread
+	handle-read
+		place-data-in-output-buffer-for-broadcast
+thread2:iosendthread:sockets1-100
+	handle-ready-for-sending
+		send-updates
+	
+```
+
+order of updates for all clients
+
+the illusion of updating the same location, when you're not.
+
+trees of parallel work, sharding framework
+
+feed a list of sharding framework rules and the program wires itself up automatically.
+
+sharding framework, routing notation
+
+work at distance, state machine notation
+
+# 651. High level goal or pattern
+
+We can use other people's solutions if we implement against a high level goal.
+
+# 652. Sharding framework is plurality
+
+And contexts. Mini DB of keyvalues object graphs.
+
+# 653. Distributed systems upgrade patterns is a sliding puzzle and logistics
+
+Move things out the way, for you to move something in their place.
+
+
+
+Erlang become functionality, what does it enable, structured interaction programming
+
+
+
+the keywords of our language are decided by us
+
+# 654. Global shard cache
+
+We can shard and then cache aggregated totals periodically.
+
+# 655. Synchronized gear working
+
+Working with other people is like working with synchronized gears.
+
+# 656. Desired interactions - Fuzz
+
+# 657. Compositor API
+
+# 658. Links in documents?
+
+Can links in documents mean something special?
+
+# 659. Code flashcards and space repetition
+
+# 660. Generate permutations of API to see if they're useful
+
+is parsing train tracks an instance hierarchy? of switchable behaviour? Like Java's file APIs, you want to plug them in various combinations.
+
+Where to jump to
+
+# 661. Something useful
+
+How can someone create something technically useful given all that has been created already?
+
+Knowledge
+
+# 662. Call surface
+
+Just call a function to get something done.
+
+# 663. Solving the async problem
+
+# 663. Efficient text tables and slot programming
+
+Efficient spreadsheets and table driven interfaces with text only
+
+Slots on the screen to be filled, paged. Rather than generate an entire hierarchy of all data and scrollbars, we just animate between slots. Infinite scrolling.
+
+It's not something that is painted repeatedly or in entirety and then composited.
+
+Scrollbars are a slot with a time variable. You don't actually draw past the slots on the screen.
+
+# 664. What is the symbolic problem that async is in languages
+
+Rust exposes you to a lot of complexity when you use async. Assembly is simple under the microscope but when you zoom out it is complicated.
+
+Some complicated rules to remember.
+
+# 665. Async drawing interfaces
+
+# 667. Clay APIs
+
+callbacks, async, we can ask for the API we want. For example, parsing APIs for XML can be all-in-one-go or incremental. Retained mode, immediate mode.
+
+# 668. Nothing is designed for scale
+
+Cloud hasn't solved the scaling problem. It's solved by sharding and data flow trees, as in Rama.
+
+# 669. Conway program
+
+# 670. Compatibility and interoperability is just JMP statements (control flow) and logistics
+
+
+
+#  
 
 
 
