@@ -5106,6 +5106,8 @@ Observers can be created so that when assignment(task, thread) is changed, it fi
 
 # 638. State machine formulation, movement and memory management
 
+Manual memory management, there is an event that means something can be thrown away. It's essentially a state.
+
 # 639. Memory management as pieces of string
 
 We can stretch a piece of memory location to identify it's beginning and end and wire the free to occur when the end of string is reached.
@@ -5255,7 +5257,11 @@ We can shard and then cache aggregated totals periodically.
 
 Working with other people is like working with synchronized gears.
 
-# 656. Desired interactions - Fuzz
+# 656. Desired interactions - Fuzz explosion
+
+Expression parsing in programming is limited in what it can express. We can handle higher forms of expression.
+
+Functional programming is similarly limited.
 
 # 657. Compositor API
 
@@ -5283,7 +5289,7 @@ Just call a function to get something done.
 
 # 663. Solving the async problem
 
-# 663. Efficient text tables and slot programming
+# 663. Efficient text tables and slot GUI programming
 
 Efficient spreadsheets and table driven interfaces with text only
 
@@ -5313,6 +5319,159 @@ Cloud hasn't solved the scaling problem. It's solved by sharding and data flow t
 
 # 670. Compatibility and interoperability is just JMP statements (control flow) and logistics
 
+# 671. File system improvements
+
+Depending on file systems
+
+# 672. Environment variables, arguments, struct implementation are all logistics
+
+# 673. Small bits of code and latency
+
+Design your programs so they are not sequential.
+
+How do you parallelise events?
+
+# 674. Line drawings in memory
+
+A formula can derive the next address
+
+# 675. How to incorporate sharding and partitioning and fan out into state machine formulation
+
+Nonblocking barriers can do a bidirectional exchange of work at communication synchronization time.
+
+Need a data stream abstraction.
+
+# 675. Relationship of objects, actors and tip of execution
+
+Are objects and actors the same thing? How do you schedule object graphs?
+
+Positional logic of multinames and state machine formulation.
+
+Messaging and events can be partitioned.
+
+# 676. Scatter barrier
+
+# 677. Elastic output text (relations)
+
+Write a program that outputs the right sequence traversal. The output IS an AST. It represents additional behaviour that needs to be integrated into the rest of the program. Ambiguity and ordering. And logistics.
+
+# 678. Structured interaction programming of events is an inversion of object orientated programming
+
+Events apply to different instances and objects depending on context.
+
+Binding of event to context
+
+a group of facts is a context and an object
+
+# 679. Logistics - is what do you want to be true
+
+# 680. Thunking enables point and click programming
+
+# 681. Coordination pattern, algorithm is testable, represents work to do
+
+Timeline and associations
+
+arbitrary precision and control over subpatterns, such as cache behaviour, microbatching, logistics, is a layout & bind algorithm, talk of that in terms of this.
+
+# 682. Turning an object graph into a tree
+
+# 683. Memory, IO and synchronization is your bottleneck
+
+# 684. Factory metaphor
+
+Microservices, services, communication.
+
+# 685. Direct control over scopes
+
+async move in Rust
+
+# 686. What is an elegant multithreaded assembly program
+
+# 687. Seamless switching between push/pull
+
+# 688. Logistics that keep working
+
+# 689. Async data at the database layer, uncertainty
+
+# 690. The other side of inconsistent data
+
+If you have 4 service updates to 4 separate databases. We want updates to the services to go in lockstep.
+
+| Description | Update |
+| ----------- | ------ |
+| Service A   |        |
+| Service B   |        |
+| Service C   |        |
+| Service D   |        |
+
+There is 1 desired state out of 16 states: all 4 updates are successful.
+
+The instigator can potentially know which state was reached: all states were successful.
+
+We can assume success at T + epoch where this T+epoch is actually an identifier.
+
+But we also monitor identifier clocks of the instigator, if the instigator clock stops, we know we didn't hear about success and the settled epoch can be ignored.
+
+Is this just another way of saying 2-phase commit?
+
+# 691. Using recursion at what it is good at
+
+# 692. Page GUI
+
+Generate a large page of data and then work out how to optimise it.
+
+# 693. Angles of the same thing
+
+Contexts, redrawn from different perspectives
+
+# 694. Conways law and "define what needs done"
+
+I don't want to do that work.
+
+# 695. The value producing calculation
+
+Import idea, all interactions. Structured interaction programming
+
+# 696. Poke data into into website, handle payments, work distribution
+
+# 697. Operating systems doesn't really work as a part time job, you need someone permanent
+
+# 698. Appbrowser
+
+# 699. Reliable
+
+
+
+
+
+structured interaction and a game where you have to change code to handle cases 
+
+
+
+# 700. Data-first or API-first?
+
+Many developers say that it is data is the key part of your system. This is true except that you want to do things with your data and this is where APIs come in.
+
+# 701. Bulk to sequential
+
+[This comment](https://news.ycombinator.com/item?id=37505003) caused me to think that it should be possible to convert between bulk and sequential. This is similar to my one to many idea.
+
+# 702. Text editors and menus don't really do anything
+
+
+
+# 703. Schema Mutation
+
+
+
+
+
+
+
+
+
+
+
 
 
 #  
@@ -5320,6 +5479,24 @@ Cloud hasn't solved the scaling problem. It's solved by sharding and data flow t
 
 
 # Ideas
+
+async syscall interface
+
+local partition and global, talk about
+
+context of state machine formulation can be permuted
+
+internal render loops, external render loops
+
+productionised API calls, coreutils - web servers are accept,bind,sendfile
+
+all about synchronization
+
+text mode performance meters
+
+everything is available
+
+logistics, inferred by the pipeline
 
 spheres with hands that orient themselves and spin in different dimensions of freedom
 
