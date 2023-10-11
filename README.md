@@ -4476,6 +4476,19 @@ We can handle events in tasks that are different per thread, this allows us to s
 |              |              |              |              | steal events |              |
 |              |              |              |              |              | steal events |
 
+
+
+| Thread 1      | Thread 2      | Thread 3      | Thread 4      | Thread 5      | Thread 6      |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+|               |               |               |               |               |               |
+|               |               |               |               |               |               |
+|               |               |               |               |               |               |
+|               |               |               |               |               |               |
+|               |               |               |               |               |               |
+| exchange work | exchange work | exchange work | exchange work | exchange work | exchange work |
+
+
+
 How to combine with LMAX Disruptor style for data?
 
 can host a real scheduler inside a task when not stealing events
@@ -5416,9 +5429,11 @@ Is this just another way of saying 2-phase commit?
 
 # 691. Using recursion at what it is good at
 
+it's not collection processing.
+
 # 692. Page GUI
 
-Generate a large page of data and then work out how to optimise it.
+Generate a large page of data and then work out how to optimise it based on data flow analysis, piecemeal.
 
 # 693. Angles of the same thing
 
@@ -5461,6 +5476,775 @@ Many developers say that it is data is the key part of your system. This is true
 
 
 # 703. Schema Mutation
+
+# 704. Facts and collections
+
+Moving between collections, efficiently.
+
+# 705. 2d. scroll code
+
+# 706. Callstacks are like processes
+
+# 707. Architecture community
+
+# 708. Adjacent traversal
+
+A kernel has kernel threads and userspace threads. It also has an interrupt handler, (ISR), these are contexts for processes.
+
+A thread is an adjacent traversal through memory. The RSP is just a number, a register.
+
+
+
+# 709. How do you execute a picture?
+
+# 710. C Programming semantics and automatic memory management
+
+# 711. Your app is a multipass compiler
+
+# 712. Databases handle append storage of streams
+
+# 713. GPU acceleration of logistics
+
+# 714. Define the interaction results
+
+Don't compute them.
+
+# 715. Interpret a bitmap
+
+Draw rectangles that mean things.
+
+# 716. What to do
+
+# 717. Text based storage
+
+A bank system only needs account number, sort code name to set up a direct debit.
+
+# 718. GUI interactions and impossibility
+
+# 719. Accelerating programs with shards and nonblocking barrier and eventual consistency
+
+We can combine nonblocking barrier with sharding and eventual consistency for global visibility.
+
+```
+struct {
+	int balance;
+	List<String>;
+}
+```
+
+
+
+```
+```
+
+# 720. Interactions are set lookup
+
+# 721. Counting fast and linear scan
+
+I learned about the linear scan optimisation with SIMD where you just add the number of times the key is greater than the search to avoid a branch.
+
+Counting is fast on computers.
+
+We know where we are when we count two things.
+
+Overlapping OR sequences
+
+if A interacts with B how do I count that interaction?
+
+Algebra and counting
+
+
+
+# 722. Preemptible thread with nonblocking barriers
+
+# 723. Timeline programming
+
+log lines timeline plotting
+
+draw state, then calculate steps to produce it
+
+# 724. Logical regions are just numbered ranges
+
+stacks, RSP,
+
+# 725. Rigid turning, lines, steel poles that cannot be "out by a number"
+
+# 726. Create your objects, logistics creates the objects how you set them
+
+Control flow graphs of stack through numbers in code.
+
+interlocking stacks
+
+value tracing, typed register known in each place, structs are sequences of memory accesses
+
+What if the following could be turned into a thread automatically?
+
+```
+pthread_create | do_something | do_something_else | pthread_join
+
+```
+
+write the high level steps sequences, fill in the gaps
+
+logical traversal, compiler objects
+
+multithreading can be assured by ensuring the data is always a tree,
+
+thread safety is obtained by creating edges between branches, this can be translated into a lock
+
+create a object, link the context to its arguments
+
+struct {
+
+​	int field1;
+
+​	int field2;
+
+}
+
+is a 
+
+mov %rbp, %rax
+
+mov 8(%rbp), %rax
+
+# 727. Parameter bindings are objects that are named
+
+```
+					context1
+thread1					x
+pthread_create 			x
+attr					x
+start_routine			x
+args					x
+
+context_1:
+pthread_t *restrict thread,
+const pthread_attr_t *restrict attr,
+void *(*start_routine)(void *),
+void *restrict arg
+```
+
+# 728. Optimise arbitrary programs based on AUTO-ast generation of data flow
+
+Based on what touched what.
+
+# 729. Manual memory management generation
+
+```
+A
+ B
+ C
+  D
+  E
+ F
+G
+```
+
+```
+A
+ B
+ while True:
+  D
+   H
+    P
+    M
+     O
+  E
+   N
+ F
+G
+```
+
+The antitree
+
+```
+            A
+           B
+   while True:
+          D
+         H
+        P
+        M
+       O
+          E
+         N
+            F
+           G
+```
+
+Lifecycles of variables.
+
+```
+struct mystruct *thestruct;
+while true:
+	thestruct = malloc(sizeof(struct mystruct));
+	
+```
+
+Graph traversal, find the "last access" in the graph.
+
+We need a named stack, a hashmap used by the compiler to reference count in the compiler
+
+# 730. Very complicated GUIs
+
+Memory management
+
+# 731. Assembly and sideways through a collection
+
+ordering is critical in computing
+
+ordering of arguments, ordering of memory locations
+
+
+
+# 732. Lexer grouping
+
+Create cases for the lexer to group together.
+
+# 733. Eventing in assembly
+
+# 734. There should be more ways to create a valid program than an invalid program
+
+```
+```
+
+# 735. Tuple architecture programming
+
+Plurality is easy, if the system is designed for plurality from the beginning.
+
+When we think of programming, we essentially create objects and pass them around and then call functions on different things. We can radically transform an architecture by thinking of control flow serialisation.
+
+
+
+```
+int recvthread {
+	while (running) {
+		events = events.poll();
+		
+	}
+}
+int main() {
+	thread_t recvthread;
+    thread_t sendthread;
+    thread_t workerthread;
+}
+```
+
+The following code generates the above: Arguments to functions are grouped into contexts.
+
+```
+socket(n)[] <-> recvthread
+socket(n)[] <-> sendthread
+
+recvthread events.poll sendthread.ringbuffer
+sendthread events.poll recvthread.ringbuffer
+workerthread
+workerthread
+main recvthread
+main sendthread
+thread_t <-> ringbuffer
+main pthread_create workerthread
+main pthread_create workterthread
+
+```
+
+A query engine implementation is a topology of objects that we want to generate code for.
+
+Plural
+
+Control flow is a tree through the tuples
+
+```
+```
+
+can go direct to high level AST or assembly/machine code
+
+query engines, cost based optimisers for code traversal
+
+insert costs for various traversals based on system state, which is based on joins across the architecture determined statically
+
+a join is a traversal and is control flow
+
+we know the size of the problem based on inputs
+
+what is the size of programs/code being searched
+
+deferred mechanism
+
+# 736. How do you write a responsive UI that also has high throughput?
+
+# 737. Steps to get there
+
+
+
+I've been thinking about the volcano model and this blog post https://laplab.me/posts/inside-new-query-engine-of-mongodb/
+
+if each AST node is similar to an iterator, i am thinking how i would compile that into assembly 
+
+
+
+# 738. Timeline game
+
+# 739. Porting the nonblocking barrier to assembly
+
+Need to malloc some task objects.
+
+The task objects get passed in the pthread_create constructor.
+
+The arrived flag update needs a memory barrier. (mfence)
+
+The tasks can be function pointers.
+
+The timer thread for preempting loops.
+
+can receive a register for which thread to preempt and preempt that thread's data structure.
+
+need a scheduled data array
+
+# 740. Tree structure is pointers
+
+The structure of data at assembly is a tree of numerical offsets and leaq pointer dereferences.
+
+
+
+# 741. Grid actors
+
+With my nonblocking barrier, we have bulk synchronous synchronization. We need to map channel semantics to this model, in preparation for scheduling.
+
+| ---  | ---  |
+| ---- | ---- |
+|      |      |
+
+
+
+```
+url-downloader
+html-parser
+link-extractor
+link-saver
+```
+
+```
+
+```
+
+
+
+# 742. Local and sequentially adjacent where possible
+
+
+
+# 743. Compiled unit
+
+A dynamic configuration unit that is compiled to machine code.
+
+Div, a unit of code. is it a function? a closure? an iterator? a channel? a buffer?
+
+# 744. Compiler derived coroutines
+
+Can arbitrary pieces of code be integrated at compile time?
+
+# 745. Type system and algebra should be separated from the rest of the compiler
+
+# 746. Event dispatch
+
+Statelines can be represented by bitfields. Parallel state machines can also be bitfields.
+
+
+
+The stateline syntax of state machine formulation requires an efficient dispatch check.
+
+if we have a fork:
+
+```
+state1 state2 | something2
+state1 state3 | something3
+```
+
+This represents a fork.
+
+The naive approach is this:
+
+```
+submitted == completions
+```
+
+If we have 3 facts in one group:
+
+```
+state1 state2 state3
+```
+
+We need to efficiently test each individual fact plus the aggregation of them all.
+
+```
+state1.mask | 0x01
+state2.mask | 0x01 << 1
+something2.mask | 0x01 << 2
+something3.mask | 0x01 << 3
+dispatch on this value
+```
+
+
+
+# 747. Resource management
+
+# 748. Tables to code
+
+Terraform is essentially a table of values that then gets mapped to commands to change it.
+
+
+
+# 749. Direct manipulation of output
+
+# 750. Provide
+
+# 751. Openfactory
+
+# 752. Hardware schedules and timelines
+
+Linear assembly is the most concrete schedule.
+
+
+
+# 753. State machine formulation and logistics of parameters (tuples relations)
+
+The parameters are what is flowing.
+
+You generate the tuples and they get matched up.
+
+Parallelisation can be inferred.
+
+Can scale different objects in the tuple accordingly.
+
+# 754. Draw parser control flow, drawing through records
+
+It's a mutual combination, interactions between different parses.
+
+```
+opencurly
+openbracket
+string
+comma
+int
+string
+closebracket
+closecurly
+
+```
+
+
+
+# 755. Pointer chasing and spatial storage of graphs
+
+Indirection of relative addressing `24(%rcx)`
+
+leaq `24(%rcx)` is double indirection
+
+traversal of pointers
+
+
+
+# 756. Vectors, linear algebra, counting, logistics, kinematics
+
+"Translate Move through space"
+
+Ordering?
+
+# 757. Calculus of relationships
+
+# 758. A number is all you need (batch processing)
+
+attestation
+
+# 759. AST includes the file system
+
+
+
+# 760. Should identifiers include their type?
+
+# 761. Single static assignment, registers and state machine formulation
+
+# 762. How do you wake up a coroutine from the IO thread?
+
+Do you run it to the runqueue?
+
+# 763. Define a traversal
+
+
+
+# 764. Inline functions
+
+Write some code, but want to use it elsewhere with different parameters? Just stick a label in front of it.
+
+```
+for (var n = 0; n < statements.length; n++) {
+    //graphData.push([statements[n].fact, "moves", statements[n].parameters.join(" ")]);
+    for (var b = 0; b < statements[n].parameters.length; b++) {
+      for (var c = 0; c < statements[n].parameters.length; c++) {
+        if (b != c) {
+          graphData.push([`${statements[n].parameters[b]}`, "moves", statements[n].parameters[c]]);
+
+        }
+      }
+    }
+  }
+```
+
+I want to call a portion of this code from elsewhere:
+
+```
+for (var n = 0; n < statements.length; n++) {
+    // inlinefunction parseparameters(statements)
+    for (var b = 0; b < statements[n].parameters.length; b++) {
+      for (var c = 0; c < statements[n].parameters.length; c++) {
+        if (b != c) {
+          graphData.push([`${statements[n].parameters[b]}`, "moves", statements[n].parameters[c]]);
+
+        }
+      }
+
+
+      //graphData.push([parameterIndex[keys[n]][b].fact, "moves", keys[n]]);
+
+      // graphData.push([parameterIndex[keys[n]][b].parameters[x], "moves", keys[n]]);
+
+
+
+
+    }
+  }
+```
+
+
+
+# 765. Computers operate on traversals of Numbers
+
+Each memory address is a number. The relationship of memory is quite strange, it's a wiry pattern of memory addresses to locations.
+
+A traversal in memory is addresses.
+
+A data structure is a traversal and then logistics for placing things somewhere.
+
+Traversal through code and traversal through logistics through placing things in places.
+
+A btree is a traversal of children and then a divide traversal.
+
+# 766. Automatic parallelisation and automated verification
+
+In state machine formulation, we know what steps can be local to a thread - we in fact prefer that.
+
+State machine formulation is in fact a protocol that is related to parsing.
+
+Parsing can be validated. We can test all paths and integrations.
+
+We can check if there is a path through the entire application. Traversal.
+
+# 767. How do you lose synchronization?
+
+# 768. The lock-free multithreaded barrier
+
+How do you communicate with objects that are in the multithreaded lockfree barrier?
+
+You have to be part of the rhythm to insert into the barrier.
+
+The stages can all communicate at a phase when there is communication.
+
+How can an outside process communicate with the barrier?
+
+It has to be introduced to the barrier?
+
+IO thread needs to communicate with the barrier.
+
+Need a thread safe approach to sending data to the barrier.
+
+A barrier step can exchange data, but unfortunately it needs a mutex or a lock free algorithm.
+
+===>
+
+​	 <===
+
+I have a buffer of data in my thread, I want to share it with the multithreaded barrier.
+
+I might be writing to it
+
+structured taking! Indicate that it is ready to take.
+
+Virtual barrier superstep.
+
+benign data race.
+
+Flag
+
+multithreaded switch circuit
+
+# 769. Different methods, reuse stackframe
+
+# 770. Method append without if statements
+
+How to make all the following sequential - without an if statement?
+
+```
+barriered_work_ingest
+barriered_work_a
+barriered_work_b
+barriered_work_c
+```
+
+# 771. How to do IPC, fast
+
+# 772. Variable length sized things
+
+# 773. Wide stretch - slow thing, fast thing
+
+Why is Python, Javascript everything so slow?
+
+# 774. Wide pipe architecture
+
+The multithreaded barrier allows an alternative form of computer architecture in software programs.
+
+Instead of running programs passing 64 bits at a time to eachother, they operate on large buffers.
+
+
+
+# 775. Appliances that just stay running
+
+# 776. Buffer doubler
+
+When rate is detected in a microbatch to slow down, double the buffer size.
+
+I can detect starvation in my multithreaded barrier runtime.
+
+# 777. How to overlay a list over a fixed number of items but retain order?
+
+# 778. Memory numbering
+
+Number each pointer and then track its movements between where it resides
+
+# 779. Memory is just a number
+
+# 780. It's amazing how much of computing comes down to memory
+
+# 781. A different sort of while
+
+While other things are going on
+
+Regions
+
+multiplexing
+
+chunks
+
+buckets
+
+slots
+
+numbers!
+
+
+
+# 782. Observable system of a web scale system
+
+# 783. Loop preemption for security
+
+
+
+
+
+# 784. Visibility from where I'm standing
+
+Every method has a potential set of methods it can be inside
+
+
+
+# 785. Frontend drives the backend
+
+# 786. CRUD Service and relationships
+
+# 787. Query is logistics
+
+Routing of data flow
+
+unfolding
+
+# 788. Lookup table integer colour space - where everything is
+
+# 789. Latency and throughput
+
+if you transfer less now, you can do more sooner
+
+# 790. Buffers are permanent regions
+
+# 791. Buffer and time backpressure
+
+# 792. Assembly queues
+
+# 793. Hard capacity engine
+
+A computer program can manage millions of items efficiently if you keep the numbers low.
+
+# 794. 3d rendering of game, GHC compiler
+
+# 795. Fast startup
+
+# 796. Indirection built into the system
+
+Distributed systems are hard to upgrade.
+
+Versions add interactions.
+
+# 797. Can we compute by moving?
+
+Moving is fast.
+
+# 798. Automatic queues from compiler
+
+Assembly operates on moving things between registers
+
+And memory
+
+A queue is a multithreaded construct
+
+A TCP connection or UDP datagram is a network concept
+
+But it's all movement
+
+# 799. Register only program
+
+Can and algorithm just use registers and use addition, subtraction, division and multiplication to identify position?
+
+Dimensions
+
+That's linear algebra!
+
+btree linear algebra
+
+a "is inside" is just a number on a dimension
+
+a
+
+b
+
+c
+
+d
+
+# 800. HTTP Actors
+
+Actors resolvable by HTTP.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
