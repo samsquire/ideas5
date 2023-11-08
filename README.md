@@ -5276,7 +5276,7 @@ Expression parsing in programming is limited in what it can express. We can hand
 
 Functional programming is similarly limited.
 
-# 657. Compositor API
+# 657. Compositor API and with a timeline API
 
 # 658. Links in documents?
 
@@ -6186,7 +6186,7 @@ A computer program can manage millions of items efficiently if you keep the numb
 
 # 794. 3d rendering of game, GHC compiler
 
-# 795. Fast startup
+# 795. Fast startup of processes
 
 # 796. Indirection built into the system
 
@@ -6229,6 +6229,8 @@ b
 c
 
 d
+
+Can a sys call use a register?
 
 # 800. HTTP Actors
 
